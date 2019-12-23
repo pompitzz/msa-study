@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.member;
+package me.sun.springbootstudy.domain.member;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +57,4 @@ class MemberRepositoryTest {
         //then
         assertThat(findMember.getEmail()).isEqualTo(email);
     }
-
 }

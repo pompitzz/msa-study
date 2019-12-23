@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.member;
+package me.sun.springbootstudy.domain.member;
 
 import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
 import me.sun.springbootstudy.web.dto.MemberResponseDto;
@@ -14,6 +14,9 @@ class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     void joinMemberAndFind() throws Exception {
@@ -42,5 +45,24 @@ class MemberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 유저가 존재하지 않습니다.");
     }
+
+    @Test
+    void passwordEncode() throws Exception {
+        //given
+        MemberJoinRequestDto joinDto = MemberJoinRequestDto.builder()
+                .email("email@gmail.com")
+                .password("password")
+                .name("John")
+                .role(MemberRole.USER)
+                .build();
+        //when
+        Long savedId = memberService.save(joinDto);
+        Member member = memberRepository.findById(savedId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        //then
+        assertThat(member.getPassword()).isNotEqualTo(joinDto.getPassword());
+    }
+
 
 }

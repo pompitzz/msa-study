@@ -3,16 +3,23 @@ package me.sun.springbootstudy.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.sun.springbootstudy.member.Member;
-import me.sun.springbootstudy.member.MemberRole;
+import me.sun.springbootstudy.domain.member.Member;
+import me.sun.springbootstudy.domain.member.MemberRole;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Getter
 public class MemberJoinRequestDto {
 
+    @NotEmpty
     private String email;
+    @NotEmpty
     private String password;
+    @NotEmpty
     private String name;
+    @NotNull
     private MemberRole role;
 
     @Builder

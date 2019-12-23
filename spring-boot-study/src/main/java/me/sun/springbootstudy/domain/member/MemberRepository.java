@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.member;
+package me.sun.springbootstudy.domain.member;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

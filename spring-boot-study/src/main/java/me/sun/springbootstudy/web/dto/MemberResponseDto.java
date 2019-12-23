@@ -2,8 +2,8 @@ package me.sun.springbootstudy.web.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.sun.springbootstudy.member.Member;
-import me.sun.springbootstudy.member.MemberRole;
+import me.sun.springbootstudy.domain.member.Member;
+import me.sun.springbootstudy.domain.member.MemberRole;
 
 @Getter
 @NoArgsConstructor

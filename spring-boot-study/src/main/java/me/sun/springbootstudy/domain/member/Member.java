@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.member;
+package me.sun.springbootstudy.domain.member;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,5 +34,9 @@ public class Member {
         this.password = password;
         this.name = name;
         this.role = role;
+    }
+
+    public void encodingPassword(String password) {
+        this.password = password;
     }
 }

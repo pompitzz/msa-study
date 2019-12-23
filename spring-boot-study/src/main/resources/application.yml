@@ -11,3 +11,8 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
+custom:
+  clientId: clientApp
+  clientSecret: secret
+  jwtKey: test

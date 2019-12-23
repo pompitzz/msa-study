@@ -21,11 +21,14 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.2.RELEASE'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
 
     annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
