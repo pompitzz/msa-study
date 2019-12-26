@@ -42,7 +42,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()
                 .withClient(clientId)
                 .authorizedGrantTypes("password", "refresh_token")
-                .scopes("read", "profile")
+                .scopes("read", "profile", "write")
                 .secret(passwordEncoder.encode(clientSecret))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60);
@@ -61,7 +61,8 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
-    private JwtAccessTokenConverter jwtAccessTokenConverter() {
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(jwtKey);
         return converter;
