@@ -17,8 +17,8 @@ public class AppRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         MemberJoinRequestDto dto = MemberJoinRequestDto.builder()
-                .email("test@gmail.com")
-                .password("qwe123")
+                .email("123")
+                .password("123")
                 .role(MemberRole.USER)
                 .name("홍길동")
                 .build();

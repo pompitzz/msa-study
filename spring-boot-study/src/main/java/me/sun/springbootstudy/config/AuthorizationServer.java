@@ -15,6 +15,10 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @RequiredArgsConstructor
 @EnableAuthorizationServer
@@ -24,7 +28,6 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final MemberService memberService;
-
     @Value("${custom.clientId}")
     private String clientId;
     @Value("${custom.clientSecret}")
@@ -35,6 +38,10 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.passwordEncoder(passwordEncoder);
+
+        // 토큰 발급을 위해선 AuthenticationFilter에 corsfilter를 추가해줘야 한다.
+        CorsFilter filter = new CorsFilter(corsConfigurationSource());
+        security.addTokenEndpointAuthenticationFilter(filter);
     }
 
     @Override
@@ -67,4 +74,21 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         converter.setSigningKey(jwtKey);
         return converter;
     }
+
+
+    /**
+     * cors를 허용하고 싶은 도메인을 추가하면 된다.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("http://localhost:8081");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
+
 }
