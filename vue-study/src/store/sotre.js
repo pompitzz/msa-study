@@ -7,7 +7,17 @@ import mutations from "./mutations";
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-    state: {},
+    state: {
+        showModal: false,
+        modalTitle: '',
+        modalDescription: '',
+        modalOption: '',
+        tokenInfo: {
+            accessToken: '',
+            refreshToken: '',
+            expires_in: '',
+        }
+    },
     getters,
     mutations,
     actions

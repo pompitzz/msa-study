@@ -12,7 +12,7 @@
 #### Vue
  - Node
  - Vue
- - Vuex
+ - Vuex@
 ---
 ## 구현 순서
 #### SpringBoot
@@ -25,9 +25,21 @@
       1. BoardRepository, Service, Controller 추가
       1. ResourceServerConfig 추가
       1. ResourceServer 동작 확인 테스트 추가
+    - Cors 설정
+      1. Authorization Server 측에 cors를 설정해야 토큰 발급할 때 문제가 없다.
+      2. Filter로 OPTIONS 메서드가 들어올 때 response를 강제할 수 있지만 모든 Domain을 허용해야 하므로 좋지않다.
+
 #### Vue
 1. 회원가입, 로그인 기능 구현
-    - 회원가입 페이지 구현
-    - 회원가입 기능 구현
-    - 로그인 페이지 구현
-    - 로그인 기능 구현
+    - 회원가입, 로그인 뷰 구현
+      - MDBootstrap으로 화면 재구성
+      - slot을 이용하여 하나의 Modal을 여러 상황에 맞게 커스텀
+    - 회원가입, 로그인 API 통신 구현
+      - 회원가입, 로그인 성공 시 자동으로 다음 화면으로 변경
+      - 회원가입, 로그인 실패 시 Modal을 띄워 사용자에게 알려줌
+      - 로그인 시 state의 tokenInfo에 토큰 정보들을 담아놓고 axios defalut Header에 AccessToken 등록
+
+2. 권한별 라우터 설정, 로그아웃 구현
+    - 라우터 내비게이션 가드를 이용하여 인증되지 않은 사용자가 인증이 필요한 페이지 접속시 Modal을 띄우고 로그인 화면으로 리다이렉트
+    - 로그인 시 페이지 상단의 로그인, 회원가입을 로그아웃으로 변경
+    - 로그아웃 시 token 정보를 초기화하여 인증이 필요한 서버를 접속하기 위해서는 다시 로그인 필요

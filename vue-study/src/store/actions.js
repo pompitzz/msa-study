@@ -1,30 +1,36 @@
 import {requestJoinMember, requestLogin} from "../apis/api";
-import {router} from "../routes/route";
+import {createInfo} from "../common";
 
 export default {
     async REQUEST_JOIN(context, member) {
         try {
             const response = await requestJoinMember(member);
-            alert('회원가입을 성공하였습니다');
-            console.log(member);
-            await router.push('/login');
+            context.commit('SET_MODAL_TEXTS', createInfo(
+                '회원가입 성공!',
+                '로그인 페이지로 이동합니다.',
+                '이동'
+            ));
             return response;
-
         } catch (e) {
-            alert('회원가입이 실패하였습니다.');
+            context.commit('SET_MODAL_TEXTS', createInfo(
+                '회원가입 실패!',
+                '다시한번 더 시도해주세요',
+                'Close'
+            ));
         }
     },
 
-    async REQUEST_LOGIN(context, info){
-        try{
+    async REQUEST_LOGIN(context, info) {
+        try {
             const response = await requestLogin(info);
-            alert('로그인에 성공하였습니다');
-            console.log(response);
-            context.commit('SET_LOGIN_USER', response.data);
+            context.commit('LOGIN', response.data);
             return response;
-        }catch (e) {
-            alert('로그인 실패!');
-            console.log(e);
+        } catch (e) {
+            context.commit('SET_MODAL_TEXTS', createInfo(
+                '로그인 실패!',
+                '다시한번 더 시도해주세요',
+                'CLOSE'
+            ));
         }
     }
 }

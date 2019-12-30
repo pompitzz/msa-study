@@ -3,10 +3,10 @@
 </template>
 
 <script>
-    import Resister from "../components/Resister";
+    import Resister from "../components/Register";
     export default {
-        name: "ResisterView",
-        components:{
+        name: "Register",
+        components: {
             Resister
         }
     }
