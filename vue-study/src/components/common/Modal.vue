@@ -1,45 +1,57 @@
 <template>
-    <!-- Modal -->
-    <transition aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fadeInUp"
-                id="exampleModalCenter"
-                role="dialog"
-                tabindex="-1">
-
-        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
-        <div class="modal-dialog modal-dialog-centered" role="document">
-
-
-            <div class="modal-content  p-3 mx-auto">
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger" id="exampleModalLongTitle">
-                        <slot name="title">Modal title</slot>
-                    </h5>
-                </div>
-                <div class="p-3">
-                    <slot name="description">description</slot>
-                    <button class="btn btn-secondary d-flex ml-auto" name="close" type="button">
-                        <slot name="close">Close</slot>
-                    </button>
-                </div>
+    <transition>
+        <mdb-modal :show="modal" @close="CLOSE_MODAL" class="only-close-modal">
+            <div class="p-2">
+                <mdb-modal-header>
+                    <mdb-modal-title color="warning">
+                        <h5 class="red-text my-auto">
+                            <slot name="title">
+                                Title
+                            </slot>
+                        </h5>
+                    </mdb-modal-title>
+                </mdb-modal-header>
+                <mdb-modal-body>
+                    <slot name="description">
+                        다시 한번 더 시도해주세요
+                    </slot>
+                    <br>
+                    <mdb-btn @click.native="CLOSE_MODAL" class="d-flex ml-auto" color="secondary">
+                        <slot name="option">TEST</slot>
+                    </mdb-btn>
+                </mdb-modal-body>
             </div>
-        </div>
+        </mdb-modal>
     </transition>
 </template>
-
 <script>
+    import {mdbBtn, mdbModal, mdbModalTitle, mdbModalHeader, mdbModalBody} from 'mdbvue'
+    import {mapMutations, mapState} from 'vuex'
+
     export default {
-        name: "Modal"
+        name: "Main",
+        components: {
+            mdbBtn,
+            mdbModal,
+            mdbModalTitle,
+            mdbModalHeader,
+            mdbModalBody,
+        },
+        computed: {
+            ...mapState(['modal']),
+        },
+        methods: {
+            ...mapMutations(['CLOSE_MODAL']),
+        }
     }
 </script>
 
 <style scoped>
     .modal-dialog {
-        max-width: 500px;
-        margin-top: 0;
-        margin-bottom: 0;
+        margin-top: 500px;
     }
 
-    .modal-header h5 {
-        font-weight: bold;
+    .modal-content {
+        margin-top: 300px;
     }
 </style>

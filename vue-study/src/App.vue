@@ -1,24 +1,25 @@
 <template>
     <div id="app">
-        <Test/>
-        <transition name="page">
-            <router-view/>
-        </transition>
+        <Navbar/>
+        <router-view/>
     </div>
 </template>
 
 <script>
-    import Test from "./components/Header";
+    import Navbar from "./components/Navbar";
 
     export default {
         name: 'app',
         components: {
-            Test,
+            Navbar,
         }
     }
 </script>
 
 <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
+
     html body {
         padding: 0;
         margin: 0;
@@ -36,5 +37,9 @@
 
     .page-enter, .page-leave-to {
         opacity: 0;
+    }
+
+    .only-close-modal .modal-content {
+        margin-top: 50%;
     }
 </style>

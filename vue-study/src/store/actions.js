@@ -1,18 +1,18 @@
-import {requestJoinMember, requestLogin} from "../apis/api";
-import {createInfo} from "../common";
+import {requestJoinMember, requestLogin} from "../api/api";
+import {createModalTexts} from "../common";
 
 export default {
     async REQUEST_JOIN(context, member) {
         try {
             const response = await requestJoinMember(member);
-            context.commit('SET_MODAL_TEXTS', createInfo(
+            context.commit('SET_MODAL_TEXTS', createModalTexts(
                 '회원가입 성공!',
                 '로그인 페이지로 이동합니다.',
                 '이동'
             ));
             return response;
         } catch (e) {
-            context.commit('SET_MODAL_TEXTS', createInfo(
+            context.commit('SET_MODAL_TEXTS', createModalTexts(
                 '회원가입 실패!',
                 '다시한번 더 시도해주세요',
                 'Close'
@@ -26,7 +26,7 @@ export default {
             context.commit('LOGIN', response.data);
             return response;
         } catch (e) {
-            context.commit('SET_MODAL_TEXTS', createInfo(
+            context.commit('SET_MODAL_TEXTS', createModalTexts(
                 '로그인 실패!',
                 '다시한번 더 시도해주세요',
                 'CLOSE'

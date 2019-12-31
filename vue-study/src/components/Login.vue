@@ -4,11 +4,11 @@
             <h3 class="mb-4 font-weight-bold">로그인</h3>
 
             <div>
-                <input class="d-block w-100 p-3 mb-3 my-input" placeholder="E-mail" type="text" v-model="email">
-                <input class="d-block w-100 p-3 mb-3 my-input" placeholder="Password" type="password"
-                       v-model="password">
-                <a @click="loginRequest"
-                   class="btn btn-outline-default waves-effect w-75 font-weight-bold p-2">LOGIN</a>
+                <mdb-input label="E-mail" type="text" v-model="email"/>
+                <mdb-input label="Password" type="password" v-model="password"/>
+
+                <mdb-btn @click="loginRequest" class="w-75 font-weight-bold p-2" outline="default">LOGIN</mdb-btn>
+
                 <p class="mt-3 mb-0">아직 회원이 아니신가요?
                     <router-link class="font-weight-bold text-danger"
                                  to="/register">회원가입
@@ -16,10 +16,10 @@
                 </p>
             </div>
         </div>
-        <Modal @close="CLOSE_MODAL" v-if="showModal">
-            <h5 slot="title"> {{modalTitle}} </h5>
-            <p slot="description"> {{modalDescription}} </p>
-            <div @click="CLOSE_MODAL" slot="close">{{modalOption}}</div>
+        <Modal>
+            <slot slot="title"> {{modalTitle}}</slot>
+            <slot slot="description"> {{modalDescription}}</slot>
+            <slot slot="option">{{modalOption}}</slot>
         </Modal>
 
     </div>
@@ -29,7 +29,8 @@
 <script>
     import Modal from "./common/Modal";
     import {mapActions, mapMutations, mapState} from 'vuex'
-    import {createInfo} from "../common";
+    import {createModalTexts} from "../common";
+    import {mdbInput, mdbBtn} from 'mdbvue'
 
     export default {
         name: "Login",
@@ -40,10 +41,12 @@
             }
         },
         computed: {
-            ...mapState(['showModal', 'modalTitle', 'modalDescription', 'modalOption'])
+            ...mapState(['modal', 'modalTitle', 'modalDescription', 'modalOption'])
         },
         components: {
-            Modal
+            Modal,
+            mdbInput,
+            mdbBtn
         },
         methods: {
             ...mapMutations(['CLOSE_MODAL', 'SET_MODAL_TEXTS']),
@@ -55,7 +58,7 @@
                         password: this.password,
                     })
                 } else {
-                    this.SET_MODAL_TEXTS(createInfo(
+                    this.SET_MODAL_TEXTS(createModalTexts(
                         '로그인 불가',
                         '아이디와 비밀번호를 입력해주세요.',
                         'CLOSE'

@@ -1,33 +1,29 @@
 <template>
     <div>
+        <div class="text-center">
+            <h1 style="margin-top: 300px;">This is Main Component</h1>
+            <mdb-btn color="primary">
+                <mdb-icon class="mr-1" icon="magic"/>
+                Primary
+            </mdb-btn>
 
-        <button @click="modalOpen" style="margin: 50px">Click</button>
+            <mdb-btn color="default">Default</mdb-btn>
 
-        <Modal @close="showModal = false" v-if="showModal">
-            <h5 slot="title"> 테스트1 </h5>
-            <p slot="description"> 설명 </p>
-            <div @click="showModal = false" slot="close">Close</div>
-        </Modal>
+            <mdb-btn color="secondary">Secondary</mdb-btn>
+        </div>
+
+
     </div>
 </template>
 
 <script>
-    import Modal from "./common/Modal";
+    import {mdbBtn, mdbIcon} from 'mdbvue'
 
     export default {
         name: "Main",
-        data() {
-            return {
-                showModal: false,
-            }
-        },
         components: {
-            Modal
-        },
-        methods: {
-            modalOpen() {
-                this.showModal = true;
-            }
+            mdbBtn,
+            mdbIcon
         }
     }
 </script>

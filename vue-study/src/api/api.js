@@ -14,7 +14,7 @@ function requestLogin(info) {
     form.append('password', info.password);
     form.append("grant_type", "password");
     const requestData = {
-        url: "http://localhost:8080/oauth/token",
+        url: `${config.baseUrl}/oauth/token`,
         method: "POST",
         auth: {
             username: 'clientApp',
@@ -28,7 +28,6 @@ function requestLogin(info) {
 
 function setAccessTokenInHeader(accessToken) {
     axios.defaults.headers.common['Authorization'] = accessToken ? `Bearer ${accessToken}` : null;
-    console.log(axios.defaults.headers);
 }
 
 export {requestJoinMember, requestLogin, setAccessTokenInHeader}

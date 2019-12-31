@@ -1,4 +1,4 @@
-const createInfo = (title, description, option) => {
+const createModalTexts = (title, description, option) => {
     return {
         title: title,
         description: description,
@@ -6,4 +6,4 @@ const createInfo = (title, description, option) => {
     }
 };
 
-export {createInfo}
+export {createModalTexts}

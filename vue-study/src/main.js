@@ -1,14 +1,10 @@
+import 'bootstrap-css-only/css/bootstrap.min.css'
+import 'mdbvue/lib/css/mdb.min.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import Vue from 'vue'
 import App from './App.vue'
-import 'mdbootstrap/css/mdb.css'
-import 'mdbootstrap/css/bootstrap.min.css'
-import 'mdbootstrap/css/style.css'
-import 'mdbootstrap/js/jquery.min'
-import 'mdbootstrap/js/popper.min'
-import 'mdbootstrap/js/bootstrap.min'
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import {router} from "./routes/route";
-import {store} from "./store/sotre";
+import {store} from "./store/store";
 
 Vue.config.productionTip = false;
 

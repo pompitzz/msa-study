@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        showModal: false,
+        modal: false,
         modalTitle: '',
         modalDescription: '',
         modalOption: '',

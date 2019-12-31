@@ -1,12 +1,10 @@
 <template>
-    <Modal @close="CLOSE_MODAL" v-if="showModal">
-        <h5 slot="title"> {{modalTitle}} </h5>
-        <p slot="description"> {{modalDescription}} </p>
-        <div @click="CLOSE_MODAL" slot="close">
-            <router-link class="text-white" to="/login">
-                {{modalOption}}
-            </router-link>
-        </div>
+    <Modal>
+        <slot slot="title"> {{modalTitle}}</slot>
+        <slot slot="description"> {{modalDescription}}</slot>
+        <router-link class="text-white" slot="option" to="/login">
+            {{modalOption}}
+        </router-link>
     </Modal>
 </template>
 

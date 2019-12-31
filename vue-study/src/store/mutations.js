@@ -1,5 +1,4 @@
 import {router} from "../routes/route";
-import {setAccessTokenInHeader} from "../apis/api";
 
 const changeTokenInfo = (state, data) => {
     state.tokenInfo.accessToken = data ? data.access_token : null;
@@ -12,19 +11,20 @@ export default {
         state.modalTitle = info.title;
         state.modalDescription = info.description;
         state.modalOption = info.option;
-        state.showModal = true;
+        state.modal = true;
     },
     CLOSE_MODAL(state) {
-        state.showModal = false;
+        state.modal = false;
+    },
+    OPEN_MODAL(state) {
+        state.modal = true;
     },
     LOGIN(state, responseTokenInfo) {
         changeTokenInfo(state, responseTokenInfo);
-        setAccessTokenInHeader(responseTokenInfo.access_token);
         router.push('/main');
     },
     LOGOUT(state) {
         changeTokenInfo(state, null);
-        setAccessTokenInHeader(null);
         router.push('/main');
     },
 }
