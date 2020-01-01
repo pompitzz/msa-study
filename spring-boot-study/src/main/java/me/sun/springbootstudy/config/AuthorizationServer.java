@@ -28,6 +28,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final MemberService memberService;
+
     @Value("${custom.clientId}")
     private String clientId;
     @Value("${custom.clientSecret}")
@@ -39,7 +40,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.passwordEncoder(passwordEncoder);
 
-        // 토큰 발급을 위해선 AuthenticationFilter에 corsfilter를 추가해줘야 한다.
+        // 엔드포인트에 필터를 추가해줘야 토큰 발급시 cors 문제가 발생하지 않는다.
         CorsFilter filter = new CorsFilter(corsConfigurationSource());
         security.addTokenEndpointAuthenticationFilter(filter);
     }
