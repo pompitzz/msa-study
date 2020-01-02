@@ -2,17 +2,21 @@ version: 0.0 #CodeDeploy버전 설정 프로젝트 버전이 아니므로 0.0 �
 os: linux
 files:
   - source:  / # CodeDeploy에서 전달 해준 파일 중 이동 시킬 대상 지정 전체이르모 /로 했다
-    destination: /home/ec2-user/app/step3/zip/ # 그 파일을 받는 곳
+    destination: /home/ec2-user/app/msa-study/zip/ # 그 파일을 받는 곳
     overwrite: yes
 
+# CodeDeploy에서 EC2 서버로 넘겨준 파일들을 모두 ec2-user 권한을 갖도록 한다.
 permissions:
   - object: /
     pattern: "**"
     owner: ec2-user
     group: ec2-user
 
+# CodeDeploy 배포 단계에서 실행할 명령어 지정
+# ApplicationStart라는 단계에서 deploy.sh를 ec2-user 권한으로 실행
+# 60초 이상 스크립트가 실행되면 실패.
 hooks:
   ApplicationStart:
-    - location: start.sh # 엔진엑스와 연결되어 있지 않은 Port로 새 버전의 스프링 부트를 시작합니다.
+    - location: deploy.sh
       timeout: 60
       runas: ec2-user
