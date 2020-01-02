@@ -27,7 +27,7 @@ custom:
 
 ---
 spring.profiles: real
-spring.profiles.active: real-db
+spring.profiles.include: real-db
 
 server:
   port: 8081

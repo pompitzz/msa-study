@@ -16,8 +16,8 @@
                               required v-model="member.password"
                               label="Password" type="password" prepend-icon="mdi-lock"></v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="validatePasswordRules"
-                              required v-model="member.validatePassword"
+                <v-text-field class="pl-3 pr-3" :rules="validatePasswordRules"                              required v-model="validatePassword"
+
                               label="Re-enter password" type="password" prepend-icon="mdi-lock"></v-text-field>
 
                 <v-text-field class="pl-3 pr-3" :rules="nameRules"
@@ -46,8 +46,8 @@
                     password: '',
                     name: '',
                     role: 'USER',
-                    validatePassword: '',
                 },
+                validatePassword: '',
                 validatePasswordRules: [
                     v => v === this.member.password || '비밀번호가 맞지 않습니다.'
                 ]

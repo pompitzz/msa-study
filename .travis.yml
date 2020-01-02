@@ -20,6 +20,27 @@ before_install:
 
 script: "cd spring-boot-study; ./gradlew clean build"
 
+# S3 설정
+## CodeDeploy는 jar 파일을 인식하지 못하므로 jar와 기타 설정 파일들을 로 압축한다.
+before_deploy:
+  - zip -r spring-boot-study * # 현재위치의 모든 파일을 이름으로 압축한다
+  - mkdir -p deploy # deploy라는 디렉토리를 Travis CI가 실행 중인 위치에생성한다
+  - mv spring-boot-study.zip deploy/spring-boot-study.zip #생성된 위치로 이동한다
+
+# S#로 파일 업로드 혹운 CodeDeploy로 배포 등 외부 서비스와 연동될 행위들을 선언
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis CI 설정 값
+    secret_access_key: $AWS_SECRET_KEY # Travis CI 설정 값
+
+    bucket: springboot2-restapi-s3
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private # zip 파을 접근 private
+    local_dir: deploy # deploy 폴더만 s3로 전송
+    wait-until-deployed: true
+
+# Email 알람
 notifications:
   email:
     recipients:
