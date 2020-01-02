@@ -1,0 +1,26 @@
+language: java
+jdk:
+  - openjdk8
+
+# master branch의 push에만 수행
+branches:
+  only:
+    - master
+
+# gradle 의존성을 캐시하여 다음 배포시 받지 않도록 한다.
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+# Permission denied 문제 해결
+before_install:
+  - cd spring-boot-study
+  - chmod +x gradlew
+
+script: "cd spring-boot-study; ./gradlew clean build"
+
+notifications:
+  email:
+    recipients:
+      - dongmyeong.lee22@gmail.com
