@@ -40,7 +40,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.passwordEncoder(passwordEncoder);
 
-        // ¿£µåÆ÷ÀÎÆ®¿¡ ÇÊÅÍ¸¦ Ãß°¡ÇØÁà¾ß ÅäÅ« ¹ß±Ş½Ã cors ¹®Á¦°¡ ¹ß»ıÇÏÁö ¾Ê´Â´Ù.
+        // ì—”ë“œí¬ì¸íŠ¸ì— í•„í„°ë¥¼ ì¶”ê°€í•´ì¤˜ì•¼ í† í° ë°œê¸‰ì‹œ cors ë¬¸ì œê°€ ë°œìƒí•˜ì§€ ì•ŠëŠ”ë‹¤.
         CorsFilter filter = new CorsFilter(corsConfigurationSource());
         security.addTokenEndpointAuthenticationFilter(filter);
     }
@@ -78,7 +78,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
 
     /**
-     * cors¸¦ Çã¿ëÇÏ°í ½ÍÀº µµ¸ŞÀÎÀ» Ãß°¡ÇÏ¸é µÈ´Ù.
+     * corsë¥¼ í—ˆìš©í•˜ê³  ì‹¶ì€ ë„ë©”ì¸ì„ ì¶”ê°€í•˜ë©´ ëœë‹¤.
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
