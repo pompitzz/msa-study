@@ -1,0 +1,18 @@
+version: 0.0 #CodeDeploy버전 설정 프로젝트 버전이 아니므로 0.0 사용
+os: linux
+files:
+  - source:  / # CodeDeploy에서 전달 해준 파일 중 이동 시킬 대상 지정 전체이르모 /로 했다
+    destination: /home/ec2-user/app/step3/zip/ # 그 파일을 받는 곳
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  ApplicationStart:
+    - location: start.sh # 엔진엑스와 연결되어 있지 않은 Port로 새 버전의 스프링 부트를 시작합니다.
+      timeout: 60
+      runas: ec2-user
