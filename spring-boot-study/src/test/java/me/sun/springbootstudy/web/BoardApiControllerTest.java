@@ -1,6 +1,7 @@
 package me.sun.springbootstudy.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.sun.springbootstudy.TokenInformation;
 import me.sun.springbootstudy.domain.board.BoardRepository;
 import me.sun.springbootstudy.domain.board.BoardService;
 import me.sun.springbootstudy.domain.member.MemberRepository;
@@ -51,11 +52,8 @@ class BoardApiControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Value("${custom.clientId}")
-    String clientId;
-
-    @Value("${custom.clientSecret}")
-    String clientSecret;
+    @Autowired
+    TokenInformation tokenInformation;
 
     @BeforeEach
     void clearAll() {
@@ -132,7 +130,7 @@ class BoardApiControllerTest {
 
         //when & then
         ResultActions result = this.mockMvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId, clientSecret))
+                .with(httpBasic(tokenInformation.getClientId(), tokenInformation.getClientSecret()))
                 .param("username", email)
                 .param("password", password)
                 .param("grant_type", "password"));

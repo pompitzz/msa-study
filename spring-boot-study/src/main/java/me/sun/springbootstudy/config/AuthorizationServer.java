@@ -1,8 +1,8 @@
 package me.sun.springbootstudy.config;
 
 import lombok.RequiredArgsConstructor;
+import me.sun.springbootstudy.TokenInformation;
 import me.sun.springbootstudy.domain.member.MemberService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,13 +28,16 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final MemberService memberService;
+    private final TokenInformation tokenInformation;
 
-    @Value("${custom.clientId}")
-    private String clientId;
-    @Value("${custom.clientSecret}")
-    private String clientSecret;
-    @Value("${custom.jwtKey}")
-    private String jwtKey;
+////    @Value("${custom.clientId}")
+//    private String clientId = "clientApp";
+//
+////    @Value("${custom.clientSecret}")
+//    private String clientSecret = "secret";
+//
+////    @Value("${custom.jwtKey}")
+//    private String jwtKey = "test";
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -48,10 +51,10 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient(clientId)
+                .withClient(tokenInformation.getClientId())
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("read", "profile", "write")
-                .secret(passwordEncoder.encode(clientSecret))
+                .secret(passwordEncoder.encode(tokenInformation.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60);
     }
@@ -72,7 +75,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(jwtKey);
+        converter.setSigningKey(tokenInformation.getJwtKey());
         return converter;
     }
 

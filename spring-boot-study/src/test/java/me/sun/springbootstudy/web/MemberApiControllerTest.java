@@ -1,6 +1,7 @@
 package me.sun.springbootstudy.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.sun.springbootstudy.TokenInformation;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;
 import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
@@ -34,12 +35,8 @@ class MemberApiControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Value("${custom.clientId}")
-    String clientId;
-
-    @Value("${custom.clientSecret}")
-    String clientSecret;
-
+    @Autowired
+    TokenInformation tokenInformation;
     @Test
     void joinMember() throws Exception {
         //given
@@ -73,7 +70,7 @@ class MemberApiControllerTest {
 
         //when & then
         this.mockMvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId, clientSecret))
+                .with(httpBasic(tokenInformation.getClientId(), tokenInformation.getClientSecret()))
                 .param("username", email)
                 .param("password", password)
                 .param("grant_type", "password")

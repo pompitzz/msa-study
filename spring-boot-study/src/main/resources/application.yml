@@ -1,9 +1,17 @@
 spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  profiles: local
   datasource:
     url: jdbc:h2:tcp://localhost/~/springVue
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -11,6 +19,18 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
+custom:
+  clientId: clientApp
+  clientSecret: secret
+  jwtKey: test
+
+---
+spring.profiles: real
+spring.profiles.active: real-db
+
+server:
+  port: 8081
 
 custom:
   clientId: clientApp
