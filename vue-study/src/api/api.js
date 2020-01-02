@@ -8,10 +8,10 @@ function requestJoinMember(member) {
     return axios.post(`${config.baseUrl}/api/members/join`, member);
 }
 
-function requestLogin(info) {
+function requestLogin(member) {
     let form = new FormData();
-    form.append('username', info.email);
-    form.append('password', info.password);
+    form.append('username', member.email);
+    form.append('password', member.password);
     form.append("grant_type", "password");
     const requestData = {
         url: `${config.baseUrl}/oauth/token`,

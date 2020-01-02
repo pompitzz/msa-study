@@ -1,36 +1,46 @@
 import {requestJoinMember, requestLogin} from "../api/api";
-import {createModalTexts} from "../common";
+
 
 export default {
     async REQUEST_JOIN(context, member) {
+
         try {
             const response = await requestJoinMember(member);
-            context.commit('SET_MODAL_TEXTS', createModalTexts(
-                '회원가입 성공!',
-                '로그인 페이지로 이동합니다.',
-                '이동'
-            ));
+            context.commit('OPEN_MODAL', setModalTexts(true));
             return response;
         } catch (e) {
-            context.commit('SET_MODAL_TEXTS', createModalTexts(
-                '회원가입 실패!',
-                '다시한번 더 시도해주세요',
-                'Close'
-            ));
+            context.commit('OPEN_MODAL', setModalTexts(false));
         }
     },
 
-    async REQUEST_LOGIN(context, info) {
+    async REQUEST_LOGIN(context, member) {
         try {
-            const response = await requestLogin(info);
-            context.commit('LOGIN', response.data);
+            const response = await requestLogin(member);
+            context.commit('LOGIN_SUCCESS', response.data);
             return response;
         } catch (e) {
-            context.commit('SET_MODAL_TEXTS', createModalTexts(
-                '로그인 실패!',
-                '다시한번 더 시도해주세요',
-                'CLOSE'
-            ));
+            context.commit('OPEN_MODAL', {
+                    title: '로그인 실패',
+                    content: '다시 한번 더 시도해주세요.',
+                    option: '닫기'
+                }
+            )
         }
     }
 }
+
+const setModalTexts = (isSuccess) => {
+    if (isSuccess) {
+        return {
+            title: '회원가입 성공!',
+            content: '로그인 페이지로 이동합니다.',
+            option: '이동',
+        }
+    } else {
+        return {
+            title: '회원가입 실패',
+            content: '다시 한번 더 시도해주세요.',
+            option: '닫기'
+        }
+    }
+};
