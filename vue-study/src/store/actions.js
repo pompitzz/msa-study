@@ -2,8 +2,8 @@ import {requestJoinMember, requestLogin} from "../api/api";
 
 
 export default {
-    async REQUEST_JOIN(context, member) {
 
+    async REQUEST_JOIN(context, member) {
         try {
             const response = await requestJoinMember(member);
             context.commit('OPEN_MODAL', setModalTexts(true));

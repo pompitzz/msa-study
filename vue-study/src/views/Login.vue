@@ -15,7 +15,6 @@
                                   required v-model="member.password"
                                   label="Password" type="password" prepend-icon="mdi-lock"></v-text-field>
 
-
                     <v-btn class="mt-3" color="cyan" outlined @click="loginRequest" :loading="loadingState">LOGIN</v-btn>
                 </v-form>
                 <p class="mt-3 mb-0">아직 회원이 아니신가요?

@@ -21,8 +21,8 @@
                 </v-btn>
             </div>
 
-            <v-btn outlined class="mr-3 d-none d-sm-inline-flex" color="white" @click="LOGOUT"
-                   v-if="isAuthenticated">
+            <v-btn outlined class="mr-3 d-none d-sm-inline-flex"
+                   color="white" @click="LOGOUT" v-if="isAuthenticated">
                 <v-icon left>mdi-logout-variant</v-icon>
                 <span>로그아웃</span>
             </v-btn>

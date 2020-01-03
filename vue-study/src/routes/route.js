@@ -13,7 +13,7 @@ const isAuthenticationMember = (to, from, next) => {
     if (store.getters.isAuthenticated) {
         next()
     } else {
-        next(`/no-auth?returnPath=${encodeURIComponent(from.path)}`);
+        next('/no-auth');
     }
 };
 
@@ -41,7 +41,8 @@ const router =  new VueRouter({
             path: '/memo',
             name: 'memo',
             component: Memo,
-            beforeEnter: (to, from, next) => isAuthenticationMember(to, from, next),
+            beforeEnter: (to, from, next) =>
+                isAuthenticationMember(to, from, next),
         },
         {
             path: '/no-auth',

@@ -17,10 +17,9 @@ function requestLogin(member) {
         url: `${config.baseUrl}/oauth/token`,
         method: "POST",
         auth: {
-            username: 'clientApp',
-            password: 'secret'
+            username: process.env.VUE_APP_CLIENTID,
+            password: process.env.VUE_APP_CLIENTSECRET,
         },
-        mimeType: "multipart/form-data",
         data: form
     };
     return axios(requestData);

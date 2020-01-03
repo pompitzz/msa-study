@@ -8,23 +8,24 @@
 
             <v-form class="pa-3 text-center" ref="form">
 
-                <v-text-field class="pl-3 pr-3" :rules="emailRules"
-                              required v-model="member.email" label="E-mail"
-                              type="email" prepend-icon="mdi-email"></v-text-field>
+                <v-text-field class="pl-3 pr-3" :rules="emailRules" required v-model="member.email"
+                              label="E-mail" type="email" prepend-icon="mdi-email">
+                </v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="passwordRules"
-                              required v-model="member.password"
-                              label="Password" type="password" prepend-icon="mdi-lock"></v-text-field>
+                <v-text-field class="pl-3 pr-3" :rules="passwordRules" required v-model="member.password"
+                              label="Password" type="password" prepend-icon="mdi-lock">
+                </v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="validatePasswordRules"                              required v-model="validatePassword"
+                <v-text-field class="pl-3 pr-3" :rules="validatePasswordRules" required v-model="validatePassword"
+                              label="Re-enter password" type="password" prepend-icon="mdi-lock">
+                </v-text-field>
 
-                              label="Re-enter password" type="password" prepend-icon="mdi-lock"></v-text-field>
-
-                <v-text-field class="pl-3 pr-3" :rules="nameRules"
-                              required v-model="member.name" label="Name"
-                              type="text" prepend-icon="mdi-account"></v-text-field>
+                <v-text-field class="pl-3 pr-3" :rules="nameRules" required v-model="member.name"
+                              label="Name" type="text" prepend-icon="mdi-account">
+                </v-text-field>
 
                 <v-btn class="mt-3" color="" outlined @click="joinRequest" :loading="loadingState">REGISTER</v-btn>
+
             </v-form>
         </div>
         <Modal/>
@@ -49,7 +50,7 @@
                 },
                 validatePassword: '',
                 validatePasswordRules: [
-                    v => v === this.member.password || '비밀번호가 맞지 않습니다.'
+                    v => v === this.member.password || '비밀번호가 맞지 않습니다..'
                 ]
             }
         },
