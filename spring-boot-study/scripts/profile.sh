@@ -2,9 +2,10 @@
 
 # 쉬고 있는 profile 찾기
 
-function find_idle_profile() {
+function find_idle_profile()
+{
   #statements
-  RESPONSE_CODE=$(curl -s -o /dev/null -w "{http_code}" http://localhost/profile) #
+  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile) #
 
   if [ ${RESPONSE_CODE} -ge 400 ]; then # 400보다큰 에러면
     CURRENT_PROFILE=real2

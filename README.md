@@ -46,17 +46,22 @@
 
 
 #### AWS 배포하기
-1. EC2, RDS 생성
-  - 필요한 프로그램 다운로드
-  - EC2에서 RDS 접속해보기
+1. **EC2, RDS 생성**
+    - 필요한 프로그램 다운로드
+    - EC2에서 RDS 접속해보기
 
-2. EC2에서 직접 서버 실행
-  - 직접 Clone후 Build하여 실행
-  - 배포 스크립트 만들어서 실행
+2. **EC2에서 직접 서버 실행**
+    - 직접 Clone후 Build하여 실행
+    - 배포 스크립트 만들어서 실행
 
-3. 배포 자동화 하기
-  - Travis CI 설정
-  - AWS S3 생성 후 Travis CI와 연동
-  - AWS CodeDeploy 생성 후 Travis CI, S3, CodeDeploy 연동
-  - 배포 스크립트 만들어서 배포 자동화
-  
+3. **배포 자동화**
+    - Travis CI 설정
+    - AWS S3 생성 후 Travis CI와 연동
+    - AWS CodeDeploy 생성 후 Travis CI, S3, CodeDeploy 연동
+    - 배포 스크립트 만들어서 배포 자동화
+
+4. **무중단 배포**
+    - 엔진엑스 설치하여 프로젝트와 연동하기
+    - 스크립트 만들기
+    - profiles 설정 후 테스트
+    
