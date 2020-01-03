@@ -26,7 +26,8 @@ custom:
   jwtKey: test
 
 ---
-spring.profiles: real
+
+spring.profiles: real1
 spring.profiles.include: real-db
 
 server:
@@ -36,3 +37,17 @@ custom:
   clientId: clientApp
   clientSecret: secret
   jwtKey: test
+
+---
+
+spring.profiles: real2
+spring.profiles.include: real-db
+
+server:
+  port: 8082
+
+custom:
+  clientId: clientApp
+  clientSecret: secret
+  jwtKey: test
+

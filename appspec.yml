@@ -16,7 +16,15 @@ permissions:
 # ApplicationStart라는 단계에서 deploy.sh를 ec2-user 권한으로 실행
 # 60초 이상 스크립트가 실행되면 실패.
 hooks:
+  AfterInstall:
+    - location: stop.sh # 엔진엑스와 연결되어 있지 않은 스프링 부트 종료
+      timeout: 60
+      runas: ec2-user
   ApplicationStart:
-    - location: deploy.sh
+    - location: start.sh # 엔직엔스와 연결되어 있지 않은 Port로 새 버번 프로젝트를 시작
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+    - location: health.sh # 정상적으로 실행되었는지 확인
       timeout: 60
       runas: ec2-user

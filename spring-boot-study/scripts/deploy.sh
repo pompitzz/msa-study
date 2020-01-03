@@ -1,7 +1,6 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/msa-study
-PROJECT_NAME=spring-boot-study
 
 echo "> Build 파일 복사"
 

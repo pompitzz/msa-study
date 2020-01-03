@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'me.sun'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.2-SNAPSHOT' + new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = '1.8'
 
 configurations {
