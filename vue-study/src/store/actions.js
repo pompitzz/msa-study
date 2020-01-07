@@ -16,7 +16,7 @@ export default {
     async REQUEST_LOGIN(context, member) {
         try {
             const response = await requestLogin(member);
-            context.commit('LOGIN_SUCCESS', response.data);
+            context.commit('LOGIN', response.data);
             return response;
         } catch (e) {
             context.commit('OPEN_MODAL', {

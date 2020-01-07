@@ -6,11 +6,7 @@ export default {
         content: '',
         option: '',
     },
-    tokenInfo: {
-        accessToken: '',
-        refreshToken: '',
-        expires_in: '',
-    },
+    accessToken: localStorage.getItem('access_token'),
     // ============ Rules ============ //
     emailRules: [
         v => !!v || '이메일을 작성해주세요.',

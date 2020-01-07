@@ -41,8 +41,7 @@ const router =  new VueRouter({
             path: '/memo',
             name: 'memo',
             component: Memo,
-            beforeEnter: (to, from, next) =>
-                isAuthenticationMember(to, from, next),
+            beforeEnter: (to, from, next) => isAuthenticationMember(to, from, next),
         },
         {
             path: '/no-auth',

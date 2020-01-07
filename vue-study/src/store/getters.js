@@ -1,5 +1,5 @@
 export default {
     isAuthenticated(state) {
-        return !!state.tokenInfo.accessToken;
+        return !!state.accessToken;
     }
 }

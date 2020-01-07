@@ -25,8 +25,11 @@ function requestLogin(member) {
     return axios(requestData);
 }
 
-function setAccessTokenInHeader(accessToken) {
-    axios.defaults.headers.common['Authorization'] = accessToken ? `Bearer ${accessToken}` : null;
-}
+const setAccessTokenInHeader = (accessToken) => {
+    axios.defaults.headers.common['Authorization'] = accessToken;
+};
 
-export {requestJoinMember, requestLogin, setAccessTokenInHeader}
+const deleteAccessTokenInHeader = () => {
+    axios.defaults.headers.common['Authorization'] = null;
+};
+export {requestJoinMember, requestLogin, setAccessTokenInHeader, deleteAccessTokenInHeader}

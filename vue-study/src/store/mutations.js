@@ -1,24 +1,24 @@
 import {router} from "../routes/route";
-import {setAccessTokenInHeader} from "../api/api";
-
-const changeTokenInfo = (state, data) => {
-    state.tokenInfo.accessToken = data ? data.access_token : null;
-    state.tokenInfo.refreshToken = data ? data.refresh_token : null;
-    state.tokenInfo.expires_in = data ? data.expires_in : null;
-};
+import {setAccessTokenInHeader, deleteAccessTokenInHeader} from "../api/api";
+import {setTokenInLocalStorage, deleteTokenInLocalStorage} from "../utils/oauth";
 
 export default {
-    LOGIN_SUCCESS(state, responseTokenInfo) {
-        changeTokenInfo(state, responseTokenInfo);
-        setAccessTokenInHeader(state.tokenInfo.accessToken);
+
+    LOGIN(state, responseTokenInfo) {
+        setTokenInLocalStorage(responseTokenInfo);
+        setAccessTokenInHeader(responseTokenInfo.access_token);
+        state.accessToken = localStorage.getItem("access_token");
+        state.loadingState = false;
         router.push('/');
     },
     LOGOUT(state) {
-        changeTokenInfo(state, null);
-        setAccessTokenInHeader(state.tokenInfo.accessToken);
+        deleteTokenInLocalStorage();
+        deleteAccessTokenInHeader();
+        state.accessToken = null;
         router.push('/');
     },
-    CLOSE_MODAL(state){
+
+    CLOSE_MODAL(state) {
         state.modal.open = false;
     },
     OPEN_MODAL(state, modalTexts){
