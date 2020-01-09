@@ -1,4 +1,4 @@
-import {requestJoinMember, requestLogin} from "../api/api";
+import {requestJoinMember, requestLogin, uploadImage} from "../api/api";
 
 
 export default {
@@ -26,7 +26,18 @@ export default {
                 }
             )
         }
+    },
+
+    async UPLOAD_IMAGE(context, image) {
+        try {
+            const response = await uploadImage(image);
+            console.log(response);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
     }
+
 }
 
 const setModalTexts = (isSuccess) => {
