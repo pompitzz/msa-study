@@ -49,6 +49,9 @@ function uploadImage(image) {
     return axios(requestData);
 }
 
+function sendText(text) {
+    return axios.post(`${config.baseUrl}/md`, text);
+}
 
 const setAccessTokenInHeader = (accessToken) => {
     axios.defaults.headers.common['Authorization'] = accessToken;
@@ -57,4 +60,4 @@ const setAccessTokenInHeader = (accessToken) => {
 const deleteAccessTokenInHeader = () => {
     axios.defaults.headers.common['Authorization'] = null;
 };
-export {requestJoinMember, requestLogin, setAccessTokenInHeader, deleteAccessTokenInHeader, uploadImage}
+export {requestJoinMember, requestLogin, setAccessTokenInHeader, deleteAccessTokenInHeader, uploadImage, sendText}

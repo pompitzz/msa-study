@@ -1,73 +1,57 @@
 <template>
-    <div class="mx-auto">
-        <h1>Main</h1>
-        <div style="width: 500px">
-            <v-file-input
-                    label="images"
-                    multiple
-                    name="images"
-                    prepend-icon="mdi-camera"
-                    v-model="files"
-            >
-                <template v-slot:selection="{ text }">
-                    <v-chip
-                            class="white--text"
-                            color="indigo"
-                            label
-                            small
-                    >
-                        {{ text }}
-                    </v-chip>
-                </template>
-            </v-file-input>
-            <v-btn @click="sendImage">
-                전송
-            </v-btn>
-            <br>
-            <v-img :src="endimg"
-                   height="300"
-                   width="300"></v-img>
-            test
-            <v-img :src="imgUrl"
-                   height="300"
-                   width="300"
-            ></v-img>
-            {{imgUrl}}
-        </div>
+    <div>
+        <v-container>
+            <editor ref="editor"
+                    v-model="editorText"
+            />
+            <v-btn @click="log">Click</v-btn>
 
+            <v-card class="pa-3" light>
+                <viewer :value="editorText" dark="false"/>
+            </v-card>
+            <code>
+                testtesttest
+            </code>
+        </v-container>
     </div>
 </template>
 
 <script>
+
+
+    import Editor from '@toast-ui/vue-editor/src/Editor.vue'
+    import Viewer from '@toast-ui/vue-editor/src/Viewer.vue'
     import {mapActions} from 'vuex'
 
     export default {
         name: "Main",
+        components: {
+            Editor,
+            Viewer
+        },
         data() {
             return {
-                files: [],
-                imgUrl: '',
-                endimg: '',
+                editorText: '',
+                htmltext: '',
             }
         },
         methods: {
-            ...mapActions(['UPLOAD_IMAGE']),
-            sendImage() {
-                // this.image = this.$refs.image.files[0];
-                this.UPLOAD_IMAGE(this.files)
-                    .then(img => this.imgUrl = img);
-
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    this.endimg = e.target.result;
+            ...mapActions(['SEND_BOARD']),
+            log() {
+                console.log(this.editorText);
+                const jsonTest = {
+                    content: this.editorText,
                 };
-                reader.readAsDataURL(this.files[0]);
-            },
-
+                this.SEND_BOARD(jsonTest);
+                let html = this.$refs.editor.invoke('getHtml');
+                console.log(html);
+            }
         }
     }
 </script>
 
 <style scoped>
-
+    code {
+        box-shadow: none !important;
+    }
 </style>

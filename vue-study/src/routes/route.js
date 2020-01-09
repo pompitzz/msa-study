@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Register from "../views/Register";
@@ -7,6 +6,9 @@ import NoAuth from "../views/NoAuth";
 import Main from "../views/Main";
 import Memo from "../views/Memo";
 import store from "../store/store";
+import BoardWrite from "../views/BoardWrite";
+import Boards from "../views/Boards";
+import Article from "../views/Article";
 
 
 const isAuthenticationMember = (to, from, next) => {
@@ -47,7 +49,24 @@ const router =  new VueRouter({
             path: '/no-auth',
             name: 'no-auth',
             component: NoAuth
-        }
+        },
+        {
+            path: '/board-write',
+            name: 'boardWrite',
+            component: BoardWrite,
+        },
+        {
+            path: '/boards',
+            name: 'boards',
+            component: Boards,
+        },
+        {
+            path: '/article',
+            name: 'article',
+            component: Article,
+        },
+
+
     ]
 });
 

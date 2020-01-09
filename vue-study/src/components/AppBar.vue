@@ -2,7 +2,7 @@
     <div>
         <v-app-bar
                 flat
-                color="teal"
+                color="#404242"
                 class="white--text">
 
             <v-toolbar-title>
@@ -69,6 +69,7 @@
                     {name: '메모장', icon: 'mdi-note-text', route: '/memo'},
                     {name: '로그인', icon: 'mdi-login-variant', route: '/login'},
                     {name: '회원가입', icon: 'mdi-account-plus', route: '/register'},
+                    {name: '게시글', icon: 'mdi-clipboard-text-multiple-outline', route: '/boards'},
                 ]
             }
         },

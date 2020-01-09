@@ -1,4 +1,4 @@
-import {requestJoinMember, requestLogin, uploadImage} from "../api/api";
+import {requestJoinMember, requestLogin, uploadImage, sendText} from "../api/api";
 
 
 export default {
@@ -32,6 +32,16 @@ export default {
         try {
             const response = await uploadImage(image);
             console.log(response);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    async SEND_BOARD(content, text) {
+        try {
+            const response = await sendText(text);
+            console.log(text);
             return response.data;
         } catch (e) {
             console.log(e);

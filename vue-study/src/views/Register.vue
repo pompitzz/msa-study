@@ -1,33 +1,36 @@
 <template>
-    <div class="register-container">
+    <div class="fill-height">
+        <v-row align="center" class="fill-height" justify="center">
+            <div class="register elevation-15">
+                <h3 class="font-weight-bold text-center py-3 black--text">
+                    회 원 가 입
+                </h3>
 
-        <div class="register elevation-15">
-            <h3 class="font-weight-bold text-center py-3">
-                회 원 가 입
-            </h3>
+                <v-form class="pa-3 text-center" ref="form">
 
-            <v-form class="pa-3 text-center" ref="form">
+                    <v-text-field :rules="emailRules" class="pl-3 pr-3" label="E-mail" prepend-icon="mdi-email"
+                                  required type="email" v-model="member.email">
+                    </v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="emailRules" required v-model="member.email"
-                              label="E-mail" type="email" prepend-icon="mdi-email">
-                </v-text-field>
+                    <v-text-field :rules="passwordRules" class="pl-3 pr-3" label="Password" prepend-icon="mdi-lock"
+                                  required type="password" v-model="member.password">
+                    </v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="passwordRules" required v-model="member.password"
-                              label="Password" type="password" prepend-icon="mdi-lock">
-                </v-text-field>
+                    <v-text-field :rules="validatePasswordRules" class="pl-3 pr-3" label="Re-enter password"
+                                  prepend-icon="mdi-lock"
+                                  required type="password" v-model="validatePassword">
+                    </v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="validatePasswordRules" required v-model="validatePassword"
-                              label="Re-enter password" type="password" prepend-icon="mdi-lock">
-                </v-text-field>
+                    <v-text-field :rules="nameRules" class="pl-3 pr-3" label="Name" prepend-icon="mdi-account"
+                                  required type="text" v-model="member.name">
+                    </v-text-field>
 
-                <v-text-field class="pl-3 pr-3" :rules="nameRules" required v-model="member.name"
-                              label="Name" type="text" prepend-icon="mdi-account">
-                </v-text-field>
+                    <v-btn :loading="loadingState" @click="joinRequest" class="mt-3" color="indigo" outlined>REGISTER
+                    </v-btn>
 
-                <v-btn class="mt-3" color="" outlined @click="joinRequest" :loading="loadingState">REGISTER</v-btn>
-
-            </v-form>
-        </div>
+                </v-form>
+            </div>
+        </v-row>
         <Modal/>
     </div>
 </template>
@@ -80,19 +83,17 @@
 </script>
 
 <style scoped>
-    .register-container {
-        min-height: 100vh;
-        background-color: #63b47a;
+
+    @media (min-width: 700px) {
+        .register {
+            width: 400px !important;
+        }
     }
 
     .register {
         background-color: white;
-        width: 400px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         border-radius: 8px;
+        width: 80%;
         border: white 1px solid;
         padding: 20px;
     }
