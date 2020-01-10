@@ -10,19 +10,22 @@
                                 append-icon="mdi-file-document-box-search-outline"
                                 hide-details
                                 label="검색"
-                                single-line
                                 v-model="search"
                         ></v-text-field>
                     </v-card-title>
                     <v-data-table
                             :headers="headers"
                             :items="boards"
-                            :search="search"
-                            :loading="false"
+                            :items-per-page="10"
+                            :loading="loadingState"
+                            :sort-by.sync="sortby"
                             hide-default-footer
                     >
+
                         <template v-slot:item.title="{item}">
-                            <v-btn text class="text-none px-1 my-td"  @click="moveToArticle(item)">{{titleLimit(item.title)}}</v-btn>
+                            <v-btn @click="moveToArticle(item)" class="text-none px-1 my-td" text>
+                                {{titleLimit(item.title)}}
+                            </v-btn>
                         </template>
                         <template v-slot:item.viewsCount="{item}" class="text-center">
                             <span class="text-center mx-3">{{item.viewsCount}}</span>
@@ -32,7 +35,10 @@
                         </template>
                     </v-data-table>
                     <div class="text-right">
-                        <v-btn class="ma-3" to="/board-write"
+                        <v-btn @click="moveToWritePage" class="ma-3"
+                        >글쓰기
+                        </v-btn>
+                        <v-btn @click="logTest" class="ma-3"
                         >글쓰기
                         </v-btn>
                     </div>
@@ -47,62 +53,112 @@
                 </v-card>
             </v-row>
         </v-container>
+        <Modal @pass="modalEvent"/>
     </div>
 </template>
 <script>
     import {mapActions, mapState, mapMutations} from 'vuex';
-    import moment from 'vue-moment'
+    import {router} from "../routes/route";
+    import Modal from "../components/Modal";
+
     export default {
         name: "BoardWrite",
+        components: {
+            Modal
+        },
         data() {
             return {
                 search: '',
                 headers: [
                     {text: '제목', value: 'title', align: 'left'},
-                    {text: '작성자', value: 'author'},
+                    {text: '작성자', value: 'author', sortable: false},
                     {text: '조회수', value: 'viewsCount'},
                     {text: '최근 수정일', value: 'lastModifiedDate'},
                 ],
-                pageRequest:{
+                pageRequest: {
                     page: 0,
                     sort: 'id,DESC'
                 },
                 currentPage: Number,
+                sortby: [],
+                lastSortBy: '',
+                timeout: null,
             }
         },
-        methods:{
-            ...mapActions(['QUERY_BOARDS']),
-            ...mapMutations(['MOVE_TO_ARTICLE']),
-            next(page){
+        methods: {
+            ...mapActions(['QUERY_BOARDS', 'COUNT_MOVE_TO_ARTICLE']),
+            ...mapMutations(['CLOSE_MODAL', 'OPEN_MODAL']),
+            next(page) {
                 this.pageRequest.page = page - 1;
                 this.QUERY_BOARDS(this.pageRequest);
             },
-            moveToArticle(board){
-                console.log('item', board);
+            moveToArticle(board) {
                 const articleInfo = {
-                    id:  board.id,
+                    id: board.id,
                     href: board._links.self.href,
                 };
 
-                this.MOVE_TO_ARTICLE(articleInfo);
+                this.COUNT_MOVE_TO_ARTICLE(articleInfo);
             },
-            titleLimit(title){
-                return title.length > 40 ? title.substring(0, 40) + '...' : title;
-                console.log(title);
+            titleLimit(title) {
+                return title.length > 70 ? title.substring(0, 40) + '...' : title;
+            },
+            moveToWritePage() {
+                if (localStorage.getItem('email') === null) {
+                    this.OPEN_MODAL({
+                        title: '로그인이 필요합니다.',
+                        content: `로그인을 한 사용자만 게시글 작성이 가능합니다.`,
+                        option: '닫기',
+                    })
+                } else {
+                    router.push('/board-write');
+                }
+
+            },
+            queryBoardWithSortBy() {
+                if (this.sortby.length !== 0) {
+                    this.lastSortby = this.sortby[0];
+                    this.pageRequest.sort = `${this.lastSortby},DESC`;
+                    this.QUERY_BOARDS(this.pageRequest);
+                } else {
+                    this.pageRequest.sort = `${this.lastSortby},ASC`;
+                    this.QUERY_BOARDS(this.pageRequest);
+                }
+            },
+            logTest() {
+                console.log(this.search);
+            },
+            modalEvent() {
+                this.CLOSE_MODAL();
             }
 
         },
         created() {
             this.QUERY_BOARDS(this.pageRequest);
         },
-        computed:{
-            ...mapState(['pageInfo', 'boardList']),
-            boards(){
+        computed: {
+            ...mapState(['pageInfo', 'boardList', 'loadingState']),
+            boards() {
                 return this.boardList;
             },
-            pageItems(){
+            pageItems() {
                 return this.pageInfo;
             },
+        },
+        watch: {
+            sortby: {
+                handler() {
+                    this.queryBoardWithSortBy();
+                }
+            },
+            search: {
+                handler() {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                        this.logTest()
+                    }, 500);
+                }
+            }
         }
     }
 </script>
@@ -111,7 +167,8 @@
     .boards-list {
         width: 100% !important;
     }
-    .my-td{
+
+    .my-td {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;

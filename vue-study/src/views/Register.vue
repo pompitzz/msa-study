@@ -31,14 +31,14 @@
                 </v-form>
             </div>
         </v-row>
-        <Modal/>
+        <Modal @pass="modalEvent"/>
     </div>
 </template>
 
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex'
     import Modal from "../components/Modal";
-
+    import {router} from "../routes/route";
 
     export default {
         name: "Resister",
@@ -70,13 +70,21 @@
         },
         methods: {
             ...mapActions(['REQUEST_JOIN']),
-            ...mapMutations(['OPEN_MODAL', 'START_LOADING']),
+            ...mapMutations(['OPEN_MODAL', 'START_LOADING', 'CLOSE_MODAL']),
             joinRequest() {
                 if (this.$refs.form.validate()) {
                     this.START_LOADING();
                     this.REQUEST_JOIN(this.member);
                 }
             },
+            modalEvent(isClose) {
+                if (isClose) {
+                    this.CLOSE_MODAL();
+                } else {
+                    this.CLOSE_MODAL();
+                    router.push('/login');
+                }
+            }
         }
     }
 

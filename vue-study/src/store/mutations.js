@@ -1,7 +1,6 @@
 import {router} from "../routes/route";
 import {setAccessTokenInHeader, deleteAccessTokenInHeader} from "../api/api";
 import {setTokenInLocalStorage, deleteTokenInLocalStorage} from "../utils/oauth";
-import moment from "moment";
 
 export default {
 
@@ -20,18 +19,17 @@ export default {
         router.push('/');
     },
     SUCCESS_SAVE_BOARD(state, boardInfo) {
-        console.log(boardInfo);
         state.articleUrl = boardInfo._links.self.href;
         router.push(`/article/${boardInfo.content}`);
     },
     SET_BOARD_PAGES(state, boardPagesInfo) {
+        state.loadingState = false;
         state.boardList = boardPagesInfo._embedded.boardListResponseDtoList;
         boardPagesInfo.page.number += 1;
         state.pageInfo = boardPagesInfo.page;
     },
     MOVE_TO_ARTICLE(state, articleInfo){
         state.articleUrl = articleInfo.href;
-        console.log(articleInfo);
         router.push(`/article/${articleInfo.id}`);
     }
     ,
@@ -43,7 +41,6 @@ export default {
         state.modal.title = modalTexts.title;
         state.modal.content = modalTexts.content;
         state.modal.option = modalTexts.option;
-        state.modal.route = modalTexts.route;
         state.modal.open = true;
     },
     START_LOADING(state) {

@@ -26,7 +26,7 @@
                 </div>
             </div>
         </v-row>
-        <Modal/>
+        <Modal @pass="modalEvent"/>
     </div>
 </template>
 
@@ -52,13 +52,16 @@
         },
         methods: {
             ...mapActions(['REQUEST_LOGIN']),
-            ...mapMutations(['OPEN_MODAL', 'START_LOADING']),
+            ...mapMutations(['START_LOADING', 'CLOSE_MODAL']),
             loginRequest() {
                 if (this.$refs.form.validate()) {
                     this.START_LOADING();
                     this.REQUEST_LOGIN(this.member);
                 }
             },
+            modalEvent() {
+                this.CLOSE_MODAL();
+            }
         }
     }
 </script>

@@ -3,7 +3,6 @@
         <v-container>
             <h1 class="text-center">글쓰기</h1>
             <BoardEditor :board="board" @pass="setBoard"/>
-
         </v-container>
     </div>
 </template>
@@ -21,17 +20,22 @@
                 board: {
                     title: '',
                     content: '',
-                    viewsCount: 0,
-                    email: localStorage.getItem('email'),
                     boardType: '',
                 },
             }
         },
         methods: {
-            ...mapActions(['SAVE_BOARD']),
+            ...mapActions(['SAVE_BOARD', 'QUERY_ARTICLE']),
             setBoard(editor) {
                 this.SAVE_BOARD(editor);
             },
+        },
+        created() {
+            this.QUERY_ARTICLE(this.$route.params.id).then(res => {
+                this.board.title = res.title;
+                this.board.content = res.content;
+                this.board.boardType = res.boardType;
+            });
         }
     }
 </script>

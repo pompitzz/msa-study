@@ -5,7 +5,6 @@ export default {
         title: '',
         content: '',
         option: '',
-        route: '',
     },
     articleUrl: '',
     pageInfo:'',

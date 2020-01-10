@@ -1,4 +1,10 @@
-import {requestJoinMember, requestLogin, uploadImage, requestSaveBoard, queryArticle, queryBoards} from "../api/api";
+import {
+    requestJoinMember, requestLogin,
+    uploadImage, requestSaveBoard,
+    queryArticle, queryBoards, validateBoardMember
+    , countBoardViews
+} from "../api/api";
+import {router} from "../routes/route";
 
 
 export default {
@@ -24,7 +30,6 @@ export default {
                     title: '로그인 실패',
                     content: '다시 한번 더 시도해주세요.',
                     option: '닫기',
-                    route: '',
                 }
             )
         }
@@ -42,7 +47,6 @@ export default {
     async SAVE_BOARD(context, board) {
         try {
             const response = await requestSaveBoard(board);
-            console.log('response', response.data);
             context.commit('SUCCESS_SAVE_BOARD', response.data);
             return response.data;
         } catch (e) {
@@ -50,15 +54,14 @@ export default {
                     title: '게시글 작성 실패',
                     content: '다시 한번 더 시도해주세요.',
                     option: '닫기',
-                    route: '',
                 }
             )
         }
     },
 
-    async QUERY_ARTICLE(context, articleUrl) {
+    async QUERY_ARTICLE(context, id) {
         try {
-            const response = await queryArticle(articleUrl);
+            const response = await queryArticle(id);
             console.log(response.data);
             return response.data;
         } catch (e) {
@@ -68,13 +71,55 @@ export default {
 
     async QUERY_BOARDS(context, pageRequest) {
         try {
+            context.commit('START_LOADING');
             const response = await queryBoards(pageRequest);
-            console.log(response.data);
             context.commit('SET_BOARD_PAGES', response.data);
+            console.log(response.data);
             return response.data;
-        }catch (e) {
+        } catch (e) {
             console.log(e);
         }
+    },
+
+    async VALIDATE_MODIFY_MEMBER(context, emailAndBoardId) {
+        try {
+            const response = await validateBoardMember(emailAndBoardId);
+            router.push(`/article-modify/${emailAndBoardId.id}`);
+            return response.data;
+        } catch (e) {
+            context.commit('OPEN_MODAL', {
+                    title: '수정 권한이 없습니다.',
+                    content: `작성자만 수정이 가능합니다.\n` + e,
+                    option: '닫기',
+                }
+            )
+        }
+    },
+
+    async VALIDATE_DELETE_MEMBER(context, emailAndBoardId) {
+        try {
+            const response = await validateBoardMember(emailAndBoardId);
+            return response.data;
+        } catch (e) {
+            context.commit('OPEN_MODAL', {
+                    title: '삭제 권한이 없습니다.',
+                    content: `작성자 혹은 관리자만 수정이 가능합니다.\n` + e,
+                    option: '닫기',
+                }
+            )
+        }
+    },
+
+
+    async COUNT_MOVE_TO_ARTICLE(context, articleInfo) {
+        try {
+            const response = await countBoardViews(articleInfo.id);
+            context.commit('MOVE_TO_ARTICLE', articleInfo);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+
     }
 }
 
@@ -84,14 +129,12 @@ const setModalTexts = (isSuccess) => {
             title: '회원가입 성공!',
             content: '로그인 페이지로 이동합니다.',
             option: '이동',
-            rotue: '/login'
         }
     } else {
         return {
             title: '회원가입 실패',
             content: '다시 한번 더 시도해주세요.',
             option: '닫기',
-            route: '',
         }
     }
 };

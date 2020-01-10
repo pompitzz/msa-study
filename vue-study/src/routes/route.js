@@ -9,6 +9,7 @@ import store from "../store/store";
 import BoardWrite from "../views/BoardWrite";
 import Boards from "../views/Boards";
 import Article from "../views/Article";
+import BoardModify from "../views/BoardModify";
 
 
 const isAuthenticationMember = (to, from, next) => {
@@ -27,7 +28,7 @@ const router =  new VueRouter({
         {
             path: '/',
             name: 'main',
-            component: Main
+            component: Boards
         },
         {
             path: '/register',
@@ -64,6 +65,11 @@ const router =  new VueRouter({
             path: '/article/:id',
             name: 'article',
             component: Article,
+        },
+        {
+            path: '/article-modify/:id',
+            name: 'articleModify',
+            component: BoardModify,
         },
 
 
