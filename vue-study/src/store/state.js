@@ -1,5 +1,6 @@
 export default {
     loadingState: false,
+    pageLoading: false,
     modal: {
         open: false,
         title: '',
@@ -7,7 +8,7 @@ export default {
         option: '',
     },
     articleUrl: '',
-    pageInfo:'',
+    pageInfo: '',
     boardList: [],
     accessToken: localStorage.getItem('access_token'),
     // ============ Rules ============ //

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const config = {
-    baseUrl: 'http://localhost:8080'
+    baseUrl: 'http://ec2-15-164-143-254.ap-northeast-2.compute.amazonaws.com'
 };
 
 function requestJoinMember(member) {
@@ -58,12 +58,13 @@ function queryArticle(id) {
     return axios.get(`${config.baseUrl}/api/boards/${id}`);
 }
 
-function queryBoards(pageRequest) {
+function queryBoardsByTitle(queryInfo) {
     return axios.get(`${config.baseUrl}/api/boards`, {
         params: {
-            page: pageRequest.page,
-            sort: pageRequest.sort,
-            size: 7
+            title: queryInfo.title,
+            page: queryInfo.page,
+            sort: queryInfo.sort,
+            size: 6
         }
     })
 }
@@ -96,7 +97,7 @@ export {
     uploadImage,
     requestSaveBoard,
     queryArticle,
-    queryBoards,
     validateBoardMember,
-    countBoardViews
+    countBoardViews,
+    queryBoardsByTitle
 }

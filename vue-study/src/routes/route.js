@@ -5,7 +5,6 @@ import Login from "../views/Login";
 import NoAuth from "../views/NoAuth";
 import Main from "../views/Main";
 import Memo from "../views/Memo";
-import store from "../store/store";
 import BoardWrite from "../views/BoardWrite";
 import Boards from "../views/Boards";
 import Article from "../views/Article";
@@ -13,7 +12,7 @@ import BoardModify from "../views/BoardModify";
 
 
 const isAuthenticationMember = (to, from, next) => {
-    if (store.getters.isAuthenticated) {
+    if (localStorage.getItem('accee_token') !== null) {
         next()
     } else {
         next('/no-auth');
@@ -28,7 +27,7 @@ const router =  new VueRouter({
         {
             path: '/',
             name: 'main',
-            component: Boards
+            component: Main
         },
         {
             path: '/register',
@@ -55,6 +54,8 @@ const router =  new VueRouter({
             path: '/board-write',
             name: 'boardWrite',
             component: BoardWrite,
+            beforeEnter: (to, from, next) => isAuthenticationMember(to, from, next),
+
         },
         {
             path: '/boards',

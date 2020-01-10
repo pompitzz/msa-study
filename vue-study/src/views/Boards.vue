@@ -4,13 +4,13 @@
             <v-row align="center" class="fill-height mx-auto" justify="center">
                 <v-card class="pa-3 mx- 3 boards-list" dark>
                     <v-card-title>
-                        SAMPLE
+                        게시판
                         <v-spacer/>
                         <v-text-field
-                                append-icon="mdi-file-document-box-search-outline"
+                                append-icon="mdi-magnify"
                                 hide-details
                                 label="검색"
-                                v-model="search"
+                                v-model="pageRequest.title"
                         ></v-text-field>
                     </v-card-title>
                     <v-data-table
@@ -36,9 +36,6 @@
                     </v-data-table>
                     <div class="text-right">
                         <v-btn @click="moveToWritePage" class="ma-3"
-                        >글쓰기
-                        </v-btn>
-                        <v-btn @click="logTest" class="ma-3"
                         >글쓰기
                         </v-btn>
                     </div>
@@ -68,7 +65,6 @@
         },
         data() {
             return {
-                search: '',
                 headers: [
                     {text: '제목', value: 'title', align: 'left'},
                     {text: '작성자', value: 'author', sortable: false},
@@ -77,7 +73,8 @@
                 ],
                 pageRequest: {
                     page: 0,
-                    sort: 'id,DESC'
+                    sort: 'id,DESC',
+                    title: '',
                 },
                 currentPage: Number,
                 sortby: [],
@@ -86,11 +83,11 @@
             }
         },
         methods: {
-            ...mapActions(['QUERY_BOARDS', 'COUNT_MOVE_TO_ARTICLE']),
+            ...mapActions(['COUNT_MOVE_TO_ARTICLE', 'QUERY_BOARDS_BYTITLE']),
             ...mapMutations(['CLOSE_MODAL', 'OPEN_MODAL']),
             next(page) {
                 this.pageRequest.page = page - 1;
-                this.QUERY_BOARDS(this.pageRequest);
+                this.QUERY_BOARDS_BYTITLE(this.pageRequest);
             },
             moveToArticle(board) {
                 const articleInfo = {
@@ -119,14 +116,15 @@
                 if (this.sortby.length !== 0) {
                     this.lastSortby = this.sortby[0];
                     this.pageRequest.sort = `${this.lastSortby},DESC`;
-                    this.QUERY_BOARDS(this.pageRequest);
+                    this.QUERY_BOARDS_BYTITLE(this.pageRequest);
                 } else {
                     this.pageRequest.sort = `${this.lastSortby},ASC`;
-                    this.QUERY_BOARDS(this.pageRequest);
+                    this.QUERY_BOARDS_BYTITLE(this.pageRequest);
                 }
             },
             logTest() {
-                console.log(this.search);
+                console.log(this.pageRequest);
+                this.QUERY_BOARDS_BYTITLE(this.pageRequest);
             },
             modalEvent() {
                 this.CLOSE_MODAL();
@@ -134,7 +132,7 @@
 
         },
         created() {
-            this.QUERY_BOARDS(this.pageRequest);
+            this.QUERY_BOARDS_BYTITLE(this.pageRequest);
         },
         computed: {
             ...mapState(['pageInfo', 'boardList', 'loadingState']),
@@ -151,12 +149,12 @@
                     this.queryBoardWithSortBy();
                 }
             },
-            search: {
+            'pageRequest.title': {
                 handler() {
                     clearTimeout(this.timeout);
                     this.timeout = setTimeout(() => {
                         this.logTest()
-                    }, 500);
+                    }, 800);
                 }
             }
         }

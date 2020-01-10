@@ -4,7 +4,8 @@
         <v-content>
             <router-view/>
         </v-content>
-        <v-footer class="theme--dark"><span class="mx-auto">Copyright © DongMyeong</span></v-footer>
+        <v-footer app class="theme--dark"><span class="mx-auto">Copyright © {{new Date() | moment('YYYY')}} All Rights Reserved.</span>
+        </v-footer>
     </v-app>
 </template>
 

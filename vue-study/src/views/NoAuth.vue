@@ -1,8 +1,12 @@
 <template>
-        <div class="ml-auto no-auth text-center mt-5 mr-5">
-            <h3 class="mb-5">현재 페이지로 접속하기 위해선 로그인이 필요합니다.</h3>
-            <v-btn color="red" outlined to="/login">로그인 페이지로 이동</v-btn>
-        </div>
+    <div class="fill-height">
+        <v-row align="center" class="fill-height" justify="center">
+            <v-card class="text-center" dark style="padding: 30px">
+                <h3 class="mb-5">현재 페이지로 접속하기 위해선 로그인이 필요합니다.</h3>
+                <v-btn color="red" outlined to="/login">로그인 페이지로 이동</v-btn>
+            </v-card>
+        </v-row>
+    </div>
 </template>
 
 <script>

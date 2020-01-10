@@ -23,8 +23,14 @@ export default {
         router.push(`/article/${boardInfo.content}`);
     },
     SET_BOARD_PAGES(state, boardPagesInfo) {
-        state.loadingState = false;
-        state.boardList = boardPagesInfo._embedded.boardListResponseDtoList;
+        state.pageLoading = false;
+
+        if (boardPagesInfo.page.totalElements === 0) {
+            state.boardList = [];
+        } else {
+            state.boardList = boardPagesInfo._embedded.boardListResponseDtoList;
+        }
+
         boardPagesInfo.page.number += 1;
         state.pageInfo = boardPagesInfo.page;
     },
@@ -45,5 +51,8 @@ export default {
     },
     START_LOADING(state) {
         state.loadingState = true;
+    },
+    PAGE_LOADING(state) {
+        state.pageLoading = true;
     }
 }

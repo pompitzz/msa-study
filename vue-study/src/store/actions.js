@@ -1,8 +1,8 @@
 import {
     requestJoinMember, requestLogin,
     uploadImage, requestSaveBoard,
-    queryArticle, queryBoards, validateBoardMember
-    , countBoardViews
+    queryArticl, validateBoardMember
+    , countBoardViews, queryBoardsByTitle
 } from "../api/api";
 import {router} from "../routes/route";
 
@@ -69,17 +69,6 @@ export default {
         }
     },
 
-    async QUERY_BOARDS(context, pageRequest) {
-        try {
-            context.commit('START_LOADING');
-            const response = await queryBoards(pageRequest);
-            context.commit('SET_BOARD_PAGES', response.data);
-            console.log(response.data);
-            return response.data;
-        } catch (e) {
-            console.log(e);
-        }
-    },
 
     async VALIDATE_MODIFY_MEMBER(context, emailAndBoardId) {
         try {
@@ -119,7 +108,18 @@ export default {
         } catch (e) {
             console.log(e);
         }
+    },
 
+    async QUERY_BOARDS_BYTITLE(context, queryInfo) {
+        try {
+            context.commit('PAGE_LOADING');
+            const response = await queryBoardsByTitle(queryInfo);
+            console.log(response.data);
+            context.commit('SET_BOARD_PAGES', response.data);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
