@@ -2,8 +2,8 @@ package me.sun.springbootstudy;
 
 import lombok.RequiredArgsConstructor;
 import me.sun.springbootstudy.domain.board.Board;
-import me.sun.springbootstudy.domain.board.BoardRepository;
 import me.sun.springbootstudy.domain.board.BoardType;
+import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import org.springframework.boot.ApplicationArguments;

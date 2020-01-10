@@ -2,9 +2,9 @@ package me.sun.springbootstudy.web;
 
 import me.sun.springbootstudy.common.BaseControllerTest;
 import me.sun.springbootstudy.domain.board.Board;
-import me.sun.springbootstudy.domain.board.BoardRepository;
 import me.sun.springbootstudy.domain.board.BoardService;
 import me.sun.springbootstudy.domain.board.BoardType;
+import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
@@ -172,14 +172,15 @@ class BoardApiControllerTest extends BaseControllerTest {
 
 
     @Test
-    @DisplayName("게시판을 페이징 처리하여 조회하는 테스트")
-    void findBoardAllWithPaging() throws Exception {
+    @DisplayName("게시판을 제목별 페이징 처리하여 조회하는 테스트")
+    void findBoardsByTitleWithPageable() throws Exception {
         //given
         saveTestMemberAndBoards();
 
         //when && then
         this.mockMvc.perform(get("/api/boards")
                 .contentType(MediaType.APPLICATION_JSON)
+                .param("title", "title1")
                 .param("page", "0")
                 .param("size", "10")
                 .param("sort", "id,DESC")
@@ -197,6 +198,58 @@ class BoardApiControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("page.totalElements").exists())
                 .andExpect(jsonPath("page.totalPages").exists())
                 .andExpect(jsonPath("page.number").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("게시판을 제목이 빈칸일 때 페이징 처리하여 조회하는 테스트")
+    void findBoardsByEmptyTitleWithPageable() throws Exception {
+        //given
+        saveTestMemberAndBoards();
+
+        //when && then
+        this.mockMvc.perform(get("/api/boards")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("title", "")
+                .param("page", "0")
+                .param("size", "10")
+                .param("sort", "id,DESC")
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].id").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].title").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].author").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].lastModifiedDate").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].viewsCount").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0]._links.self.href").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+                .andExpect(jsonPath("page.size").exists())
+                .andExpect(jsonPath("page.totalElements").exists())
+                .andExpect(jsonPath("page.totalPages").exists())
+                .andExpect(jsonPath("page.number").exists());
+    }
+
+    @Test
+    @DisplayName("게시판을 제목이 존재하지않는 값일때 페이징 처리하여 조회하는 테스트")
+    void findBoardsByInVaildTextTitleWithPageable() throws Exception {
+        //given
+        saveTestMemberAndBoards();
+
+        //when && then
+        this.mockMvc.perform(get("/api/boards")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("title", "qwdqwsadascascqwe")
+                .param("page", "0")
+                .param("size", "10")
+                .param("sort", "id,DESC")
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("page.size").value(10))
+                .andExpect(jsonPath("page.totalElements").value(0))
+                .andExpect(jsonPath("page.totalPages").value(0))
+                .andExpect(jsonPath("page.number").value(0))
         ;
     }
 

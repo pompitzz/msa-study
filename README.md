@@ -5,12 +5,18 @@
 
 [구현중인 웹사이트로 접속하기](http://ec2-15-164-143-254.ap-northeast-2.compute.amazonaws.com/)
 
+[![Build Status](https://travis-ci.org/DongmyeongLee22/msa-study.svg?branch=master)](https://travis-ci.org/DongmyeongLee22/msa-study)
+
 ## 작업환경
 #### SpringBoot
  - Java 1.8
  - Gradle
  - SpringBoot 2.2.2 RELEASE  
  - Spring Data JPA
+ - Spring Boot Web MVC
+ - Spring Boot Sercurify Oauth2
+ - Spring boot HASTEOASE
+
 
 #### Vue
  - Vue
@@ -18,6 +24,8 @@
  - Vue-Router
  - Axios
  - Vuetify
+ - Toast-UI Editor
+
 ---
 ## 구현 순서
 #### SpringBoot

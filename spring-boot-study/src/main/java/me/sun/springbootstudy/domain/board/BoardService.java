@@ -1,6 +1,7 @@
 package me.sun.springbootstudy.domain.board;
 
 import lombok.RequiredArgsConstructor;
+import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.web.dto.BoardListResponseDto;
@@ -53,7 +54,10 @@ public class BoardService {
         boardRepository.countViewsCount(id);
     }
 
-    @Transactional
+    public Page<BoardListResponseDto> findBoardsByTitle(String title, Pageable pageable) {
+        return boardRepository.findBoardsTitleWithPageable(title, pageable).map(BoardListResponseDto::new);
+    }
+
     public boolean validateBoardMember(Long boardId, String email) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 존재하지 않습니다."));

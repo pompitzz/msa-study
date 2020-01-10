@@ -1,17 +1,12 @@
 package me.sun.springbootstudy.web;
 
 import lombok.RequiredArgsConstructor;
-import me.sun.springbootstudy.domain.board.BoardResponseDtoModel;
 import me.sun.springbootstudy.domain.board.BoardSaveAndUpdateRequestDtoModel;
 import me.sun.springbootstudy.domain.board.BoardService;
-import me.sun.springbootstudy.web.dto.BoardListResponseDto;
-import me.sun.springbootstudy.web.dto.BoardOneResponseDto;
-import me.sun.springbootstudy.web.dto.BoardSaveRequestDto;
-import me.sun.springbootstudy.web.dto.BoardUpdateRequestDto;
+import me.sun.springbootstudy.web.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -65,11 +60,14 @@ public class BoardApiController {
     }
 
     @GetMapping
-    public ResponseEntity queryBoards(Pageable pageable,
-                                      PagedResourcesAssembler<BoardListResponseDto> assembler) {
-        Page<BoardListResponseDto> boards = boardService.findBoards(pageable);
+    public ResponseEntity queryBoardsByTitle(@RequestParam(value = "title") String title,
+                                             Pageable pageable,
+                                             PagedResourcesAssembler<BoardListResponseDto> assembler) {
 
-        PagedModel<EntityModel<BoardListResponseDto>> entityModels = assembler.toModel(boards, BoardResponseDtoModel::new);
+        Page<BoardListResponseDto> boards = boardService.findBoardsByTitle(title, pageable);
+
+        PagedModel<BoardResponseDtoModel> entityModels = assembler.toModel(boards, BoardResponseDtoModel::new);
+
         return ResponseEntity.ok(entityModels);
     }
 
