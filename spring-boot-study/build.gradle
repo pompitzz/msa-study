@@ -11,7 +11,7 @@ apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 
 group = 'me.sun'
-version = '0.0.2-SNAPSHOT' + new Date().format("yyyyMMddHHmmss")
+version = '0.0.3-SNAPSHOT' + new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = '1.8'
 
 configurations {

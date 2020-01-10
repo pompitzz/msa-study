@@ -40,6 +40,19 @@ spring.profiles.include: real-db
 server:
   port: 8081
 
+custom:
+  clientId: clientApp
+  clientSecret: secret
+  jwtKey: test
+  accessTokenValidTime: 1060
+  refreshTokenValidTime: 61060
+  scopes:
+    - read
+    - profile
+    - write
+  grantTypes:
+    - password
+    - refresh_token
 
 ---
 
@@ -49,5 +62,18 @@ spring.profiles.include: real-db
 server:
   port: 8082
 
+custom:
+  clientId: clientApp
+  clientSecret: secret
+  jwtKey: test
+  accessTokenValidTime: 1060
+  refreshTokenValidTime: 61060
+  scopes:
+    - read
+    - profile
+    - write
+  grantTypes:
+    - password
+    - refresh_token
 
 
