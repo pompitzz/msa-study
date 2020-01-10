@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,9 +27,17 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public Long save(MemberJoinRequestDto dto) {
+        validateDuplicateMember(dto.getEmail());
         Member member = dto.toEntity();
         member.encodingPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member).getId();
+    }
+
+    private void validateDuplicateMember(String email) {
+        List<Member> findMembers = memberRepository.findAllByEmail(email);
+        if (!findMembers.isEmpty()) {
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+        }
     }
 
     public MemberResponseDto findOne(Long id) {

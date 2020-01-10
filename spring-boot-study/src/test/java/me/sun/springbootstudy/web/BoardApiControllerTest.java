@@ -1,25 +1,23 @@
 package me.sun.springbootstudy.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import me.sun.springbootstudy.TokenInformation;
+import me.sun.springbootstudy.common.BaseControllerTest;
+import me.sun.springbootstudy.domain.board.Board;
 import me.sun.springbootstudy.domain.board.BoardRepository;
 import me.sun.springbootstudy.domain.board.BoardService;
+import me.sun.springbootstudy.domain.board.BoardType;
+import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;
 import me.sun.springbootstudy.web.dto.BoardSaveRequestDto;
 import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.common.util.Jackson2JsonParser;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.stream.IntStream;
@@ -28,11 +26,10 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-class BoardApiControllerTest {
+class BoardApiControllerTest extends BaseControllerTest {
 
     @Autowired
     BoardRepository boardRepository;
@@ -41,19 +38,11 @@ class BoardApiControllerTest {
     BoardService boardService;
 
     @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
     MemberService memberService;
 
     @Autowired
     MemberRepository memberRepository;
 
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    TokenInformation tokenInformation;
 
     @BeforeEach
     void clearAll() {
@@ -62,13 +51,18 @@ class BoardApiControllerTest {
     }
 
     @Test
+    @DisplayName("AccessToken이 없이 게시판을 저장하는 테스트")
     void saveBoardWithoutAccessToken() throws Exception {
         //given
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
-                .title("타이틀")
-                .content("내용")
-                .author("작성자")
+                .title("title")
+                .content("content")
+                .author("author")
+                .viewsCount(1)
+                .boardType(BoardType.STUDY)
+                .email("email@naver.com")
                 .build();
+
         // when && then
         this.mockMvc.perform(post("/api/boards")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,35 +73,52 @@ class BoardApiControllerTest {
     }
 
     @Test
+    @DisplayName("AccessToken과 함께 게시판을 저장하는 테스트")
     void saveBoardWithAccessToken() throws Exception {
         //given
+
+        String email = "qwe123@gmail.com";
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
-                .title("타이틀")
-                .content("내용")
-                .author("작성자")
+                .title("title")
+                .content("content")
+                .author("author")
+                .viewsCount(1)
+                .boardType(BoardType.STUDY)
+                .email(email)
                 .build();
+
         // when && then
         this.mockMvc.perform(post("/api/boards")
-                .header(HttpHeaders.AUTHORIZATION, getJwtToken())
+                .header(HttpHeaders.AUTHORIZATION, getJwtToken(email))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto))
         )
                 .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(redirectedUrlPattern("http://localhost/api/boards/{id}"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("content").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+        ;
     }
 
     @Test
+    @DisplayName("AccessToken과 함께 게시판을 저장하지만 유효하지 않는 토큰일때의 테스트")
     void saveBoardWithAccessTokenButInvalidToken() throws Exception {
         //given
+        String email = "qwe123@gmail.com";
+
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
-                .title("타이틀")
-                .content("내용")
-                .author("작성자")
+                .title("title")
+                .content("content")
+                .author("author")
+                .viewsCount(1)
+                .boardType(BoardType.STUDY)
+                .email(email)
                 .build();
+
+
         // when && then
         this.mockMvc.perform(post("/api/boards")
-                .header(HttpHeaders.AUTHORIZATION, getJwtToken() + "ASD")
+                .header(HttpHeaders.AUTHORIZATION, getJwtToken(email) + "ASD")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto))
         )
@@ -116,10 +127,60 @@ class BoardApiControllerTest {
     }
 
 
-    String getJwtToken() throws Exception {
+    @Test
+    @DisplayName("게시판을 페이징 처리하여 조회하는 테스트")
+    void findBoardAllWithPaging() throws Exception {
+        //given
+        saveTestMemberAndBoards();
+
+        //when && then
+        this.mockMvc.perform(get("/api/boards")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("page", "0")
+                .param("size", "10")
+                .param("sort", "id,DESC")
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].id").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].title").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].author").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].lastModifiedDate").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0].viewsCount").exists())
+                .andExpect(jsonPath("_embedded.boardListResponseDtoList[0]._links.self.href").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+                .andExpect(jsonPath("page.size").exists())
+                .andExpect(jsonPath("page.totalElements").exists())
+                .andExpect(jsonPath("page.totalPages").exists())
+                .andExpect(jsonPath("page.number").exists())
+        ;
+    }
+
+
+    private void saveTestMemberAndBoards() {
+        Member member = Member.builder()
+                .email("email")
+                .password("pass")
+                .name("name")
+                .role(MemberRole.USER)
+                .build();
+        memberRepository.save(member);
+
+
+        IntStream.rangeClosed(1, 10).forEach(i -> boardRepository.save(Board.builder()
+                .title("title" + i)
+                .content("content" + i)
+                .author("author" + i)
+                .viewsCount(i)
+                .boardType(BoardType.STUDY)
+                .member(member)
+                .build()
+        ));
+    }
+
+    String getJwtToken(String email) throws Exception {
         //given
         String password = "qwe123";
-        String email = "email@gmail.com";
         MemberJoinRequestDto joinDto = MemberJoinRequestDto.builder()
                 .email(email)
                 .password(password)
@@ -139,31 +200,5 @@ class BoardApiControllerTest {
         Jackson2JsonParser parser = new Jackson2JsonParser();
         String access_token = parser.parseMap(responseBody).get("access_token").toString();
         return "Bearer " + access_token;
-    }
-
-    @Test
-    void findBoardAll() throws Exception {
-        //given
-        IntStream.range(0, 10).forEach(this::saveBoard);
-
-        //when && then
-        this.mockMvc.perform(get("/api/boards"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].id").exists())
-                .andExpect(jsonPath("[0].title").exists())
-                .andExpect(jsonPath("[0].content").exists())
-                .andExpect(jsonPath("[0].author").exists());
-    }
-
-
-    void saveBoard(int i) {
-        BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
-                .title("Title" + i)
-                .content("Content" + i)
-                .author("Author" + i)
-                .build();
-
-        boardService.save(dto);
     }
 }

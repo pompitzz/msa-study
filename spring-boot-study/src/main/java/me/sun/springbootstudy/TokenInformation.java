@@ -16,4 +16,13 @@ public class TokenInformation {
     String clientSecret;
 
     String jwtKey;
+
+    int accessTokenValidTime;
+
+    int refreshTokenValidTime;
+
+    String[] scopes;
+
+    String[] grantTypes;
+
 }

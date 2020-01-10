@@ -1,13 +1,15 @@
 package me.sun.springbootstudy.domain.board;
 
 import lombok.RequiredArgsConstructor;
-import me.sun.springbootstudy.web.dto.BoardResponseDto;
+import me.sun.springbootstudy.domain.member.Member;
+import me.sun.springbootstudy.domain.member.MemberRepository;
+import me.sun.springbootstudy.web.dto.BoardListResponseDto;
+import me.sun.springbootstudy.web.dto.BoardOneResponseDto;
 import me.sun.springbootstudy.web.dto.BoardSaveRequestDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -15,21 +17,23 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Long save(BoardSaveRequestDto dto) {
-        return boardRepository.save(dto.toEntity()).getId();
+        Member member = memberRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+
+        return boardRepository.save(dto.toEntity(member)).getId();
     }
 
-    public BoardResponseDto findById(Long id) {
+    public BoardOneResponseDto findBoard(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 존재하지 않습니다."));
-        return new BoardResponseDto(board);
+        return new BoardOneResponseDto(board);
     }
 
-    public List<BoardResponseDto> findAll() {
-        return boardRepository.findAll().stream()
-                .map(BoardResponseDto::new)
-                .collect(Collectors.toList());
+    public Page<BoardListResponseDto> findBoards(Pageable pageable) {
+        return boardRepository.findAll(pageable).map(BoardListResponseDto::new);
     }
 }

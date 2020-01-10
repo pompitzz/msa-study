@@ -30,17 +30,9 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     private final MemberService memberService;
     private final TokenInformation tokenInformation;
 
-////    @Value("${custom.clientId}")
-//    private String clientId = "clientApp";
-//
-////    @Value("${custom.clientSecret}")
-//    private String clientSecret = "secret";
-//
-////    @Value("${custom.jwtKey}")
-//    private String jwtKey = "test";
-
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+
         security.passwordEncoder(passwordEncoder);
 
         // 엔드포인트에 필터를 추가해줘야 토큰 발급시 cors 문제가 발생하지 않는다.
@@ -52,17 +44,17 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient(tokenInformation.getClientId())
-                .authorizedGrantTypes("password", "refresh_token")
-                .scopes("read", "profile", "write")
+                .authorizedGrantTypes(tokenInformation.getGrantTypes())
+                .scopes(tokenInformation.getScopes())
                 .secret(passwordEncoder.encode(tokenInformation.getClientSecret()))
-                .accessTokenValiditySeconds(10 * 60)
-                .refreshTokenValiditySeconds(6 * 10 * 60);
+                .accessTokenValiditySeconds(tokenInformation.getAccessTokenValidTime())
+                .refreshTokenValiditySeconds(tokenInformation.getRefreshTokenValidTime());
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
-                .userDetailsService(memberService)
+//                .userDetailsService(memberService)
                 .tokenStore(tokenStore())
                 .accessTokenConverter(jwtAccessTokenConverter());
     }
@@ -90,6 +82,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
