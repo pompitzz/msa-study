@@ -19,8 +19,6 @@ public class BoardSaveRequestDto {
     @NotNull
     private String content;
     @NotNull
-    private String author;
-    @NotNull
     private Integer viewsCount;
     @NotNull
     private BoardType boardType;
@@ -29,10 +27,9 @@ public class BoardSaveRequestDto {
 
 
     @Builder
-    public BoardSaveRequestDto(String title, String content, String author, int viewsCount, BoardType boardType, String email) {
+    public BoardSaveRequestDto(String title, String content, int viewsCount, BoardType boardType, String email) {
         this.title = title;
         this.content = content;
-        this.author = author;
         this.viewsCount = viewsCount;
         this.boardType = boardType;
         this.email = email;
@@ -40,14 +37,16 @@ public class BoardSaveRequestDto {
 
 
     public Board toEntity(Member member) {
-        return Board.builder()
+        Board board = Board.builder()
                 .title(title)
                 .content(content)
-                .author(author)
+                .author(member.getName())
                 .viewsCount(viewsCount)
                 .boardType(boardType)
                 .member(member)
                 .build();
+        member.getBoardList().add(board);
+        return board;
     }
 
 }

@@ -7,7 +7,6 @@ import me.sun.springbootstudy.domain.member.MemberService;
 import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -41,7 +40,7 @@ class MemberApiControllerTest {
     void joinMember() throws Exception {
         //given
         MemberJoinRequestDto joinDto = MemberJoinRequestDto.builder()
-                .email("email@gmail.com")
+                .email("emaasdil@gmail.com")
                 .password("password")
                 .name("John")
                 .role(MemberRole.USER)

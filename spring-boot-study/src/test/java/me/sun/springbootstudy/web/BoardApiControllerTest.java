@@ -10,6 +10,7 @@ import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;
 import me.sun.springbootstudy.web.dto.BoardSaveRequestDto;
+import me.sun.springbootstudy.web.dto.BoardUpdateRequestDto;
 import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,8 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.stream.IntStream;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,7 +57,6 @@ class BoardApiControllerTest extends BaseControllerTest {
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
                 .title("title")
                 .content("content")
-                .author("author")
                 .viewsCount(1)
                 .boardType(BoardType.STUDY)
                 .email("email@naver.com")
@@ -81,7 +80,6 @@ class BoardApiControllerTest extends BaseControllerTest {
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
                 .title("title")
                 .content("content")
-                .author("author")
                 .viewsCount(1)
                 .boardType(BoardType.STUDY)
                 .email(email)
@@ -109,7 +107,6 @@ class BoardApiControllerTest extends BaseControllerTest {
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
                 .title("title")
                 .content("content")
-                .author("author")
                 .viewsCount(1)
                 .boardType(BoardType.STUDY)
                 .email(email)
@@ -124,6 +121,53 @@ class BoardApiControllerTest extends BaseControllerTest {
         )
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
+    }
+
+
+    @Test
+    @DisplayName("게시판 저장 후 수정하는 테스트")
+    void updateBoard() throws Exception {
+        //given
+
+        MemberJoinRequestDto joinDto = MemberJoinRequestDto.builder()
+                .email("email@gmail.com")
+                .password("password")
+                .name("John")
+                .role(MemberRole.USER)
+                .build();
+        //when
+        Long savedId = memberService.save(joinDto);
+        Member member = memberRepository.findById(savedId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        Board board = Board.builder()
+                .title("Web Server Developement Using SpringBoot And Vue")
+                .content("So Hard...")
+                .author("DongMyeongLee")
+                .viewsCount(0)
+                .boardType(BoardType.STUDY)
+                .member(member)
+                .build();
+
+        boardRepository.save(board);
+
+        BoardUpdateRequestDto dto = BoardUpdateRequestDto.builder()
+                .title("title")
+                .content("hoho")
+                .boardType(BoardType.FREE)
+                .build();
+
+        // when && then
+        this.mockMvc.perform(put("/api/boards/{id}", board.getId())
+                .header(HttpHeaders.AUTHORIZATION, getJwtToken(joinDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto))
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("content").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+        ;
     }
 
 
@@ -194,6 +238,21 @@ class BoardApiControllerTest extends BaseControllerTest {
                 .with(httpBasic(tokenInformation.getClientId(), tokenInformation.getClientSecret()))
                 .param("username", email)
                 .param("password", password)
+                .param("grant_type", "password"));
+
+        String responseBody = result.andReturn().getResponse().getContentAsString();
+        Jackson2JsonParser parser = new Jackson2JsonParser();
+        String access_token = parser.parseMap(responseBody).get("access_token").toString();
+        return "Bearer " + access_token;
+    }
+
+
+    String getJwtToken(MemberJoinRequestDto joinDto) throws Exception {
+        //when & then
+        ResultActions result = this.mockMvc.perform(post("/oauth/token")
+                .with(httpBasic(tokenInformation.getClientId(), tokenInformation.getClientSecret()))
+                .param("username", joinDto.getEmail())
+                .param("password", joinDto.getPassword())
                 .param("grant_type", "password"));
 
         String responseBody = result.andReturn().getResponse().getContentAsString();

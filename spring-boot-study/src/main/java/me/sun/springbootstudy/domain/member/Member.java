@@ -1,12 +1,16 @@
 package me.sun.springbootstudy.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.sun.springbootstudy.domain.board.Board;
 import me.sun.springbootstudy.domain.common.BaseTimeEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -28,6 +32,10 @@ public class Member extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Board> boardList = new ArrayList<>();
 
     @Builder
     public Member(String email, String password, String name, MemberRole role) {

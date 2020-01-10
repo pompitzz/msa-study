@@ -2,11 +2,12 @@ package me.sun.springbootstudy.web;
 
 import lombok.RequiredArgsConstructor;
 import me.sun.springbootstudy.domain.board.BoardResponseDtoModel;
-import me.sun.springbootstudy.domain.board.BoardSaveRequestDtoModel;
+import me.sun.springbootstudy.domain.board.BoardSaveAndUpdateRequestDtoModel;
 import me.sun.springbootstudy.domain.board.BoardService;
 import me.sun.springbootstudy.web.dto.BoardListResponseDto;
 import me.sun.springbootstudy.web.dto.BoardOneResponseDto;
 import me.sun.springbootstudy.web.dto.BoardSaveRequestDto;
+import me.sun.springbootstudy.web.dto.BoardUpdateRequestDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -32,9 +33,29 @@ public class BoardApiController {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        Long savedId = boardService.save(dto);
-        BoardSaveRequestDtoModel boardSaveRequestDtoModel = new BoardSaveRequestDtoModel(savedId);
-        return ResponseEntity.ok(boardSaveRequestDtoModel);
+        Long id = boardService.save(dto);
+
+        return ResponseEntity.ok(new BoardSaveAndUpdateRequestDtoModel(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateBoard(@PathVariable Long id,
+                                      @RequestBody BoardUpdateRequestDto dto,
+                                      Errors errors) {
+
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        boardService.update(id, dto);
+
+        return ResponseEntity.ok(new BoardSaveAndUpdateRequestDtoModel(id));
+    }
+
+    @PutMapping("/count/{id}")
+    public ResponseEntity countViews(@PathVariable Long id) {
+        boardService.countBoardViews(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -50,5 +71,15 @@ public class BoardApiController {
 
         PagedModel<EntityModel<BoardListResponseDto>> entityModels = assembler.toModel(boards, BoardResponseDtoModel::new);
         return ResponseEntity.ok(entityModels);
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity validateBoardMember(@RequestParam("boardId") Long boardId,
+                                              @RequestParam("email") String email) {
+        if (!boardService.validateBoardMember(boardId, email)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 }

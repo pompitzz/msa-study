@@ -30,6 +30,7 @@ public class Board extends BaseTimeEntity {
     private BoardType boardType;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Builder
@@ -40,6 +41,12 @@ public class Board extends BaseTimeEntity {
         this.viewsCount = viewsCount;
         this.boardType = boardType;
         this.member = member;
+    }
+
+    public void update(String title, String content, BoardType boardType) {
+        this.title = title;
+        this.content = content;
+        this.boardType = boardType;
     }
 
 

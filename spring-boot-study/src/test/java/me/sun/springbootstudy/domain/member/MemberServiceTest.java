@@ -42,15 +42,15 @@ class MemberServiceTest {
     void FindNonExistMember() throws Exception {
         //when & then
         assertThatThrownBy(() -> memberService.findOne(20L))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("해당 유저가 존재하지 않습니다.");
+                .isInstanceOf(IllegalArgumentException.class);
+//                .hasMessage("해당 유저가 존재하지 않습니다.");
     }
 
     @Test
     void passwordEncode() throws Exception {
         //given
         MemberJoinRequestDto joinDto = MemberJoinRequestDto.builder()
-                .email("email@gmail.com")
+                .email("emaasdqweil@gmail.com")
                 .password("password")
                 .name("John")
                 .role(MemberRole.USER)

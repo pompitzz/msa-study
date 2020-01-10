@@ -27,6 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/members/join").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/boards/count/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
