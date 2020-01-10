@@ -61,7 +61,7 @@ const router =  new VueRouter({
             component: Boards,
         },
         {
-            path: '/article',
+            path: '/article/:id',
             name: 'article',
             component: Article,
         },

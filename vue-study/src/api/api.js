@@ -49,15 +49,39 @@ function uploadImage(image) {
     return axios(requestData);
 }
 
-function sendText(text) {
-    return axios.post(`${config.baseUrl}/md`, text);
+function requestSaveBoard(board) {
+    console.log('board', board);
+    return axios.post(`${config.baseUrl}/api/boards`, board);
+}
+
+function queryArticle(boardUrl) {
+    return axios.get(boardUrl);
+}
+
+function queryBoards(pageRequest){
+    return axios.get(`${config.baseUrl}/api/boards`, {
+        params:{
+            page: pageRequest.page,
+            sort: pageRequest.sort,
+            size: 7
+        }
+    })
 }
 
 const setAccessTokenInHeader = (accessToken) => {
-    axios.defaults.headers.common['Authorization'] = accessToken;
+    axios.defaults.headers.common['Authorization'] = "Bearer " + accessToken;
 };
 
 const deleteAccessTokenInHeader = () => {
     axios.defaults.headers.common['Authorization'] = null;
 };
-export {requestJoinMember, requestLogin, setAccessTokenInHeader, deleteAccessTokenInHeader, uploadImage, sendText}
+export {
+    requestJoinMember,
+    requestLogin,
+    setAccessTokenInHeader,
+    deleteAccessTokenInHeader,
+    uploadImage,
+    requestSaveBoard,
+    queryArticle,
+    queryBoards
+}

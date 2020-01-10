@@ -1,4 +1,4 @@
-import {requestJoinMember, requestLogin, uploadImage, sendText} from "../api/api";
+import {requestJoinMember, requestLogin, uploadImage, requestSaveBoard, queryArticle, queryBoards} from "../api/api";
 
 
 export default {
@@ -17,12 +17,14 @@ export default {
         try {
             const response = await requestLogin(member);
             context.commit('LOGIN', response.data);
+            localStorage.setItem('email', member.email);
             return response;
         } catch (e) {
             context.commit('OPEN_MODAL', {
                     title: '로그인 실패',
                     content: '다시 한번 더 시도해주세요.',
-                    option: '닫기'
+                    option: '닫기',
+                    route: '',
                 }
             )
         }
@@ -31,23 +33,49 @@ export default {
     async UPLOAD_IMAGE(context, image) {
         try {
             const response = await uploadImage(image);
-            console.log(response);
             return response.data;
         } catch (e) {
             console.log(e);
         }
     },
 
-    async SEND_BOARD(content, text) {
+    async SAVE_BOARD(context, board) {
         try {
-            const response = await sendText(text);
-            console.log(text);
+            const response = await requestSaveBoard(board);
+            console.log('response', response.data);
+            context.commit('SUCCESS_SAVE_BOARD', response.data);
+            return response.data;
+        } catch (e) {
+            context.commit('OPEN_MODAL', {
+                    title: '게시글 작성 실패',
+                    content: '다시 한번 더 시도해주세요.',
+                    option: '닫기',
+                    route: '',
+                }
+            )
+        }
+    },
+
+    async QUERY_ARTICLE(context, articleUrl) {
+        try {
+            const response = await queryArticle(articleUrl);
+            console.log(response.data);
             return response.data;
         } catch (e) {
             console.log(e);
         }
-    }
+    },
 
+    async QUERY_BOARDS(context, pageRequest) {
+        try {
+            const response = await queryBoards(pageRequest);
+            console.log(response.data);
+            context.commit('SET_BOARD_PAGES', response.data);
+            return response.data;
+        }catch (e) {
+            console.log(e);
+        }
+    }
 }
 
 const setModalTexts = (isSuccess) => {
@@ -56,12 +84,14 @@ const setModalTexts = (isSuccess) => {
             title: '회원가입 성공!',
             content: '로그인 페이지로 이동합니다.',
             option: '이동',
+            rotue: '/login'
         }
     } else {
         return {
             title: '회원가입 실패',
             content: '다시 한번 더 시도해주세요.',
-            option: '닫기'
+            option: '닫기',
+            route: '',
         }
     }
 };

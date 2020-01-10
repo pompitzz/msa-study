@@ -10,8 +10,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn v-if="modal.option === '닫기'" color="indigo" class="white--text mb-3 mr-3" @click="CLOSE_MODAL">{{modal.option}}</v-btn>
-                <v-btn v-else color="indigo" class="white--text mb-3 mr-3" @click="toLoginPage">{{modal.option}}</v-btn>
+                <v-btn v-if="modal.route === ''" color="indigo" class="white--text mb-3 mr-3" @click="CLOSE_MODAL">{{modal.option}}</v-btn>
+                <v-btn v-else color="indigo" class="white--text mb-3 mr-3" @click="routeTo">{{modal.option}}</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -28,9 +28,9 @@
         },
         methods:{
             ...mapMutations(['CLOSE_MODAL']),
-            toLoginPage() {
+            routeTo() {
                 this.CLOSE_MODAL();
-                router.push('/login');
+                router.push(modal.route);
             }
         }
     }

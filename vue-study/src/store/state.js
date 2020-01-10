@@ -5,7 +5,11 @@ export default {
         title: '',
         content: '',
         option: '',
+        route: '',
     },
+    articleUrl: '',
+    pageInfo:'',
+    boardList: [],
     accessToken: localStorage.getItem('access_token'),
     // ============ Rules ============ //
     emailRules: [

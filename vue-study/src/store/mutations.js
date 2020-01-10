@@ -1,6 +1,7 @@
 import {router} from "../routes/route";
 import {setAccessTokenInHeader, deleteAccessTokenInHeader} from "../api/api";
 import {setTokenInLocalStorage, deleteTokenInLocalStorage} from "../utils/oauth";
+import moment from "moment";
 
 export default {
 
@@ -14,21 +15,38 @@ export default {
     LOGOUT(state) {
         deleteTokenInLocalStorage();
         deleteAccessTokenInHeader();
+        localStorage.removeItem("email");
         state.accessToken = null;
         router.push('/');
     },
-
+    SUCCESS_SAVE_BOARD(state, boardInfo) {
+        console.log(boardInfo);
+        state.articleUrl = boardInfo._links.self.href;
+        router.push(`/article/${boardInfo.content}`);
+    },
+    SET_BOARD_PAGES(state, boardPagesInfo) {
+        state.boardList = boardPagesInfo._embedded.boardListResponseDtoList;
+        boardPagesInfo.page.number += 1;
+        state.pageInfo = boardPagesInfo.page;
+    },
+    MOVE_TO_ARTICLE(state, articleInfo){
+        state.articleUrl = articleInfo.href;
+        console.log(articleInfo);
+        router.push(`/article/${articleInfo.id}`);
+    }
+    ,
     CLOSE_MODAL(state) {
         state.modal.open = false;
     },
-    OPEN_MODAL(state, modalTexts){
+    OPEN_MODAL(state, modalTexts) {
         state.loadingState = false;
         state.modal.title = modalTexts.title;
         state.modal.content = modalTexts.content;
         state.modal.option = modalTexts.option;
+        state.modal.route = modalTexts.route;
         state.modal.open = true;
     },
-    START_LOADING(state){
+    START_LOADING(state) {
         state.loadingState = true;
     }
 }

@@ -18,52 +18,102 @@
                             :headers="headers"
                             :items="boards"
                             :search="search"
-                    ></v-data-table>
+                            :loading="false"
+                            hide-default-footer
+                    >
+                        <template v-slot:item.title="{item}">
+                            <v-btn text class="text-none px-1 my-td"  @click="moveToArticle(item)">{{titleLimit(item.title)}}</v-btn>
+                        </template>
+                        <template v-slot:item.viewsCount="{item}" class="text-center">
+                            <span class="text-center mx-3">{{item.viewsCount}}</span>
+                        </template>
+                        <template v-slot:item.lastModifiedDate="{item}" class="text-center">
+                            {{item.lastModifiedDate | moment('YYYY-MM-DD')}}
+                        </template>
+                    </v-data-table>
                     <div class="text-right">
-                        <v-btn class="ma-3" to="/article"
-                        >뷰어 테스트
-                        </v-btn>
                         <v-btn class="ma-3" to="/board-write"
                         >글쓰기
                         </v-btn>
                     </div>
+                    <v-row>
+                        <v-pagination
+                                v-model="pageInfo.number"
+                                :length="pageItems.totalPages"
+                                :total-visible="8"
+                                @input="next"
+                        ></v-pagination>
+                    </v-row>
                 </v-card>
             </v-row>
         </v-container>
     </div>
 </template>
 <script>
-
+    import {mapActions, mapState, mapMutations} from 'vuex';
+    import moment from 'vue-moment'
     export default {
         name: "BoardWrite",
         data() {
             return {
                 search: '',
                 headers: [
-                    {
-                        text: '제목',
-                        align: 'left',
-                        sortable: false,
-                        value: 'title',
-                    },
+                    {text: '제목', value: 'title', align: 'left'},
                     {text: '작성자', value: 'author'},
-                    {text: '조회수', value: 'count'},
-                    {text: '날짜', value: 'date'},
+                    {text: '조회수', value: 'viewsCount'},
+                    {text: '최근 수정일', value: 'lastModifiedDate'},
                 ],
-                boards: [
-                    {title: '알고르짐이란? ', author: '이동명', count: '33', date: '2019-01-01 11:11'},
-                    {title: '알고르짐이란? ', author: '이동명', count: '33', date: '2019-01-01 11:11'},
-                    {title: '알고르짐이란? ', author: '이동명', count: '33', date: '2019-01-01 11:11'},
-                    {title: '알고르짐이란? ', author: '이동명', count: '33', date: '2019-01-01 11:11'},
-                    {title: '알고르짐이란? ', author: '이동명', count: '33', date: '2019-01-01 11:11'},
-                ],
+                pageRequest:{
+                    page: 0,
+                    sort: 'id,DESC'
+                },
+                currentPage: Number,
             }
         },
+        methods:{
+            ...mapActions(['QUERY_BOARDS']),
+            ...mapMutations(['MOVE_TO_ARTICLE']),
+            next(page){
+                this.pageRequest.page = page - 1;
+                this.QUERY_BOARDS(this.pageRequest);
+            },
+            moveToArticle(board){
+                console.log('item', board);
+                const articleInfo = {
+                    id:  board.id,
+                    href: board._links.self.href,
+                };
+
+                this.MOVE_TO_ARTICLE(articleInfo);
+            },
+            titleLimit(title){
+                return title.length > 40 ? title.substring(0, 40) + '...' : title;
+                console.log(title);
+            }
+
+        },
+        created() {
+            this.QUERY_BOARDS(this.pageRequest);
+        },
+        computed:{
+            ...mapState(['pageInfo', 'boardList']),
+            boards(){
+                return this.boardList;
+            },
+            pageItems(){
+                return this.pageInfo;
+            },
+        }
     }
 </script>
 
 <style scoped>
     .boards-list {
         width: 100% !important;
+    }
+    .my-td{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 </style>
