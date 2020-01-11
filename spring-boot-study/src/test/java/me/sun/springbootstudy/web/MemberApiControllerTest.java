@@ -74,7 +74,6 @@ class MemberApiControllerTest {
                 .param("password", password)
                 .param("grant_type", "password")
         ).andDo(print());
-
     }
 
 

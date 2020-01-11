@@ -3,6 +3,7 @@ package me.sun.springbootstudy.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRole;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class MemberJoinRequestDto {
 
     @NotEmpty

@@ -1,6 +1,7 @@
 package me.sun.springbootstudy.config.oauth;
 
 import lombok.RequiredArgsConstructor;
+import me.sun.springbootstudy.domain.member.MemberRole;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 // cors 허용
                 .cors().and()
                 .authorizeRequests()
+                .antMatchers("/api/admin/**").hasRole(MemberRole.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/members/join").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/boards/count/**").permitAll()
@@ -32,6 +34,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
     }
-
-
 }

@@ -50,7 +50,7 @@ dependencies {
     implementation 'com.querydsl:querydsl-apt' // querydsl
 
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
+    implementation 'com.h2database:h2'
 
     annotationProcessor 'org.projectlombok:lombok'
 

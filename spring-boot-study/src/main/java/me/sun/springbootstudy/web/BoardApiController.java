@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,8 @@ public class BoardApiController {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        Long id = boardService.save(dto);
 
+        Long id = boardService.save(dto);
         return ResponseEntity.ok(new BoardSaveAndUpdateRequestDtoModel(id));
     }
 
@@ -73,9 +74,10 @@ public class BoardApiController {
 
     @GetMapping("/validate")
     public ResponseEntity validateBoardMember(@RequestParam("boardId") Long boardId,
-                                              @RequestParam("email") String email) {
+                                              @RequestParam(value = "email", defaultValue = "") String email) {
+
         if (!boardService.validateBoardMember(boardId, email)) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근권한이 없습니다.");
         }
 
         return ResponseEntity.ok().build();

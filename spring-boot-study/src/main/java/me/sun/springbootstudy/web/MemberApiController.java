@@ -3,12 +3,10 @@ package me.sun.springbootstudy.web;
 import lombok.RequiredArgsConstructor;
 import me.sun.springbootstudy.domain.member.MemberService;
 import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
+import me.sun.springbootstudy.web.dto.MemberResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -19,9 +17,14 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity errorHandler(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e);
+    }
+
     @PostMapping("/join")
-    public ResponseEntity<Object> joinMember(@RequestBody @Valid MemberJoinRequestDto dto,
-                                             Errors errors) {
+    public ResponseEntity joinMember(@RequestBody @Valid MemberJoinRequestDto dto,
+                                     Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
@@ -29,6 +32,12 @@ public class MemberApiController {
         memberService.save(dto);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity queryMemberRole(@RequestParam("email") String email) {
+        MemberResponseDto dto = memberService.findByEmail(email);
+        return ResponseEntity.ok(dto);
     }
 
 }

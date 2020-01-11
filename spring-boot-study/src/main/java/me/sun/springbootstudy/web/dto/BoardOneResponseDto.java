@@ -14,6 +14,7 @@ public class BoardOneResponseDto {
     String title;
     String content;
     String author;
+    String email;
     LocalDateTime lastModifiedDate;
     BoardType boardType;
 
@@ -24,5 +25,6 @@ public class BoardOneResponseDto {
         this.boardType = entity.getBoardType();
         this.content = entity.getContent();
         this.lastModifiedDate = entity.getLastModifiedDate();
+        this.email = entity.getMember().getEmail();
     }
 }
