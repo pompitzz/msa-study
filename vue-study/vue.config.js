@@ -3,6 +3,6 @@ module.exports = {
     "transpileDependencies": [
         "vuetify"
     ],
-    outputDir: "../spring-boot-study/src/main/resources/static",
-    indexPath: "../static/index.html"
+    // outputDir: "../spring-boot-study/src/main/resources/static",
+    // indexPath: "../static/index.html"
 };

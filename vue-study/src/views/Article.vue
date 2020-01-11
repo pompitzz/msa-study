@@ -13,6 +13,42 @@
             <v-card class="pa-5" light>
                 <viewer :value="article.content" dark="false"/>
             </v-card>
+            <!--            <v-card class="my-5 pa-1 mx-auto" dark width="600">-->
+            <!--                <div class="ma-3">-->
+            <!--                    <div>-->
+            <!--                        <v-icon class="mr-3 mb-2">mdi-account</v-icon>-->
+            <!--                        <h3 class="d-inline-block ma-0">이 동 명 <span class="mx-1"/></h3> 2018-09-91-->
+            <!--                        <v-btn class="float-right mb-2 ml-0" text>삭제</v-btn>-->
+            <!--                        <v-btn class="float-right mb-2" text>수정</v-btn>-->
+            <!--                    </div>-->
+            <!--                    <hr/>-->
+            <!--                    <p style="font-size: 15px" class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>-->
+            <!--                </div>-->
+            <!--            </v-card>-->
+            <!--            <v-card class="my-5 pa-1 mx-auto" dark width="600">-->
+            <!--                <div class="ma-3">-->
+            <!--                    <div>-->
+            <!--                        <v-icon class="mr-3 mb-2">mdi-account</v-icon>-->
+            <!--                        <h3 class="d-inline-block ma-0">이 동 명 <span class="mx-1"/></h3> 2018-09-91-->
+            <!--                        <v-btn class="float-right mb-2 ml-0" text>삭제</v-btn>-->
+            <!--                        <v-btn class="float-right mb-2" text>수정</v-btn>-->
+            <!--                    </div>-->
+            <!--                    <hr/>-->
+            <!--                    <p style="font-size: 15px" class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>-->
+            <!--                </div>-->
+            <!--            </v-card>-->
+            <!--            <v-card class="my-5 pa-1 mx-auto" dark width="600">-->
+            <!--                <div class="ma-3">-->
+            <!--                    <div>-->
+            <!--                        <v-icon class="mr-3 mb-2">mdi-account</v-icon>-->
+            <!--                        <h3 class="d-inline-block ma-0">이 동 명 <span class="mx-1"/></h3> 2018-09-91-->
+            <!--                        <v-btn class="float-right mb-2 ml-0" text>삭제</v-btn>-->
+            <!--                        <v-btn class="float-right mb-2" text>수정</v-btn>-->
+            <!--                    </div>-->
+            <!--                    <hr/>-->
+            <!--                    <p style="font-size: 15px" class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>-->
+            <!--                </div>-->
+            <!--            </v-card>-->
 
         </v-container>
         <Modal/>
@@ -28,7 +64,13 @@
         name: "Article",
         data() {
             return {
-                article: {},
+                article: {
+                    title: '',
+                    author: '',
+                    content: '',
+                    email: '',
+                    lastModifiedDate: '',
+                },
                 isAuthor: false,
             }
         },

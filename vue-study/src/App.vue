@@ -50,5 +50,10 @@
 
     .tui-editor-contents pre {
         background-color: #f5f5f5 !important;
+        margin-top: 8 ox !important;
+    }
+
+    .tui-editor-contents hr {
+        border-top: 1px solid black !important;
     }
 </style>

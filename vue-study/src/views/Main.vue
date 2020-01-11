@@ -2,14 +2,52 @@
     <div>
         <v-container>
             <h1>This is Main Page</h1>
-            <v-card class="my-5 pa-5" dark width="600">
-                <div class="ma-3">
-                    <v-icon class="mb-2 mr-3" large>mdi-account</v-icon>
-                    <h3 class="d-inline-block">이 동 명 <span class="mx-1"/></h3> 2018-09-91
-                    <hr/>
-                    <p class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>
+            <div style="width: 600px">
+                <v-card class="my-5 pa-5" dark width="600">
+                    <div class="ma-3">
+                        <div>
+                            <v-icon class="mb-2 mr-3" large>mdi-account</v-icon>
+                            <h3 class="d-inline-block">이 동 명 <span class="mx-1"/></h3> 2018-09-91
+                            <v-btn class="float-right ma-0 ml-0" text>삭제</v-btn>
+                            <v-btn class="float-right ma-0" text>수정</v-btn>
+                        </div>
+                        <hr/>
+                        <p class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>
+                    </div>
+                </v-card>
+                <div>
+
+                    <v-card class="my-5 pa-5" dark style="margin-left: 50px" width="550">
+                        <v-icon class="white--text">mdi-subdirectory-arrow-right</v-icon>
+                        <div class="ma-3">
+                            <div>
+                                <v-icon class="mb-2 mr-3" large>mdi-account</v-icon>
+                                <h3 class="d-inline-block">이 동 명 <span class="mx-1"/></h3> 2018-09-91
+                                <v-btn class="float-right ma-0 ml-0" text>삭제</v-btn>
+                                <v-btn class="float-right ma-0" text>수정</v-btn>
+                            </div>
+                            <hr/>
+                            <p class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>
+                        </div>
+                    </v-card>
                 </div>
-            </v-card>
+                <div>
+                    <v-card class="my-5 pa-5" dark style="margin-left: 100px" width="500">
+                        <v-icon class="white--text">mdi-subdirectory-arrow-right</v-icon>
+
+                        <div class="ma-3">
+                            <div>
+                                <v-icon class="mb-2 mr-3" large>mdi-account</v-icon>
+                                <h3 class="d-inline-block">이 동 명 <span class="mx-1"/></h3> 2018-09-91
+                                <v-btn class="float-right ma-0 ml-0" text>삭제</v-btn>
+                                <v-btn class="float-right ma-0" text>수정</v-btn>
+                            </div>
+                            <hr/>
+                            <p class="mt-3">좋은 정보 감사합니다. 다음에 또 봬여</p>
+                        </div>
+                    </v-card>
+                </div>
+            </div>
         </v-container>
         <Modal @pass="modalEvnet"/>
     </div>
