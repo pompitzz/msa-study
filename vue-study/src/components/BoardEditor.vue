@@ -15,9 +15,12 @@
                       placeholder="제목을 입력하세요"
                       v-model="editor.title"
         ></v-text-field>
-        <editor height="500px"
-                v-model="editor.content"/>
+        <v-card>
+            <editor height="500px"
+                    v-model="editor.content"/>
+        </v-card>
         <v-btn @click="writeBoard"
+               color="indigo"
                class="mt-5 float-right mr-3"
                dark>
             글쓰기

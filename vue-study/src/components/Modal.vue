@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
+    import {mapState, mapMutations} from 'vuex'
 
     export default {
         name: "Modal",
@@ -25,11 +25,12 @@
             ...mapState(['modal'])
         },
         methods: {
+            ...mapMutations(['CLOSE_MODAL']),
             modalOption() {
                 if (this.modal.option === '닫기') {
-                    this.$emit('pass', true);
+                    this.CLOSE_MODAL();
                 } else {
-                    this.$emit('pass', false);
+                    this.$emit('pass');
                 }
             }
         }

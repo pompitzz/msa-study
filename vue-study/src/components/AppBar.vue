@@ -9,6 +9,18 @@
 
             <v-spacer/>
 
+            <v-snackbar
+                    :color="getSnackBarInfo.color"
+                    :timeout="timeout"
+                    v-model="getSnackBarInfo.open">
+                <h3 class="white--text">{{getSnackBarInfo.text}}</h3>
+
+                <v-btn @click="getSnackBarInfo.open = false" color="white--text" text>
+                    CLOSE
+                </v-btn>
+            </v-snackbar>
+
+            <v-spacer/>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-icon color="white" v-on="on">mdi-apps</v-icon>
@@ -16,7 +28,6 @@
 
                 <v-list>
                     <div :key="link.name" v-for="link in links">
-
                         <v-list-item v-if="selectMenuList(link.name)"
                                      router :to="link.route">
                             <v-list-item-title>{{link.name}}</v-list-item-title>
@@ -43,15 +54,7 @@
             <hr class="ma-3 white my-hr"/>
             <v-list>
                 <div :key="link.text" v-for="link in links">
-                    <v-list-item :to="link.route" router v-if="link.route != null">
-                        <v-list-item-action>
-                            <v-icon color="white">{{link.icon}}</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content class="white--text">
-                            {{link.name}}
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item :href="link.href" class="cyan lighten-2" target="_blank" v-else>
+                    <v-list-item :to="link.route" router v-if="selectMenuList(link.name)">
                         <v-list-item-action>
                             <v-icon color="white">{{link.icon}}</v-icon>
                         </v-list-item-action>
@@ -60,6 +63,15 @@
                         </v-list-item-content>
                     </v-list-item>
                 </div>
+
+                <v-list-item @click="LOGOUT" router v-if="isAuthenticated">
+                    <v-list-item-action>
+                        <v-icon color="white">mdi-logout-variant</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content class="white--text">
+                        로그아웃
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
         <!-- SECTION: 옆쪽 Drawer -->
@@ -73,18 +85,20 @@
         name: "AppBar",
         data() {
             return {
+                timeout: 5000,
                 drawer: true,
                 links: [
                     {name: '메인', icon: 'mdi-home', route: '/'},
                     {name: '메모장', icon: 'mdi-note-text', route: '/memo'},
                     {name: '게시글', icon: 'mdi-clipboard-text-multiple-outline', route: '/boards'},
+                    {name: '관리자 페이지', icon: 'mdi-account', route: '/admin/test'},
                     {name: '로그인', icon: 'mdi-login-variant', route: '/login'},
                     {name: '회원가입', icon: 'mdi-account-plus', route: '/register'},
                 ]
             }
         },
         computed: {
-            ...mapGetters(['isAuthenticated'])
+            ...mapGetters(['isAuthenticated', 'getSnackBarInfo'])
         },
         methods: {
             ...mapMutations(['LOGOUT']),
@@ -98,8 +112,6 @@
                 return true;
             }
         }
-
-
     }
 </script>
 

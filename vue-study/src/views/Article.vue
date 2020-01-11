@@ -7,14 +7,15 @@
                     moment('YYYY-MM-DD')}}</span>
             </p>
             <div class="mb-3">
-                <v-btn @click="modifyBoard" class="mx-2" color="grey" dark outlined small>수정</v-btn>
-                <v-btn @click="deleteBoard" class="mx-2" color="grey" dark outlined small>삭제</v-btn>
+                <v-btn @click="modifyBoard" class="mx-2" color="grey" dark outlined small v-if="isAuthor">수정</v-btn>
+                <v-btn @click="deleteBoard" class="mx-2" color="grey" dark outlined small v-if="isAuthor">삭제</v-btn>
             </div>
-            <v-card class="pa-3" light>
+            <v-card class="pa-5" light>
                 <viewer :value="article.content" dark="false"/>
             </v-card>
+
         </v-container>
-        <Modal @pass="modalEvent"/>
+        <Modal/>
     </div>
 </template>
 
@@ -28,6 +29,7 @@
         data() {
             return {
                 article: {},
+                isAuthor: false,
             }
         },
         components: {
@@ -58,9 +60,6 @@
                     this.openModal();
                 }
             },
-            modalEvent() {
-                this.CLOSE_MODAL();
-            },
             openModal() {
                 this.OPEN_MODAL({
                     title: '인증되지 않은 사용자',
@@ -70,7 +69,10 @@
             }
         },
         created() {
-            this.QUERY_ARTICLE(this.$route.params.id).then(res => this.article = res);
+            this.QUERY_ARTICLE(this.$route.params.id).then(res => {
+                this.article = res;
+                this.isAuthor = this.article.email === localStorage.getItem('email');
+            });
         }
     }
 </script>

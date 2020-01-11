@@ -13,6 +13,7 @@
 
                         <v-text-field :rules="passwordRules"
                                       label="Password" prepend-icon="mdi-lock"
+                                      @keyup.enter="loginRequest"
                                       required type="password" v-model="member.password"></v-text-field>
 
                         <v-btn :loading="loadingState" @click="loginRequest" class="mt-3" color="cyan" outlined>LOGIN
@@ -26,7 +27,7 @@
                 </div>
             </div>
         </v-row>
-        <Modal @pass="modalEvent"/>
+        <Modal/>
     </div>
 </template>
 
@@ -59,9 +60,6 @@
                     this.REQUEST_LOGIN(this.member);
                 }
             },
-            modalEvent() {
-                this.CLOSE_MODAL();
-            }
         }
     }
 </script>

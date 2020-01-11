@@ -22,7 +22,7 @@
                     </v-text-field>
 
                     <v-text-field :rules="nameRules" class="pl-3 pr-3" label="Name" prepend-icon="mdi-account"
-                                  required type="text" v-model="member.name">
+                                  @keyup.enter="joinRequest" required type="text" v-model="member.name">
                     </v-text-field>
 
                     <v-btn :loading="loadingState" @click="joinRequest" class="mt-3" color="indigo" outlined>REGISTER
@@ -77,13 +77,9 @@
                     this.REQUEST_JOIN(this.member);
                 }
             },
-            modalEvent(isClose) {
-                if (isClose) {
-                    this.CLOSE_MODAL();
-                } else {
-                    this.CLOSE_MODAL();
-                    router.push('/login');
-                }
+            modalEvent() {
+                this.CLOSE_MODAL();
+                router.push('/login');
             }
         }
     }

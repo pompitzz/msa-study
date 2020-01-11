@@ -25,9 +25,10 @@
             }
         },
         methods: {
-            ...mapActions(['SAVE_BOARD', 'QUERY_ARTICLE']),
+            ...mapActions(['UPDATE_BOARD', 'QUERY_ARTICLE']),
             setBoard(editor) {
-                this.SAVE_BOARD(editor);
+                editor.id = this.$route.params.id;
+                this.UPDATE_BOARD(editor);
             },
         },
         created() {

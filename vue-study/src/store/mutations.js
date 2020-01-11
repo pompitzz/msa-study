@@ -1,21 +1,20 @@
 import {router} from "../routes/route";
-import {setAccessTokenInHeader, deleteAccessTokenInHeader} from "../api/api";
+import {deleteAccessTokenInHeader} from "../api/api";
 import {setTokenInLocalStorage, deleteTokenInLocalStorage} from "../utils/oauth";
 
 export default {
 
     LOGIN(state, responseTokenInfo) {
         setTokenInLocalStorage(responseTokenInfo);
-        setAccessTokenInHeader(responseTokenInfo.access_token);
-        state.accessToken = localStorage.getItem("access_token");
+        state.accessToken = localStorage.getItem('access_token');
         state.loadingState = false;
         router.push('/');
     },
     LOGOUT(state) {
         deleteTokenInLocalStorage();
         deleteAccessTokenInHeader();
-        localStorage.removeItem("email");
         state.accessToken = null;
+        localStorage.removeItem("email");
         router.push('/');
     },
     SUCCESS_SAVE_BOARD(state, boardInfo) {
@@ -54,5 +53,10 @@ export default {
     },
     PAGE_LOADING(state) {
         state.pageLoading = true;
+    },
+    SET_SNACKBAR(state, snackbarInfo) {
+        state.snackbarInfo.open = true;
+        state.snackbarInfo.text = snackbarInfo.text;
+        state.snackbarInfo.color = snackbarInfo.color;
     }
 }

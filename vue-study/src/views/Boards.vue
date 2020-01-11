@@ -50,7 +50,7 @@
                 </v-card>
             </v-row>
         </v-container>
-        <Modal @pass="modalEvent"/>
+        <Modal @pause="modalEvent"/>
     </div>
 </template>
 <script>
@@ -76,6 +76,10 @@
                     sort: 'id,DESC',
                     title: '',
                 },
+                articleInfo: {
+                    id: '',
+                    href: '',
+                },
                 currentPage: Number,
                 sortby: [],
                 lastSortBy: '',
@@ -90,12 +94,9 @@
                 this.QUERY_BOARDS_BYTITLE(this.pageRequest);
             },
             moveToArticle(board) {
-                const articleInfo = {
-                    id: board.id,
-                    href: board._links.self.href,
-                };
-
-                this.COUNT_MOVE_TO_ARTICLE(articleInfo);
+                this.articleInfo.id = board.id;
+                this.articleInfo.href = board._links.self.href;
+                this.COUNT_MOVE_TO_ARTICLE(this.articleInfo);
             },
             titleLimit(title) {
                 return title.length > 70 ? title.substring(0, 40) + '...' : title;
@@ -122,12 +123,12 @@
                     this.QUERY_BOARDS_BYTITLE(this.pageRequest);
                 }
             },
-            logTest() {
-                console.log(this.pageRequest);
+            serachBoards() {
                 this.QUERY_BOARDS_BYTITLE(this.pageRequest);
             },
             modalEvent() {
                 this.CLOSE_MODAL();
+                router.push(`/article/${this.articleInfo.id}`);
             }
 
         },
@@ -153,7 +154,7 @@
                 handler() {
                     clearTimeout(this.timeout);
                     this.timeout = setTimeout(() => {
-                        this.logTest()
+                        this.serachBoards()
                     }, 800);
                 }
             }
