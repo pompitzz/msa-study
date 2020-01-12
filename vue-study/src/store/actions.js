@@ -150,7 +150,7 @@ export default {
             context.commit('SET_BOARD_PAGES', response.data);
             return response.data;
         } catch (e) {
-            context.commit('SET_SNACKBAR', setSnackBarInfo('너무 많은 검색은 서버에 무리를 줄 수 있습니다.!', 'error'))
+            // context.commit('SET_SNACKBAR', setSnackBarInfo('너무 많은 검색은 서버에 무리를 줄 수 있습니다.!', 'error'))
         }
     },
     async QUERY_MEMBER(context, email) {

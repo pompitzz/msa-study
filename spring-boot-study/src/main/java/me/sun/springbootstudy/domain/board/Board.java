@@ -27,6 +27,7 @@ public class Board extends BaseTimeEntity {
 
     private int viewsCount;
 
+    @Enumerated(EnumType.STRING)
     private BoardType boardType;
 
     @OneToOne(fetch = FetchType.LAZY)
