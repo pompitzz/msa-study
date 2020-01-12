@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.sun.springbootstudy.domain.board.Board;
+import me.sun.springbootstudy.domain.comment.Comment;
 import me.sun.springbootstudy.domain.common.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.List;
 public class Member extends BaseTimeEntity {
 
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -35,7 +37,11 @@ public class Member extends BaseTimeEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "member")
-    private List<Board> boardList = new ArrayList<>();
+    private List<Board> boards = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Member(String email, String password, String name, MemberRole role) {

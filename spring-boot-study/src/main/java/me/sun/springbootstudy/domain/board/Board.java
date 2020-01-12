@@ -4,10 +4,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.sun.springbootstudy.domain.comment.Comment;
 import me.sun.springbootstudy.domain.common.BaseTimeEntity;
 import me.sun.springbootstudy.domain.member.Member;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -15,6 +18,7 @@ import javax.persistence.*;
 public class Board extends BaseTimeEntity {
 
     @Id
+    @Column(name = "board_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -23,9 +27,10 @@ public class Board extends BaseTimeEntity {
     @Lob
     private String content;
 
-    private String author;
-
     private int viewsCount;
+
+    @OneToMany(mappedBy = "board")
+    private List<Comment> comments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private BoardType boardType;
@@ -35,10 +40,9 @@ public class Board extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public Board(String title, String content, String author, int viewsCount, BoardType boardType, Member member) {
+    public Board(String title, String content, int viewsCount, BoardType boardType, Member member) {
         this.title = title;
         this.content = content;
-        this.author = author;
         this.viewsCount = viewsCount;
         this.boardType = boardType;
         this.member = member;
@@ -49,6 +53,4 @@ public class Board extends BaseTimeEntity {
         this.content = content;
         this.boardType = boardType;
     }
-
-
 }
