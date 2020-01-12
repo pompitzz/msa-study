@@ -5,7 +5,11 @@ import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.comment.CommentService;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
-import me.sun.springbootstudy.web.dto.*;
+import me.sun.springbootstudy.web.dto.board.BoardListResponseDto;
+import me.sun.springbootstudy.web.dto.board.BoardOneResponseDto;
+import me.sun.springbootstudy.web.dto.board.BoardSaveRequestDto;
+import me.sun.springbootstudy.web.dto.board.BoardUpdateRequestDto;
+import me.sun.springbootstudy.web.dto.comment.CommentResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,7 +35,7 @@ public class BoardService {
     }
 
     public BoardOneResponseDto findBoard(Long id) {
-        Board board = boardRepository.findWithFetchById(id)
+        Board board = boardRepository.findWithMemberBy(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 존재하지 않습니다."));
 
         List<CommentResponseDto> commentResponseDtos = commentService.findCommentsOnlyDepth0(id);

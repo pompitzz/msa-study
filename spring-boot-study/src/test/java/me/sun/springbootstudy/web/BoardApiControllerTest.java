@@ -9,9 +9,9 @@ import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;
-import me.sun.springbootstudy.web.dto.BoardSaveRequestDto;
-import me.sun.springbootstudy.web.dto.BoardUpdateRequestDto;
-import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
+import me.sun.springbootstudy.web.dto.board.BoardSaveRequestDto;
+import me.sun.springbootstudy.web.dto.board.BoardUpdateRequestDto;
+import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -143,7 +143,6 @@ class BoardApiControllerTest extends BaseControllerTest {
         Board board = Board.builder()
                 .title("Web Server Developement Using SpringBoot And Vue")
                 .content("So Hard...")
-                .author("DongMyeongLee")
                 .viewsCount(0)
                 .boardType(BoardType.STUDY)
                 .member(member)
@@ -267,7 +266,6 @@ class BoardApiControllerTest extends BaseControllerTest {
         IntStream.rangeClosed(1, 10).forEach(i -> boardRepository.save(Board.builder()
                 .title("title" + i)
                 .content("content" + i)
-                .author("author" + i)
                 .viewsCount(i)
                 .boardType(BoardType.STUDY)
                 .member(member)

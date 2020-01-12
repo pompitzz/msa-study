@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.web.dto;
+package me.sun.springbootstudy.web.dto.board;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +17,18 @@ public class BoardOneResponseDto {
     String email;
     LocalDateTime lastModifiedDate;
     BoardType boardType;
+//    Slice<CommentResponseDto> commentList;
 
 
     public BoardOneResponseDto(Board entity) {
         this.title = entity.getTitle();
-        this.author = entity.getAuthor();
+        this.author = entity.getMember().getName();
         this.boardType = entity.getBoardType();
         this.content = entity.getContent();
         this.lastModifiedDate = entity.getLastModifiedDate();
         this.email = entity.getMember().getEmail();
+
+//        List<Comment> comments = entity.getComments();
+
     }
 }

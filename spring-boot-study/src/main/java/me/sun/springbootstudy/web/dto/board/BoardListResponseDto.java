@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.web.dto;
+package me.sun.springbootstudy.web.dto.board;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class BoardListResponseDto {
     public BoardListResponseDto(Board entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
-        this.author = entity.getAuthor();
+        this.author = entity.getMember().getName();
         this.lastModifiedDate = entity.getLastModifiedDate();
         this.viewsCount = entity.getViewsCount();
     }

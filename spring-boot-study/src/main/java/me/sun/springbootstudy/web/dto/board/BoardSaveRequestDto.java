@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.web.dto;
+package me.sun.springbootstudy.web.dto.board;
 
 
 import lombok.Builder;
@@ -40,12 +40,11 @@ public class BoardSaveRequestDto {
         Board board = Board.builder()
                 .title(title)
                 .content(content)
-                .author(member.getName())
                 .viewsCount(viewsCount)
                 .boardType(boardType)
                 .member(member)
                 .build();
-        member.getBoardList().add(board);
+        member.getBoards().add(board);
         return board;
     }
 

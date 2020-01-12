@@ -5,7 +5,7 @@ import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
-import me.sun.springbootstudy.web.dto.CommentSaveRequestDto;
+import me.sun.springbootstudy.web.dto.comment.CommentSaveRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

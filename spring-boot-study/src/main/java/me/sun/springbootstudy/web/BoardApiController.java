@@ -3,7 +3,7 @@ package me.sun.springbootstudy.web;
 import lombok.RequiredArgsConstructor;
 import me.sun.springbootstudy.domain.board.BoardSaveAndUpdateRequestDtoModel;
 import me.sun.springbootstudy.domain.board.BoardService;
-import me.sun.springbootstudy.web.dto.*;
+import me.sun.springbootstudy.web.dto.board.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;

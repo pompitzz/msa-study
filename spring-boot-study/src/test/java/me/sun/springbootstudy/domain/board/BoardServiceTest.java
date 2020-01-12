@@ -4,8 +4,8 @@ import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
-import me.sun.springbootstudy.web.dto.BoardListResponseDto;
-import me.sun.springbootstudy.web.dto.BoardUpdateRequestDto;
+import me.sun.springbootstudy.web.dto.board.BoardListResponseDto;
+import me.sun.springbootstudy.web.dto.board.BoardUpdateRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -104,7 +104,6 @@ class BoardServiceTest {
         Board board = Board.builder()
                 .title("hello")
                 .content("content")
-                .author("author")
                 .viewsCount(0)
                 .boardType(BoardType.STUDY)
                 .member(member)
@@ -133,7 +132,6 @@ class BoardServiceTest {
         assertThat(findBoard.getTitle()).isEqualTo(updatedTitle);
         assertThat(findBoard.getContent()).isEqualTo(updatedContent);
         assertThat(findBoard.getBoardType()).isEqualTo(updatedBoardType);
-        assertThat(findBoard.getAuthor()).isEqualTo("author");
     }
 
 
@@ -172,7 +170,6 @@ class BoardServiceTest {
         IntStream.rangeClosed(1, 10).forEach(i -> boardRepository.save(Board.builder()
                 .title("title" + i)
                 .content("content" + i)
-                .author("author" + i)
                 .viewsCount(i)
                 .boardType(BoardType.STUDY)
                 .member(member)

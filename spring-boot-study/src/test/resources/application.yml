@@ -9,9 +9,9 @@ spring:
         show_sql: true
 
 custom:
-  clientId: clientApp
-  clientSecret: secret
-  jwtKey: test
+  clientId: testId
+  clientSecret: testSecret
+  jwtKey: jushTest
   accessTokenValidTime: 1060
   refreshTokenValidTime: 61060
   scopes:

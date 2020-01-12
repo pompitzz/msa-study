@@ -2,8 +2,8 @@ package me.sun.springbootstudy.web;
 
 import lombok.RequiredArgsConstructor;
 import me.sun.springbootstudy.domain.member.MemberService;
-import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
-import me.sun.springbootstudy.web.dto.MemberResponseDto;
+import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
+import me.sun.springbootstudy.web.dto.member.MemberResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;

@@ -5,8 +5,8 @@ import me.sun.springbootstudy.domain.board.Board;
 import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
-import me.sun.springbootstudy.web.dto.CommentResponseDto;
-import me.sun.springbootstudy.web.dto.CommentSaveRequestDto;
+import me.sun.springbootstudy.web.dto.comment.CommentResponseDto;
+import me.sun.springbootstudy.web.dto.comment.CommentSaveRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

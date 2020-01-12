@@ -3,6 +3,7 @@ package me.sun.springbootstudy.domain.board;
 import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ class BoardRepositoryTest {
     @Autowired
     EntityManager em;
 
+    @BeforeEach
+    void init() {
+        boardRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("조회수가 증가하는지 확인하는 테스트")
     void checkViewCount1() throws Exception {
@@ -43,7 +50,6 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("Web Server Developement Using SpringBoot And Vue")
                 .content("So Hard...")
-                .author("DongMyeongLee")
                 .viewsCount(0)
                 .boardType(BoardType.STUDY)
                 .member(member)
@@ -78,7 +84,6 @@ class BoardRepositoryTest {
         Board board = Board.builder()
                 .title("Web Server Developement Using SpringBoot And Vue")
                 .content("So Hard...")
-                .author("DongMyeongLee")
                 .viewsCount(0)
                 .boardType(BoardType.STUDY)
                 .member(member)
@@ -159,7 +164,7 @@ class BoardRepositoryTest {
 
         //then
         Page<Board> boardsOnlyTitle = boardRepository.findBoardsTitleWithPageable(query, pageRequest);
-        assertThat(boardsOnlyTitle.getTotalElements()).isEqualTo(3);
+        assertThat(boardsOnlyTitle.getTotalElements()).isEqualTo(5);
         assertThat(boardsOnlyTitle.getTotalPages()).isEqualTo(2);
         assertThat(boardsOnlyTitle.getNumber()).isEqualTo(0);
     }
@@ -168,7 +173,6 @@ class BoardRepositoryTest {
         boardRepository.save(Board.builder()
                 .title(title)
                 .content("So Hard...")
-                .author("DongMyeongLee")
                 .viewsCount(0)
                 .boardType(BoardType.STUDY)
                 .member(member)

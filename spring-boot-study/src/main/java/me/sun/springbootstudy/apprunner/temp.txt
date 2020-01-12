@@ -1,0 +1,24 @@
+//        IntStream.rangeClosed(1, 10).forEach(i -> memberService.save(MemberJoinRequestDto.builder()
+//                .email("email@gmail.com" + i)
+//                .password("password")
+//                .name("John" + i)
+//                .role(MemberRole.USER)
+//                .build()));
+
+
+//        IntStream.rangeClosed(1, 10).forEach(i -> boardRepository.save(Board.builder()
+//                .title("Web Server Developement Using SpringBoot" + i)
+//                .content("So Hard..." + i)
+//                .viewsCount(1)
+//                .boardType(BoardType.STUDY)
+//                .member(member)
+//                .build()));
+
+//        IntStream.rangeClosed(1, 30).forEach(i -> boardRepository.save(Board.builder()
+//                .title("Web Server Developement Using SpringBoot" + i)
+//                .content("So Hard...")
+//                .author("DongMyeongLee")
+//                .viewsCount(i)
+//                .boardType(BoardType.STUDY)
+//                .member(member)
+//                .build()));

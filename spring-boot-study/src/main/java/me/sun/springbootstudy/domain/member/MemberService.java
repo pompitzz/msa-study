@@ -2,8 +2,8 @@ package me.sun.springbootstudy.domain.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
-import me.sun.springbootstudy.web.dto.MemberResponseDto;
+import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
+import me.sun.springbootstudy.web.dto.member.MemberResponseDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

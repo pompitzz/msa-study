@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.web.dto;
+package me.sun.springbootstudy.web.dto.member;
 
 import lombok.Builder;
 import lombok.Getter;

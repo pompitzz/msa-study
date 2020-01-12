@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.sun.springbootstudy.TokenInformation;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;
-import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
+import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

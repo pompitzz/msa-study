@@ -3,7 +3,7 @@ package me.sun.springbootstudy.web;
 import me.sun.springbootstudy.common.BaseControllerTest;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;
-import me.sun.springbootstudy.web.dto.MemberJoinRequestDto;
+import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
