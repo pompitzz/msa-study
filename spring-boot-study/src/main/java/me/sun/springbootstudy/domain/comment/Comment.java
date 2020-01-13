@@ -34,11 +34,11 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment> child = new ArrayList<>();
 
@@ -78,6 +78,10 @@ public class Comment extends BaseTimeEntity {
     public void setMember(Member member) {
         this.member = member;
         member.getComments().add(this);
+    }
+
+    public void update(String content) {
+        this.content = content;
     }
 
 }

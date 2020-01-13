@@ -25,11 +25,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findBoardsTitleWithPageable(@Param("title") String title, Pageable pageable);
 
 
-    @Query(value = "select b from Board b join fetch b.member m")
-    Optional<Board> findWithMemberBy(Long id);
-
-    @Query(value = "select b from Board b join fetch b.member join fetch b.comments")
-    Optional<Board> findWithCommentById(Long id);
+    @Query(value = "select b from Board b join fetch b.member m where b.id = :id")
+    Optional<Board> findWithMemberBy(@Param("id") Long id);
 
 //    @Query(value = "select b from Board b left join b.comments c where c.depth")
 //    Board findBoardAndChildeOnlyDepth0(@Param("id") Long id);

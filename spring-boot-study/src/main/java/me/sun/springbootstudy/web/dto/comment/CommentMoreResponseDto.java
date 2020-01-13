@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CommentResponseDto {
+public class CommentMoreResponseDto {
 
     private Long commentId;
     private String content;
@@ -27,9 +27,9 @@ public class CommentResponseDto {
      */
     private Long parentId;
     private Boolean isMore;
-    private List<CommentResponseDto> childrenResponseDto;
+    private List<CommentMoreResponseDto> childrenResponseDto;
 
-    public CommentResponseDto(Long commentId, String content, LocalDateTime createDate, Integer depth, Long parentId, String name) {
+    public CommentMoreResponseDto(Long commentId, String content, LocalDateTime createDate, Integer depth, Long parentId, String name) {
         this.commentId = commentId;
         this.content = content;
         this.createDate = createDate;
@@ -38,7 +38,7 @@ public class CommentResponseDto {
         this.name = name;
     }
 
-    public CommentResponseDto(Comment comment) {
+    public CommentMoreResponseDto(Comment comment) {
         this.commentId = comment.getId();
         this.content = comment.getContent();
         this.createDate = comment.getCreateDate();

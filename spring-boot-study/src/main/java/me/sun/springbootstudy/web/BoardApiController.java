@@ -1,9 +1,17 @@
 package me.sun.springbootstudy.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import me.sun.springbootstudy.domain.board.BoardAndCommentService;
 import me.sun.springbootstudy.domain.board.BoardSaveAndUpdateRequestDtoModel;
 import me.sun.springbootstudy.domain.board.BoardService;
-import me.sun.springbootstudy.web.dto.board.*;
+import me.sun.springbootstudy.domain.common.TokenMemberEmail;
+import me.sun.springbootstudy.web.dto.board.BoardListResponseDto;
+import me.sun.springbootstudy.web.dto.board.BoardResponseDtoModel;
+import me.sun.springbootstudy.web.dto.board.BoardSaveRequestDto;
+import me.sun.springbootstudy.web.dto.board.BoardUpdateRequestDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -16,20 +24,23 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
+@Slf4j
 @RestController
 @RequestMapping("/api/boards")
 public class BoardApiController {
 
     private final BoardService boardService;
+    private final ObjectMapper objectMapper;
+    private final BoardAndCommentService boardAndCommentService;
 
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid BoardSaveRequestDto dto,
-                               Errors errors) {
+                               @TokenMemberEmail String email,
+                               Errors errors) throws JsonProcessingException {
 
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-
         Long id = boardService.save(dto);
         return ResponseEntity.ok(new BoardSaveAndUpdateRequestDtoModel(id));
     }
@@ -54,10 +65,11 @@ public class BoardApiController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity findById(@PathVariable Long id) {
-        BoardOneResponseDto responseDto = boardService.findBoard(id);
-        return ResponseEntity.ok(responseDto);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteBoard(@PathVariable Long id,
+                                      @TokenMemberEmail String email) {
+        boardService.deleteBoard(id, email);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -72,14 +84,15 @@ public class BoardApiController {
         return ResponseEntity.ok(entityModels);
     }
 
-    @GetMapping("/validate")
-    public ResponseEntity validateBoardMember(@RequestParam("boardId") Long boardId,
-                                              @RequestParam(value = "email", defaultValue = "") String email) {
+    @RequestMapping(value = "/validate/{id}", method = RequestMethod.HEAD)
+    public ResponseEntity validateBoardMember(@PathVariable Long id,
+                                              @TokenMemberEmail String email) {
 
-        if (!boardService.validateBoardMember(boardId, email)) {
+        if (!boardService.validateBoardMember(id, email)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근권한이 없습니다.");
         }
 
         return ResponseEntity.ok().build();
     }
+
 }

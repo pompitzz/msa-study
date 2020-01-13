@@ -16,11 +16,12 @@ public class CommentRepositodyCustom {
 
     public List<CommentResponseDto> findChildrenByparentIds(List<Long> parentIds) {
         return em.createQuery(
-                "select new me.sun.springbootstudy.web.dto.CommentResponseDto" +
+                "select new me.sun.springbootstudy.web.dto.comment.CommentResponseDto" +
                         " (c.id, c.content, c.createDate, c.depth, c.parent.id, m.name)" +
                         " from Comment c" +
                         " join c.member m" +
-                        " where c.parent.id in :parentIds", CommentResponseDto.class)
+                        " where c.parent.id in :parentIds" +
+                        " order by c.createDate asc", CommentResponseDto.class)
                 .setParameter("parentIds", parentIds)
                 .getResultList();
     }

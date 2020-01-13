@@ -78,7 +78,11 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+        // 로컬 도메인
         corsConfiguration.addAllowedOrigin("http://localhost:8081");
+        // Netlify 도메인
+        corsConfiguration.addAllowedOrigin("https://naughty-murdock-133815.netlify.com");
+
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);

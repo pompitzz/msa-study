@@ -165,7 +165,7 @@ class BoardRepositoryTest {
         //then
         Page<Board> boardsOnlyTitle = boardRepository.findBoardsTitleWithPageable(query, pageRequest);
         assertThat(boardsOnlyTitle.getTotalElements()).isEqualTo(5);
-        assertThat(boardsOnlyTitle.getTotalPages()).isEqualTo(2);
+        assertThat(boardsOnlyTitle.getTotalPages()).isEqualTo(3);
         assertThat(boardsOnlyTitle.getNumber()).isEqualTo(0);
     }
 

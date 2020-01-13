@@ -29,6 +29,8 @@ public class Board extends BaseTimeEntity {
 
     private int viewsCount;
 
+    private int commentCount;
+
     @OneToMany(mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
 
@@ -40,17 +42,22 @@ public class Board extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public Board(String title, String content, int viewsCount, BoardType boardType, Member member) {
+    public Board(String title, String content, int viewsCount, BoardType boardType, Member member, int commentCount) {
         this.title = title;
         this.content = content;
         this.viewsCount = viewsCount;
         this.boardType = boardType;
         this.member = member;
+        this.commentCount = commentCount;
     }
 
     public void update(String title, String content, BoardType boardType) {
         this.title = title;
         this.content = content;
         this.boardType = boardType;
+    }
+
+    public void countOneComment() {
+        this.commentCount++;
     }
 }
