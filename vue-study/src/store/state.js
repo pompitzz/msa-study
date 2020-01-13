@@ -1,16 +1,8 @@
 export default {
     loadingState: false,
     pageLoading: false,
-    snackbarInfo: {
-        open: false,
-        text: '',
-    },
-    modal: {
-        open: false,
-        title: '',
-        content: '',
-        option: '',
-    },
+    snackbar: {open: false, text: '', location: 'top',},
+    modal: {open: false, title: '', content: '', option: '',},
     articleUrl: '',
     pageInfo: '',
     boardList: [],

@@ -17,10 +17,7 @@ export default {
         localStorage.removeItem("email");
         router.push('/');
     },
-    SUCCESS_SAVE_BOARD(state, boardInfo) {
-        state.articleUrl = boardInfo._links.self.href;
-        router.push(`/article/${boardInfo.content}`);
-    },
+
     SET_BOARD_PAGES(state, boardPagesInfo) {
         state.pageLoading = false;
 
@@ -35,7 +32,7 @@ export default {
     },
     MOVE_TO_ARTICLE(state, articleInfo){
         state.articleUrl = articleInfo.href;
-        router.push(`/article/${articleInfo.id}`);
+        router.push(`/board/${articleInfo.id}`);
     }
     ,
     CLOSE_MODAL(state) {
@@ -55,8 +52,9 @@ export default {
         state.pageLoading = true;
     },
     SET_SNACKBAR(state, snackbarInfo) {
-        state.snackbarInfo.open = true;
-        state.snackbarInfo.text = snackbarInfo.text;
-        state.snackbarInfo.color = snackbarInfo.color;
+        state.snackbar.open = true;
+        state.snackbar.text = snackbarInfo.text;
+        state.snackbar.color = snackbarInfo.color;
+        state.snackbar.location = snackbarInfo.location;
     }
 }

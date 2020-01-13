@@ -1,6 +1,5 @@
 import {
     countBoardViews,
-    queryArticle,
     queryBoardsByTitle,
     queryMember,
     queryMembers,
@@ -9,9 +8,7 @@ import {
     setSnackBarInfo,
     requestSaveBoard,
     requesUpdateBoard,
-    validateBoardMember
 } from "../api/api";
-import {router} from "../routes/route";
 
 
 export default {
@@ -54,80 +51,6 @@ export default {
     //     }
     // },
 
-    async SAVE_BOARD(context, board) {
-        try {
-            const response = await requestSaveBoard(board);
-            context.commit('SUCCESS_SAVE_BOARD', response.data);
-            return response.data;
-        } catch (e) {
-            context.commit('OPEN_MODAL', {
-                    title: '게시글 작성 실패',
-                    content: '다시 한번 더 시도해주세요.',
-                    option: '닫기',
-                }
-            )
-        }
-    },
-
-    async UPDATE_BOARD(context, board) {
-        try {
-            const response = await requesUpdateBoard(board);
-            context.commit('SUCCESS_SAVE_BOARD', response.data);
-            return response.data;
-        } catch (e) {
-            context.commit('OPEN_MODAL', {
-                    title: '게시글 수정 실패',
-                    content: '다시 한번 더 시도해주세요.',
-                    option: '닫기',
-                }
-            )
-        }
-    },
-
-    async QUERY_ARTICLE(context, id) {
-        try {
-            const response = await queryArticle(id);
-            return response.data;
-        } catch (e) {
-            context.commit('OPEN_MODAL', {
-                    title: '게시글 조회 실패',
-                    content: '다시 한번 더 시도해주세요.',
-                    option: '닫기',
-                }
-            )
-        }
-    },
-
-
-    async VALIDATE_MODIFY_MEMBER(context, emailAndBoardId) {
-        try {
-            const response = await validateBoardMember(emailAndBoardId);
-            router.push(`/article-modify/${emailAndBoardId.id}`);
-            return response.data;
-        } catch (e) {
-            context.commit('OPEN_MODAL', {
-                    title: '수정 권한이 없습니다.',
-                    content: `작성자만 수정이 가능합니다.\n` + e,
-                    option: '닫기',
-                }
-            )
-        }
-    },
-
-    async VALIDATE_DELETE_MEMBER(context, emailAndBoardId) {
-        try {
-            const response = await validateBoardMember(emailAndBoardId);
-            return response.data;
-        } catch (e) {
-            context.commit('OPEN_MODAL', {
-                    title: '삭제 권한이 없습니다.',
-                    content: `작성자 혹은 관리자만 수정이 가능합니다.\n` + e,
-                    option: '닫기',
-                }
-            )
-        }
-    },
-
 
     async COUNT_MOVE_TO_ARTICLE(context, articleInfo) {
         try {
@@ -163,7 +86,7 @@ export default {
                 text = `안녕하세요 마스터 님!`;
             }
             localStorage.setItem('name', response.data.name);
-            context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info'));
+            context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
             return response.data;
         } catch (e) {
             context.commit('OPEN_MODAL', {
@@ -185,7 +108,9 @@ export default {
                 option: '재시도',
             })
         }
-    }
+    },
+
+
 }
 
 const setModalTexts = (isSuccess) => {

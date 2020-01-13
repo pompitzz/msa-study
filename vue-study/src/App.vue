@@ -7,6 +7,19 @@
         <v-footer app class="theme--dark"><span class="mx-auto">Copyright © {{new Date() | moment('YYYY')}} All Rights Reserved.</span>
         </v-footer>
         <Modal/>
+
+        <v-snackbar
+                :bottom="snackbar.location === 'bottom'"
+                :color="snackbar.color"
+                :timeout="timeout"
+                :top="snackbar.location === 'top'"
+                v-model="snackbar.open">
+            <h3 class="white--text">{{snackbar.text}}</h3>
+
+            <v-btn @click="snackbar.open = false" color="white--text" text>
+                CLOSE
+            </v-btn>
+        </v-snackbar>
     </v-app>
 </template>
 
@@ -16,9 +29,19 @@
 
     export default {
         name: 'App',
+        data() {
+            return {
+                timeout: 5000,
+            }
+        },
         components: {
             Modal,
             AppBar
+        },
+        computed: {
+            snackbar() {
+                return this.$store.state.snackbar;
+            }
         },
 
     };

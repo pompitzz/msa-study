@@ -8,19 +8,6 @@
             </v-toolbar-title>
 
             <v-spacer/>
-
-            <v-snackbar
-                    :color="getSnackBarInfo.color"
-                    :timeout="timeout"
-                    v-model="getSnackBarInfo.open">
-                <h3 class="white--text">{{getSnackBarInfo.text}}</h3>
-
-                <v-btn @click="getSnackBarInfo.open = false" color="white--text" text>
-                    CLOSE
-                </v-btn>
-            </v-snackbar>
-
-            <v-spacer/>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-icon color="white" v-on="on">mdi-apps</v-icon>
@@ -85,7 +72,6 @@
         name: "AppBar",
         data() {
             return {
-                timeout: 5000,
                 drawer: true,
                 links: [
                     {name: '메인', icon: 'mdi-home', route: '/'},
@@ -98,7 +84,7 @@
             }
         },
         computed: {
-            ...mapGetters(['isAuthenticated', 'getSnackBarInfo'])
+            ...mapGetters(['isAuthenticated'])
         },
         methods: {
             ...mapMutations(['LOGOUT']),

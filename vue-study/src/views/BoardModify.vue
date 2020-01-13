@@ -2,41 +2,28 @@
     <div class="fill-height box">
         <v-container>
             <h1 class="text-center">글쓰기</h1>
-            <BoardEditor :board="board" @pass="setBoard"/>
+            <BoardEditor @submit="requestUpdateBoard"/>
         </v-container>
     </div>
 </template>
 
 <script>
     import BoardEditor from "../components/BoardEditor";
-    import {mapActions} from "vuex";
 
     export default {
         components: {
             BoardEditor
         },
-        data() {
-            return {
-                board: {
-                    title: '',
-                    content: '',
-                    boardType: '',
-                },
+        methods: {
+            requestUpdateBoard(boardWrite) {
+                this.$store.dispatch('MODIFY_BOARD', {
+                    boardWrite,
+                    id: this.$route.params.id,
+                });
             }
         },
-        methods: {
-            ...mapActions(['UPDATE_BOARD', 'QUERY_ARTICLE']),
-            setBoard(editor) {
-                editor.id = this.$route.params.id;
-                this.UPDATE_BOARD(editor);
-            },
-        },
         created() {
-            this.QUERY_ARTICLE(this.$route.params.id).then(res => {
-                this.board.title = res.title;
-                this.board.content = res.content;
-                this.board.boardType = res.boardType;
-            });
+            this.$store.dispatch('QUERY_MODIFY_BOARD', this.$route.params.id);
         }
     }
 </script>

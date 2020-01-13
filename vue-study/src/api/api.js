@@ -3,7 +3,7 @@ import {setTokenInLocalStorage} from "../utils/oauth";
 import store from "../store/store";
 
 const config = {
-    baseUrl: 'https://sunlee.page'
+    baseUrl: 'http://localhost:8080'
 };
 
 function requestJoinMember(member) {
@@ -51,17 +51,49 @@ function requestLogin(member) {
 // }
 
 function requestSaveBoard(board) {
-    console.log('board', board);
+    console.log('saveboard', board);
     return axios.post(`${config.baseUrl}/api/boards`, board);
 }
 
-function requesUpdateBoard(board) {
-    console.log('UpdateBoard', board);
-    return axios.put(`${config.baseUrl}/api/boards/${board.id}`, board);
+function requesUpdateBoard(payload) {
+    console.log('payloadUpdate', payload);
+    return axios.put(`${config.baseUrl}/api/boards/${payload.id}`, payload.boardWrite);
 }
 
-function queryArticle(id) {
-    return axios.get(`${config.baseUrl}/api/boards/${id}`);
+function queryBoard(pageRequest) {
+    return axios.get(`${config.baseUrl}/api/boards/${pageRequest.id}`, {
+        params: {
+            page: pageRequest.page,
+            sort: pageRequest.sort,
+            size: pageRequest.size,
+        }
+    });
+}
+
+function requestDeleteComment(commentId) {
+    return axios.delete(`${config.baseUrl}/api/comments/${commentId}`);
+}
+
+
+function querySamParentComments(payload) {
+    console.log('sampa', payload);
+    return axios.get(`${config.baseUrl}/api/comments/${payload.parentId}`, {
+        params: {
+            page: payload.commentPageReqeust.page,
+            sort: payload.commentPageReqeust.sort,
+            size: payload.commentPageReqeust.size,
+        }
+    });
+}
+
+function queryComments(pageAndIdInfo) {
+    return axios.get(`${config.baseUrl}/api/comments/${pageAndIdInfo.id}`, {
+        params: {
+            page: pageAndIdInfo.pageRequest.page,
+            sort: pageAndIdInfo.pageRequest.sort,
+            size: pageAndIdInfo.pageRequest.size,
+        }
+    });
 }
 
 function queryBoardsByTitle(queryInfo) {
@@ -75,13 +107,12 @@ function queryBoardsByTitle(queryInfo) {
     })
 }
 
-function validateBoardMember(emailAndBoardId) {
-    return axios.get(`${config.baseUrl}/api/boards/validate`, {
-        params: {
-            email: emailAndBoardId.email,
-            boardId: emailAndBoardId.id
-        }
-    });
+function requestContentForModifyBoard(boardId) {
+    return axios.post(`${config.baseUrl}/api/boards/modify/${boardId}`);
+}
+
+function deleteBoardRequest(boardId) {
+    return axios.delete(`${config.baseUrl}/api/boards/validate/${boardId}`);
 }
 
 function countBoardViews(id) {
@@ -102,10 +133,21 @@ function queryMember(email) {
     return axios.get(`${config.baseUrl}/api/members`, {params: {email: email}})
 }
 
+function saveComment(comment) {
+    return axios.post(`${config.baseUrl}/api/comments`, comment);
+}
+
+function modifyComment(comment) {
+    return axios.put(`${config.baseUrl}/api/comments/${comment.id}`, '', {
+        params: {
+            content: comment.content
+        }
+    })
+}
+
 const deleteAccessTokenInHeader = () => {
     axios.defaults.headers.common['Authorization'] = null;
 };
-
 
 axios.interceptors.request.use(
     config => {
@@ -145,28 +187,28 @@ axios.interceptors.response.use(
         console.log('Interceptors Response is ', response, new Date());
         return response;
     },
-    error => {
+    function (error) {
         console.log('Interceptors Response Error is ', error.response, new Date());
 
         if (isExpiredToken(error)) {
-            store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 만료되어 재발급 합니다.', 'error'));
+            store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 만료되어 재발급 합니다.', 'error', 'top'));
             return requestRefreshToken().then(res => {
-
                 setTokenInLocalStorage(res.data);
-                store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 재발급 되었습니다.', 'info')
+                store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 재발급 되었습니다.', 'info', 'top')
                 )
             })
-                .catch(error => store.commit('SET_SNACKBAR', setSnackBarInfo('재발급을 실패하였습니다.' + error, 'error')));
+                .catch(error => store.commit('SET_SNACKBAR', setSnackBarInfo('재발급을 실패하였습니다.' + error, 'error', 'top')));
         }
 
         return Promise.reject(error);
     }
 );
 
-function setSnackBarInfo(text, color) {
+function setSnackBarInfo(text, color, location) {
     return {
         text: text,
         color: color,
+        location: location,
     }
 }
 
@@ -175,8 +217,8 @@ export {
     requestLogin,
     deleteAccessTokenInHeader,
     requestSaveBoard,
-    queryArticle,
-    validateBoardMember,
+    queryBoard,
+    requestContentForModifyBoard,
     countBoardViews,
     queryBoardsByTitle,
     requesUpdateBoard,
@@ -184,5 +226,11 @@ export {
     queryMember,
     queryMembers,
     requestRefreshToken,
-    setSnackBarInfo
+    setSnackBarInfo,
+    saveComment,
+    queryComments,
+    requestDeleteComment,
+    deleteBoardRequest,
+    modifyComment,
+    querySamParentComments
 }

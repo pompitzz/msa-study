@@ -2,36 +2,21 @@
     <div class="fill-height box">
         <v-container>
             <h1 class="text-center">글쓰기</h1>
-            <BoardEditor :board="board" @pass="setBoard"/>
-
+            <BoardEditor @submit="requestSaveBoard"/>
         </v-container>
     </div>
 </template>
 
 <script>
     import BoardEditor from "../components/BoardEditor";
-    import {mapActions} from "vuex";
-
     export default {
         components: {
             BoardEditor
         },
-        data() {
-            return {
-                board: {
-                    title: '',
-                    content: '',
-                    viewsCount: 0,
-                    email: localStorage.getItem('email'),
-                    boardType: '',
-                },
-            }
-        },
         methods: {
-            ...mapActions(['SAVE_BOARD']),
-            setBoard(editor) {
-                this.SAVE_BOARD(editor);
-            },
+            requestSaveBoard(boardWrite) {
+                this.$store.dispatch('SAVE_BOARD', boardWrite);
+            }
         }
     }
 </script>

@@ -29,6 +29,7 @@
             modalOption() {
                 if (this.modal.option === '닫기') {
                     this.CLOSE_MODAL();
+                    window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
                 } else {
                     this.$emit('pass');
                 }

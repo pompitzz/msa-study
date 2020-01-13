@@ -23,7 +23,7 @@
                     >
 
                         <template v-slot:item.title="{item}">
-                            <v-btn @click="moveToArticle(item)" class="text-none px-1 my-td" text>
+                            <v-btn @click="moveToBoard(item)" class="text-none px-1 my-td" text>
                                 {{titleLimit(item.title)}}
                             </v-btn>
                         </template>
@@ -93,7 +93,7 @@
                 this.pageRequest.page = page - 1;
                 this.QUERY_BOARDS_BYTITLE(this.pageRequest);
             },
-            moveToArticle(board) {
+            moveToBoard(board) {
                 this.articleInfo.id = board.id;
                 this.articleInfo.href = board._links.self.href;
                 this.COUNT_MOVE_TO_ARTICLE(this.articleInfo);
@@ -128,7 +128,7 @@
             },
             modalEvent() {
                 this.CLOSE_MODAL();
-                router.push(`/article/${this.articleInfo.id}`);
+                router.push(`/board/${this.articleInfo.id}`);
             }
 
         },
@@ -141,6 +141,7 @@
                 return this.boardList;
             },
             pageItems() {
+                console.log(this.pageInfo)
                 return this.pageInfo;
             },
         },
