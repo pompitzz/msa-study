@@ -7,12 +7,6 @@ const state = {
         parentName: '',
         boardId: '',
         content: '',
-        index: '',
-    },
-    commentPageReqeust: {
-        page: 1,
-        size: 2,
-        sort: 'createDate,DESC',
     },
     dialog: false,
     isLast: false,
@@ -44,11 +38,7 @@ const mutations = {
         state.commentList = state.commentList.concat(savedComment);
         state.dialog = false;
     },
-    DELETE_ONE_COMMENTLIST(state, index) {
-        state.commentList.splice(index, 1);
-    },
-    SUCESS_MODIFY_COMMENT(state, payload) {
-        state.commentList[payload.index].content = payload.comment.content;
+    SUCESS_MODIFY_COMMENT(state) {
         state.dialog = false;
     }
 };
@@ -92,11 +82,7 @@ const actions = {
     async MODIFY_COMMENT(context, comment) {
         try {
             const response = await modifyComment(comment);
-            console.log(response.data);
-            context.commit('SUCESS_MODIFY_COMMENT', {
-                index: comment.index,
-                comment: response.data
-            });
+            context.commit('SUCESS_MODIFY_COMMENT');
             context.commit('SET_SNACKBAR', {text: '댓글 수정 성공!', color: 'info', location: 'bottom'});
             return response.data;
         } catch (e) {
@@ -109,10 +95,9 @@ const actions = {
         }
     },
 
-    async DELETE_COMMENT(context, payload) {
+    async DELETE_COMMENT(context, id) {
         try {
-            const response = await requestDeleteComment(payload.commentId);
-            context.commit('DELETE_ONE_COMMENTLIST', payload.index);
+            const response = await requestDeleteComment(id);
             context.commit('SET_SNACKBAR', {text: '댓글 삭제 성공!', color: 'info', location: 'bottom'});
             return response.data;
         } catch (e) {

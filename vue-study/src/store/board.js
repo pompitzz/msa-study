@@ -21,6 +21,13 @@ const state = {
         content: '',
         boardType: '',
     },
+    pageRequest: {
+        id: '',
+        page: 0,
+        sort: 'createDate,DESC',
+        size: 3,
+    },
+
     isAuthor: false,
 };
 
@@ -60,6 +67,9 @@ const mutations = {
     SUCCESS_MODIFY_AND_SAVE_BOARD(state, id) {
         router.push(`/board/${id}`);
     },
+    SET_BOARD_ID(state, id) {
+        state.pageRequest.id = id;
+    }
 };
 
 const actions = {

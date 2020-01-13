@@ -11,7 +11,6 @@
                     <v-container class="pb-0">
                         <v-textarea
                                 label="댓글을 작성해주세요."
-                                name="input-7-4"
                                 outlined
                                 v-model="comment.content"
                         ></v-textarea>
@@ -24,7 +23,6 @@
                         달기
                     </v-btn>
                     <v-btn @click="modify" class="mb-2 mr-3" color="blue darken-1" outlined v-else>수정</v-btn>
-                    <v-btn @click="test" class="mb-2 mr-3" color="blue darken-1" outlined v-else>test</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -48,7 +46,6 @@
                 this.$store.dispatch('MODIFY_COMMENT', {
                     id: this.comment.id,
                     content: this.comment.content,
-                    index: this.comment.index,
                 }).then(() => this.$emit('modify'))
             },
             test() {

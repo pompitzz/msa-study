@@ -28,27 +28,27 @@
                                     {{comment.createDate | moment('YYYY-MM-DD')}}</h4>
                                 <v-btn @click="deleteComment(index, comment.commentId)"
                                        class="float-right ma-0 px-0 ml-0"
+                                       v-if="isSameMember(comment.name)"
                                        text>
                                     삭제
                                 </v-btn>
                                 <v-btn @click="editComment(index, comment.content, comment.commentId)"
                                        class="float-right ma-0 px-0 "
+                                       v-if="isSameMember(comment.name)"
                                        text>수정
                                 </v-btn>
                             </div>
                             <hr/>
-                            <p class="mt-3">{{comment.content}}</p>
+                            <p class="mt-3 mb-0">{{comment.content}}</p>
                             <div class="my-2 text-right grey--text"
-                                 v-if="comment.isMore"
                             >
-                                <v-btn @click="querySameParentComments(comment)" class="elevation-2" small
+                                <v-btn @click="createCommentofComment(comment.commentId)" class="elevation-2" small
                                        style="font-size: 13px"
-                                       text>더보기
+                                       text>댓글 작성
                                 </v-btn>
                             </div>
-                            <CommentText
-                                    :boardId="board.id"
-                                    :commentList="comment.childrenResponseDto"/>
+                            <CommentList
+                                    :commentArr="comment.childrenResponseDto"/>
                         </div>
                     </v-card>
                     <div class="mt-2 text-right">
@@ -60,8 +60,9 @@
 
         </v-container>
         <Modal/>
-        <Comment @close="dialog = false"
-                 @submit="successSaveComment"
+        <Comment
+                @submit="successSaveComment"
+                @modify="successModifyComment"
         />
     </div>
 </template>
@@ -70,16 +71,11 @@
     import Viewer from '@toast-ui/vue-editor/src/Viewer.vue'
     import Modal from "../components/Modal";
     import Comment from "../components/Comment";
-    import CommentText from "../components/CommentList";
+    import CommentList from "../components/CommentList";
 
     export default {
         name: "Board",
-        data() {
-            return {
-                pageRequest: {id: this.$route.params.id, page: 0, sort: 'createDate,DESC', size: 3,},
-            }
-        },
-        components: {Comment, CommentText, Viewer, Modal},
+        components: {CommentList, Comment, Viewer, Modal},
         computed: {
             commentList() {
                 return this.$store.state.comment.commentList;
@@ -93,8 +89,8 @@
             isLast() {
                 return this.$store.state.comment.isLast;
             },
-            commentPageReqeust() {
-                return this.$store.state.comment.commentPageReqeust;
+            pageRequest() {
+                return this.$store.state.board.pageRequest;
             }
         },
 
@@ -134,12 +130,13 @@
                         parentName: '',
                         content: '',
                         boardId: this.board.id,
-                        index: '',
                     });
                 }
             },
             deleteComment(index, commentId) {
-                this.$store.dispatch('DELETE_COMMENT', {commentId: commentId, index: index})
+                this.$store.dispatch('DELETE_COMMENT', commentId)
+                    .then(() => this.$store.dispatch('QUERY_BOARD', this.pageRequest))
+
             },
             editComment(index, content, commentId) {
                 this.$store.commit('OPEN_COMMENT_MODAL', {
@@ -148,7 +145,6 @@
                     parentName: '',
                     content: content,
                     boardId: this.board.id,
-                    index: index,
                 })
             },
             successSaveComment() {
@@ -156,16 +152,19 @@
                 console.log(this.pageRequest.size);
                 this.pageRequest.size++;
                 console.log(this.pageRequest.size);
+                this.$store.dispatch('QUERY_BOARD', this.pageRequest);
                 window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
-
+            },
+            successModifyComment() {
+                this.$store.dispatch('QUERY_BOARD', this.pageRequest);
             },
             getWidth(depth) {
                 return String(95 - (5 * depth));
             },
             requestMoreComments() {
-                console.log('requestMoreComments 후 페이지 넘버 증가');
+                console.log('requestMoreComments 후 페이지 사이즈 증가');
                 console.log(this.pageRequest.page);
-                this.pageRequest.page++;
+                this.pageRequest.size = this.pageRequest.size + 3;
                 console.log(this.pageRequest.page);
                 this.$store.dispatch('QUERY_MORE_COMMENT', this.pageRequest);
             },
@@ -206,11 +205,32 @@
                     return array.reverse();
                 }
                 return null;
+            },
+            isSameMember(name) {
+                return name === localStorage.getItem('name');
+            },
+            createCommentofComment(parentId) {
+                if (localStorage.getItem('email') == null) {
+                    this.$store.commit('SET_SNACKBAR', {
+                        text: '댓글 작성을 위해 로그인하셔야 합니다.',
+                        color: 'error',
+                        location: 'top'
+                    });
+                } else {
+                    this.$store.commit('OPEN_COMMENT_MODAL', {
+                        id: '',
+                        parentId: parentId,
+                        parentName: '',
+                        content: '',
+                        boardId: this.board.id,
+                    });
+                }
             }
+
         },
         created() {
+            this.$store.commit('SET_BOARD_ID', this.$route.params.id);
             this.$store.dispatch('QUERY_BOARD', this.pageRequest);
-
         }
     }
 </script>

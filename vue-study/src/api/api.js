@@ -75,17 +75,6 @@ function requestDeleteComment(commentId) {
 }
 
 
-function querySamParentComments(payload) {
-    console.log('sampa', payload);
-    return axios.get(`${config.baseUrl}/api/comments/${payload.parentId}`, {
-        params: {
-            page: payload.commentPageReqeust.page,
-            sort: payload.commentPageReqeust.sort,
-            size: payload.commentPageReqeust.size,
-        }
-    });
-}
-
 function queryComments(pageAndIdInfo) {
     return axios.get(`${config.baseUrl}/api/comments/${pageAndIdInfo.id}`, {
         params: {
@@ -232,5 +221,4 @@ export {
     requestDeleteComment,
     deleteBoardRequest,
     modifyComment,
-    querySamParentComments
 }
