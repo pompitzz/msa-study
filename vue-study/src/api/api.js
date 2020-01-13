@@ -3,7 +3,7 @@ import {setTokenInLocalStorage} from "../utils/oauth";
 import store from "../store/store";
 
 const config = {
-    baseUrl: 'http://localhost:8080'
+    baseUrl: 'https://sunlee.page'
 };
 
 function requestJoinMember(member) {
