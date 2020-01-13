@@ -41,7 +41,7 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
 
         // commentCount 증가
-        board.countOneComment();
+        board.countComment();
 
         return new CommentCreateUpdateResponseDto(savedComment);
     }
@@ -60,16 +60,19 @@ public class CommentService {
     public void delete(Long id, String email) {
         Comment comment = validateCommentMember(id, email);
 
+        comment.getBoard().deleteOneComment();
+
         commentRepository.delete(comment);
     }
 
     private Comment validateCommentMember(Long id, String email) {
-        Comment comment = commentRepository.findByIdWithMember(id)
+        Comment comment = commentRepository.findByIdWithMemberAndBoard(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
 
         if (!comment.getMember().getEmail().equals(email)) {
             throw new IllegalArgumentException("작성한 유저만 수정이 가능합니다");
         }
+
 
         return comment;
     }

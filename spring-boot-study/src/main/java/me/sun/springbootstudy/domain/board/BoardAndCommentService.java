@@ -56,7 +56,10 @@ public class BoardAndCommentService {
         return boardAndCommentResponseDto;
     }
 
-    // 댓글 더보기를 눌렀을 때 추가 댓글 2개만 보여주고 그 댓글의 자식들이 있는지 확인한다.
+    /* 댓글 더보기를 눌렀을 때 추가 댓글 2개만 보여주고 그 댓글의 자식들이 있는지 확인한다.
+       - 다 구현했는데.. 클라이언트 단에서 계층속에 있는 댓글을 수정 삭제했을 때 그 값을 처리 후 바로 뷰단에서 보여줄수가 없다..
+
+     */
     public Slice<CommentResponseDto> findComments(Long parentId, Pageable pageable) {
 
         Slice<CommentResponseDto> commentsDto = commentRepository.findByParentId(parentId, pageable)
@@ -108,21 +111,22 @@ public class BoardAndCommentService {
                 totalChildrenList.addAll(childrenResponseDto);
             }
 
-            p.setIsMore(isMoreChildren(childrenResponseDto, 2));
+//            p.setIsMore(isMoreChildren(childrenResponseDto, 2));
+            p.setChildrenResponseDto(childrenResponseDto);
 
-            setOnlyTwoChildren(p, childrenResponseDto);
+//            setOnlyTwoChildren(p, childrenResponseDto);
         });
 
         return totalChildrenList;
     }
 
-    private void setOnlyTwoChildren(CommentResponseDto parent, List<CommentResponseDto> childrenResponseDto) {
-        if (parent.getIsMore()) {
-            parent.setChildrenResponseDto(childrenResponseDto.subList(0, 2));
-        } else {
-            parent.setChildrenResponseDto(childrenResponseDto);
-        }
-    }
+//    private void setOnlyTwoChildren(CommentResponseDto parent, List<CommentResponseDto> childrenResponseDto) {
+//        if (parent.getIsMore()) {
+//            parent.setChildrenResponseDto(childrenResponseDto.subList(0, 2));
+//        } else {
+//            parent.setChildrenResponseDto(childrenResponseDto);
+//        }
+//    }
 
     private List<Long> mapToParentIds(List<CommentResponseDto> topParents) {
         return topParents.stream().map(CommentResponseDto::getCommentId).collect(Collectors.toList());

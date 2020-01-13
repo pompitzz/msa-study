@@ -41,7 +41,7 @@ class MemberServiceTest {
     @Test
     void FindNonExistMember() throws Exception {
         //when & then
-        assertThatThrownBy(() -> memberService.findOne(20L))
+        assertThatThrownBy(() -> memberService.findOne(201212L))
                 .isInstanceOf(IllegalArgumentException.class);
 //                .hasMessage("해당 유저가 존재하지 않습니다.");
     }

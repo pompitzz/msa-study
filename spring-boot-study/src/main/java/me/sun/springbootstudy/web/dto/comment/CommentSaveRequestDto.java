@@ -13,7 +13,8 @@ public class CommentSaveRequestDto {
     @NotNull
     private Long boardId;
 
-    private Long parentId = -1L;
+    private Long parentId;
+
     @NotNull
     private String content;
 

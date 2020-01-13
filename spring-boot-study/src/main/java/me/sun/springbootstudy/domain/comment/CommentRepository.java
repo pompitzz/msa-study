@@ -17,10 +17,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
     @Query(value = "select c from Comment c join fetch c.member where c.parent.id = :parentId",
-            countQuery = "select c from Comment c where c.parent.id =: parentId")
+            countQuery = "select c from Comment c")
     Slice<Comment> findByParentId(@Param("parentId") Long parentId, Pageable pageable);
 
-    @Query(value = "select c from Comment c join fetch c.member where c.id = :id")
-    Optional<Comment> findByIdWithMember(@Param("id") Long id);
+    @Query(value = "select c from Comment c join fetch c.member join fetch c.board where c.id = :id")
+    Optional<Comment> findByIdWithMemberAndBoard(@Param("id") Long id);
 
 }

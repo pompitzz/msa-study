@@ -57,9 +57,7 @@ class BoardApiControllerTest extends BaseControllerTest {
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
                 .title("title")
                 .content("content")
-                .viewsCount(1)
                 .boardType(BoardType.STUDY)
-                .email("email@naver.com")
                 .build();
 
         // when && then
@@ -80,9 +78,7 @@ class BoardApiControllerTest extends BaseControllerTest {
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
                 .title("title")
                 .content("content")
-                .viewsCount(1)
                 .boardType(BoardType.STUDY)
-                .email(email)
                 .build();
 
         // when && then
@@ -107,9 +103,7 @@ class BoardApiControllerTest extends BaseControllerTest {
         BoardSaveRequestDto dto = BoardSaveRequestDto.builder()
                 .title("title")
                 .content("content")
-                .viewsCount(1)
                 .boardType(BoardType.STUDY)
-                .email(email)
                 .build();
 
 

@@ -19,20 +19,14 @@ public class BoardSaveRequestDto {
     @NotNull
     private String content;
     @NotNull
-    private Integer viewsCount;
-    @NotNull
     private BoardType boardType;
-    @NotNull
-    private String email;
 
 
     @Builder
-    public BoardSaveRequestDto(String title, String content, int viewsCount, BoardType boardType, String email) {
+    public BoardSaveRequestDto(String title, String content, BoardType boardType) {
         this.title = title;
         this.content = content;
-        this.viewsCount = viewsCount;
         this.boardType = boardType;
-        this.email = email;
     }
 
 
@@ -40,7 +34,7 @@ public class BoardSaveRequestDto {
         Board board = Board.builder()
                 .title(title)
                 .content(content)
-                .viewsCount(viewsCount)
+                .viewsCount(0)
                 .boardType(boardType)
                 .member(member)
                 .build();

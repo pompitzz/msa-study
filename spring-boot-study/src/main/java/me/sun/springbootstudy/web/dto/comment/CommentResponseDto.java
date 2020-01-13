@@ -44,5 +44,6 @@ public class CommentResponseDto {
         this.createDate = comment.getCreateDate();
         this.depth = comment.getDepth();
         this.name = comment.getMember().getName();
+
     }
 }

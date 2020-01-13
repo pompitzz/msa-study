@@ -57,7 +57,11 @@ public class Board extends BaseTimeEntity {
         this.boardType = boardType;
     }
 
-    public void countOneComment() {
+    public void countComment() {
         this.commentCount++;
+    }
+
+    public void deleteOneComment() {
+        this.commentCount--;
     }
 }

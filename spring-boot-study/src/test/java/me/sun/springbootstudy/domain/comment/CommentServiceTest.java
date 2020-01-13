@@ -54,8 +54,7 @@ class CommentServiceTest {
                 .boardId(savedBoard.getId())
                 .parentId(0L)
                 .content("comment" + (i - 1))
-                .email(savedMember.getEmail())
-                .build()));
+                .build(), savedMember.getEmail()));
 
         //then
         List<Comment> comments = commentRepository.findAll();
@@ -83,8 +82,7 @@ class CommentServiceTest {
                 .boardId(board.getId())
                 .parentId(parent.getId())
                 .content("child 1")
-                .email(member.getEmail())
-                .build());
+                .build(), member.getEmail());
         //then
         em.flush();
         em.clear();
@@ -113,16 +111,13 @@ class CommentServiceTest {
                 .boardId(savedBoard.getId())
                 .parentId(0L)
                 .content("comment")
-                .email(savedMember.getEmail()).build());
+                .build(), savedMember.getEmail());
 
         //when
         String updateStr = "test1";
-        CommentUpdateRequestDto dto = CommentUpdateRequestDto.builder()
-                .email(savedMember.getEmail())
-                .content(updateStr).build();
 
         //then
-        CommentCreateUpdateResponseDto update = commentService.update(savedComment.getCommentId(), dto);
+        CommentCreateUpdateResponseDto update = commentService.update(savedComment.getCommentId(), updateStr, savedMember.getEmail());
         em.flush();
         em.clear();
 
@@ -145,7 +140,7 @@ class CommentServiceTest {
                 .boardId(savedBoard.getId())
                 .parentId(0L)
                 .content("comment")
-                .email(savedMember.getEmail()).build());
+                .build(), savedMember.getEmail());
 
         // when && then
         commentService.delete(savedComment.getCommentId(), savedMember.getEmail());
@@ -169,16 +164,12 @@ class CommentServiceTest {
                 .boardId(savedBoard.getId())
                 .parentId(0L)
                 .content("comment")
-                .email(savedMember.getEmail()).build());
+                .build(), savedMember.getEmail());
 
         //when
         String updateStr = "test1";
-        CommentUpdateRequestDto dto = CommentUpdateRequestDto.builder()
-                .email("123")
-                .content(updateStr).build();
-
         //then
-        assertThatThrownBy(() -> commentService.update(savedComment.getCommentId(), dto))
+        assertThatThrownBy(() -> commentService.update(savedComment.getCommentId(), updateStr, "123@1231412.com"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("작성한 유저만 수정이 가능합니다");
     }
@@ -196,7 +187,7 @@ class CommentServiceTest {
                 .boardId(savedBoard.getId())
                 .parentId(0L)
                 .content("comment")
-                .email(savedMember.getEmail()).build());
+                .build(), savedMember.getEmail());
 
         //when
         String updateStr = "test1";

@@ -5,6 +5,7 @@ import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.web.dto.board.BoardListResponseDto;
+import me.sun.springbootstudy.web.dto.board.BoardOneResponseDto;
 import me.sun.springbootstudy.web.dto.board.BoardSaveRequestDto;
 import me.sun.springbootstudy.web.dto.board.BoardUpdateRequestDto;
 import org.springframework.data.domain.Page;
@@ -21,8 +22,9 @@ public class BoardService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long save(BoardSaveRequestDto dto) {
-        Member member = memberRepository.findByEmail(dto.getEmail())
+    public Long save(BoardSaveRequestDto dto, String email) {
+
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
         return boardRepository.save(dto.toEntity(member)).getId();
@@ -51,10 +53,13 @@ public class BoardService {
         return boardRepository.findBoardsTitleWithPageable(title, pageable).map(BoardListResponseDto::new);
     }
 
-    public boolean validateBoardMember(Long boardId, String email) {
+    private Board validateBoardMember(Long boardId, String email) {
         Board board = boardRepository.findWithMemberBy(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 존재하지 않습니다."));
-        return board.getMember().getEmail().equals(email);
+        if (!board.getMember().getEmail().equals(email)) {
+            throw new IllegalArgumentException("게시글 작성자만 수정이 가능합니다.");
+        }
+        return board;
     }
 
     @Transactional
@@ -67,5 +72,10 @@ public class BoardService {
         }
 
         boardRepository.delete(board);
+    }
+
+    public BoardOneResponseDto modifyBoardResponse(Long id, String email) {
+        Board board = this.validateBoardMember(id, email);
+        return new BoardOneResponseDto(board);
     }
 }

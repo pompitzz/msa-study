@@ -31,8 +31,8 @@ public class BoardAndCommentController {
     }
 
     @GetMapping("/api/comments/{id}")
-    public Slice<CommentResponseDto> findComments(@PathVariable Long id, Pageable pageable) {
-        return boardAndCommentService.findComments(id, pageable);
+    public Slice<CommentResponseDto> findComments(@PathVariable("id") Long parentId, Pageable pageable) {
+        return boardAndCommentService.findComments(parentId, pageable);
     }
 
     @PostMapping("/api/comments")
@@ -50,7 +50,7 @@ public class BoardAndCommentController {
 
     @PutMapping("/api/comments/{id}")
     public ResponseEntity updateComment(@PathVariable Long id,
-                                        @RequestParam String content,
+                                        @RequestParam("content") String content,
                                         @TokenMemberEmail String email) {
 
         return ResponseEntity.ok(commentService.update(id, content, email));
