@@ -30,7 +30,6 @@
 </template>
 
 <script>
-    import {mapActions, mapMutations} from 'vuex'
     import Modal from "../components/Modal";
 
     export default {
@@ -42,14 +41,12 @@
             }
         },
         methods: {
-            ...mapActions(['QUERY_MEMBERS']),
-            ...mapMutations(['CLOSE_MODAL']),
             modalEvent() {
-                this.QUERY_MEMBERS().then(res => this.members = res)
+                this.$store.dispatch('QUERY_MEMBERS_FOR_ADMIN').then(res => this.members = res)
             }
         },
         created() {
-            this.QUERY_MEMBERS().then(res => this.members = res)
+            this.$store.dispatch('QUERY_MEMBERS_FOR_ADMIN').then(res => this.members = res)
         }
     }
 </script>

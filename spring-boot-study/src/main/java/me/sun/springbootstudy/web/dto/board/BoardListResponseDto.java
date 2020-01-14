@@ -14,7 +14,9 @@ public class BoardListResponseDto {
     String title;
     String author;
     LocalDateTime lastModifiedDate;
+
     int viewsCount;
+    int commentCount;
 
     public BoardListResponseDto(Board entity) {
         this.id = entity.getId();
@@ -22,5 +24,6 @@ public class BoardListResponseDto {
         this.author = entity.getMember().getName();
         this.lastModifiedDate = entity.getLastModifiedDate();
         this.viewsCount = entity.getViewsCount();
+        this.commentCount = entity.getCommentCount();
     }
 }

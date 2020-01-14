@@ -3,7 +3,7 @@
 > JWT으로 토큰을 발급하고 Password Grant Type을 이용한다.
 > SpringBoot는 모든 기능을 테스트 코드 작성을 하도록 노력한다.
 
-[구현중인 웹사이트로 접속하기](http://ec2-15-164-143-254.ap-northeast-2.compute.amazonaws.com/)
+[구현중인 웹사이트로 접속하기](https://naughty-murdock-133815.netlify.com/)
 
 [![Build Status](https://travis-ci.org/DongmyeongLee22/msa-study.svg?branch=master)](https://travis-ci.org/DongmyeongLee22/msa-study)
 
@@ -41,6 +41,7 @@
     - Cors 설정
       1. Authorization Server 측에 cors를 설정해야 토큰 발급할 때 문제가 없다.
       2. Filter로 OPTIONS 메서드가 들어올 때 response를 강제할 수 있지만 모든 Domain을 허용해야 하므로 좋지 않다.
+
 
 #### Vue
 1. 회원가입, 로그인 기능 구현
@@ -86,3 +87,6 @@
     - 엔진엑스 설치하여 프로젝트와 연동하기
     - 스크립트 만들기
     - profiles 설정 후 테스트
+
+
+#### 계층형 댓글 구조 구현하기

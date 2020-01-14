@@ -17,18 +17,18 @@
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex'
 
     export default {
         name: "Modal",
-        computed:{
-            ...mapState(['modal'])
+        computed: {
+            modal() {
+                return this.$store.state.common.modal;
+            }
         },
         methods: {
-            ...mapMutations(['CLOSE_MODAL']),
             modalOption() {
                 if (this.modal.option === '닫기') {
-                    this.CLOSE_MODAL();
+                    this.$store.commit('CLOSE_MODAL');
                     window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
                 } else {
                     this.$emit('pass');

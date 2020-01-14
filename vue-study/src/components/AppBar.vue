@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex'
+    import {mapMutations} from 'vuex'
 
     export default {
         name: "AppBar",
@@ -74,17 +74,19 @@
             return {
                 drawer: true,
                 links: [
-                    {name: '메인', icon: 'mdi-home', route: '/'},
+                    {name: '메인', icon: 'mdi-home', route: '/main'},
                     {name: '메모장', icon: 'mdi-note-text', route: '/memo'},
                     {name: '게시글', icon: 'mdi-clipboard-text-multiple-outline', route: '/boards'},
-                    {name: '관리자 페이지', icon: 'mdi-account', route: '/admin/test'},
+                    {name: '관리자 페이지', icon: 'mdi-account', route: '/admin'},
                     {name: '로그인', icon: 'mdi-login-variant', route: '/login'},
                     {name: '회원가입', icon: 'mdi-account-plus', route: '/register'},
                 ]
             }
         },
         computed: {
-            ...mapGetters(['isAuthenticated'])
+            isAuthenticated(){
+                return this.$store.getters.isAuthenticated;
+            },
         },
         methods: {
             ...mapMutations(['LOGOUT']),

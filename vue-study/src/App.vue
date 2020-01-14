@@ -4,7 +4,7 @@
         <v-content>
             <router-view/>
         </v-content>
-        <v-footer app class="theme--dark"><span class="mx-auto">Copyright © {{new Date() | moment('YYYY')}} All Rights Reserved.</span>
+        <v-footer fixed app class="theme--dark"><span class="mx-auto">Copyright © {{new Date() | moment('YYYY')}} All Rights Reserved.</span>
         </v-footer>
         <Modal/>
 
@@ -40,7 +40,7 @@
         },
         computed: {
             snackbar() {
-                return this.$store.state.snackbar;
+                return this.$store.state.common.snackbar;
             }
         },
 
@@ -78,5 +78,9 @@
 
     .tui-editor-contents hr {
         border-top: 1px solid black !important;
+    }
+
+    .row{
+        margin: 0 auto !important;
     }
 </style>

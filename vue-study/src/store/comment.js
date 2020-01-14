@@ -1,13 +1,8 @@
-import {requestDeleteComment, saveComment, modifyComment, querySamParentComments} from "../api/api";
+import {requestDeleteComment, saveComment, modifyComment} from "../apis/comment_api";
+
 
 const state = {
-    comment: {
-        id: '',
-        parentId: '',
-        parentName: '',
-        boardId: '',
-        content: '',
-    },
+    comment: {id: '', parentId: '', parentName: '', boardId: '', content: '',},
     dialog: false,
     isLast: false,
     commentList: [],
@@ -24,9 +19,6 @@ const mutations = {
     SET_COMMENT_LIST(state, commentList) {
         console.log('commentList', commentList);
         state.commentList = commentList.content.reverse();
-        // printarray(state.commentList);
-        // reverseArrayChildren(state.commentList);
-        // printarray(state.commentList);
         state.isLast = commentList.last;
     },
     ADD_COMMENT_LIST(state, commentList) {
@@ -43,25 +35,7 @@ const mutations = {
     }
 };
 
-function reverseArrayChildren(commentList) {
-    for (const list of commentList) {
-        if (list.childrenResponseDto !== null) {
-            list.childrenResponseDto.reverse();
-        }
-    }
-}
 
-function printarray(commentList) {
-    console.log('commentList iter');
-    for (const list of commentList) {
-        if (list.childrenResponseDto !== null) {
-            for (const child of list.childrenResponseDto) {
-                console.log('commentList iter2');
-                console.log(child.commentId);
-            }
-        }
-    }
-}
 
 const actions = {
     async SAVE_COMMENT(context, comment) {

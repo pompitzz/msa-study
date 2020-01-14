@@ -8,7 +8,6 @@
 </template>
 
 <script>
-    import {mapActions, mapMutations} from 'vuex'
     import Modal from "../components/Modal";
 
     export default {
@@ -25,12 +24,10 @@
             }
         },
         methods: {
-            ...mapActions(['QUERY_MEMBER']),
-            ...mapMutations(['CLOSE_MODAL']),
             queryMember() {
                 let email = localStorage.getItem('email');
                 if (localStorage.getItem('name') === null && email !== null) {
-                    this.QUERY_MEMBER(email);
+                    this.$store.dispatch('QUERY_MEMBER',email);
                 }
             },
             modalEvnet() {

@@ -1,33 +1,17 @@
-import {
-    queryBoard,
-    requestContentForModifyBoard,
-    deleteBoardRequest,
-    requestSaveBoard,
-    requesUpdateBoard
-} from "../api/api";
 import {router} from "../routes/route";
+import {
+    countBoardViews, requestBoardContentForModifyBoard, deleteBoardRequest
+    , queryBoardsByTitle, queryBoard, requesUpdateBoard, requestSaveBoard
+} from "../apis/board_api";
 
 const state = {
-    board: {
-        id: '',
-        title: '',
-        author: '',
-        content: '',
-        email: '',
-        lastModifiedDate: '',
-    },
-    boardWrite: {
-        title: '',
-        content: '',
-        boardType: '',
-    },
-    pageRequest: {
-        id: '',
-        page: 0,
-        sort: 'createDate,DESC',
-        size: 3,
-    },
-
+    boardList: [],
+    pageLoading: false,
+    pageInfo: {},
+    boardUrl: '',
+    board: {id: '', title: '', author: '', content: '', email: '', lastModifiedDate: '',},
+    boardWrite: {title: '', content: '', boardType: '',},
+    pageRequest: {id: '', page: 0, sort: 'createDate,DESC', size: 3,},
     isAuthor: false,
 };
 
@@ -69,7 +53,28 @@ const mutations = {
     },
     SET_BOARD_ID(state, id) {
         state.pageRequest.id = id;
+    },
+    SET_BOARD_PAGES(state, boardPagesInfo) {
+        state.pageLoading = false;
+
+        if (boardPagesInfo.page.totalElements === 0) {
+            state.boardList = [];
+        } else {
+            state.boardList = boardPagesInfo._embedded.boardListResponseDtoList;
+        }
+
+        boardPagesInfo.page.number += 1;
+        state.pageInfo = boardPagesInfo.page;
+    },
+    MOVE_TO_ARTICLE(state, articleInfo) {
+        state.boardUrl = articleInfo.href;
+        router.push(`/board/${articleInfo.id}`);
     }
+    ,
+
+    PAGE_LOADING(state) {
+        state.pageLoading = true;
+    },
 };
 
 const actions = {
@@ -96,7 +101,7 @@ const actions = {
     },
     async MODIFY_VALIDATE_BOARD(context, boardId) {
         try {
-            const response = await requestContentForModifyBoard(boardId);
+            const response = await requestBoardContentForModifyBoard(boardId);
             console.log(response.data);
             context.commit('ACEEPT_MODIFY_BOARD', response.data);
             return response.data;
@@ -119,7 +124,7 @@ const actions = {
             context.commit('SET_SNACKBAR', {text: '게시글 작성 완료!', color: 'info', location: 'top'});
             return response.data;
         } catch (e) {
-            console.log(e)
+            console.log(e);
             context.commit('OPEN_MODAL', {title: '게시글 작성 실패', content: '다시 한번 더 시도해주세요.', option: '닫기',})
         }
     },
@@ -135,11 +140,34 @@ const actions = {
     },
     async QUERY_MODIFY_BOARD(context, id) {
         try {
-            const response = await requestContentForModifyBoard(id);
+            const response = await requestBoardContentForModifyBoard(id);
             context.commit('SET_MODIFY_BOARD', response.data);
             return response.data;
         } catch (e) {
             console.log('QUERY_MODIFY_BOARD 에러');
+        }
+    },
+    async COUNT_MOVE_TO_ARTICLE(context, articleInfo) {
+        try {
+            const response = await countBoardViews(articleInfo.id);
+            context.commit('MOVE_TO_ARTICLE', articleInfo);
+            return response.data;
+        } catch (e) {
+            context.commit('OPEN_MODAL', {
+                title: '게시글 조회에 실패하였습니다.',
+                content: `다시 한번 더 시도해주세요.\n` + e,
+                option: '재시도',
+            })
+        }
+    },
+    async QUERY_BOARDS_BYTITLE(context, queryInfo) {
+        try {
+            context.commit('PAGE_LOADING');
+            const response = await queryBoardsByTitle(queryInfo);
+            context.commit('SET_BOARD_PAGES', response.data);
+            return response.data;
+        } catch (e) {
+            // context.commit('SET_SNACKBAR', setSnackBarInfo('너무 많은 검색은 서버에 무리를 줄 수 있습니다.!', 'error'))
         }
     },
 };

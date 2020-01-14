@@ -15,7 +15,7 @@
                     </v-card-title>
                     <v-data-table
                             :headers="headers"
-                            :items="boards"
+                            :items="boardList"
                             :items-per-page="10"
                             :loading="loadingState"
                             :sort-by.sync="sortby"
@@ -24,7 +24,7 @@
 
                         <template v-slot:item.title="{item}">
                             <v-btn @click="moveToBoard(item)" class="text-none px-1 my-td" text>
-                                {{titleLimit(item.title)}}
+                                {{titleLimit(item.title)}} <span class="ml-1" v-if="item.commentCount !== 0">({{item.commentCount}})</span>
                             </v-btn>
                         </template>
                         <template v-slot:item.viewsCount="{item}" class="text-center">
@@ -42,7 +42,7 @@
                     <v-row>
                         <v-pagination
                                 v-model="pageInfo.number"
-                                :length="pageItems.totalPages"
+                                :length="pageInfo.totalPages"
                                 :total-visible="8"
                                 @input="next"
                         ></v-pagination>
@@ -54,7 +54,6 @@
     </div>
 </template>
 <script>
-    import {mapActions, mapState, mapMutations} from 'vuex';
     import {router} from "../routes/route";
     import Modal from "../components/Modal";
 
@@ -87,23 +86,21 @@
             }
         },
         methods: {
-            ...mapActions(['COUNT_MOVE_TO_ARTICLE', 'QUERY_BOARDS_BYTITLE']),
-            ...mapMutations(['CLOSE_MODAL', 'OPEN_MODAL']),
             next(page) {
                 this.pageRequest.page = page - 1;
-                this.QUERY_BOARDS_BYTITLE(this.pageRequest);
+                this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
             },
             moveToBoard(board) {
                 this.articleInfo.id = board.id;
                 this.articleInfo.href = board._links.self.href;
-                this.COUNT_MOVE_TO_ARTICLE(this.articleInfo);
+                this.$store.dispatch('COUNT_MOVE_TO_ARTICLE',this.articleInfo);
             },
             titleLimit(title) {
                 return title.length > 70 ? title.substring(0, 40) + '...' : title;
             },
             moveToWritePage() {
                 if (localStorage.getItem('email') === null) {
-                    this.OPEN_MODAL({
+                    this.$store.commit('OPEN_MODAL',{
                         title: '로그인이 필요합니다.',
                         content: `로그인을 한 사용자만 게시글 작성이 가능합니다.`,
                         option: '닫기',
@@ -117,32 +114,33 @@
                 if (this.sortby.length !== 0) {
                     this.lastSortby = this.sortby[0];
                     this.pageRequest.sort = `${this.lastSortby},DESC`;
-                    this.QUERY_BOARDS_BYTITLE(this.pageRequest);
+                    this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
                 } else {
                     this.pageRequest.sort = `${this.lastSortby},ASC`;
-                    this.QUERY_BOARDS_BYTITLE(this.pageRequest);
+                    this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
                 }
             },
             serachBoards() {
-                this.QUERY_BOARDS_BYTITLE(this.pageRequest);
+                this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
             },
             modalEvent() {
-                this.CLOSE_MODAL();
+                this.$store.commit('CLOSE_MODAL');
                 router.push(`/board/${this.articleInfo.id}`);
             }
 
         },
         created() {
-            this.QUERY_BOARDS_BYTITLE(this.pageRequest);
+            this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
         },
         computed: {
-            ...mapState(['pageInfo', 'boardList', 'loadingState']),
-            boards() {
-                return this.boardList;
+            loadingState() {
+                return this.$store.state.common.loadingState;
             },
-            pageItems() {
-                console.log(this.pageInfo)
-                return this.pageInfo;
+            boardList() {
+                return this.$store.state.board.boardList;
+            },
+            pageInfo() {
+                return this.$store.state.board.pageInfo;
             },
         },
         watch: {

@@ -1,38 +1,39 @@
 <template>
     <div class="fill-height">
-        <v-row align="center" class="fill-height" justify="center">
-            <div class="login text-center elevation-15">
-                <h3 class="mb-4 font-weight-bold black--text">로그인</h3>
+        <v-container class="fill-height">
+            <v-row align="center" class="fill-height" justify="center">
+                <div class="login text-center elevation-15">
+                    <h3 class="mb-4 font-weight-bold black--text">로그인</h3>
+                    <div>
+                        <v-form class="pa-3 text-center" ref="form">
 
-                <div>
-                    <v-form class="pa-3 text-center" ref="form">
+                            <v-text-field :rules="emailRules"
+                                          label="E-mail" prepend-icon="mdi-email" required
+                                          type="email" v-model="member.email"></v-text-field>
 
-                        <v-text-field :rules="emailRules"
-                                      label="E-mail" prepend-icon="mdi-email" required
-                                      type="email" v-model="member.email"></v-text-field>
+                            <v-text-field :rules="passwordRules"
+                                          label="Password" prepend-icon="mdi-lock"
+                                          @keyup.enter="loginRequest"
+                                          required type="password" v-model="member.password"></v-text-field>
 
-                        <v-text-field :rules="passwordRules"
-                                      label="Password" prepend-icon="mdi-lock"
-                                      @keyup.enter="loginRequest"
-                                      required type="password" v-model="member.password"></v-text-field>
-
-                        <v-btn :loading="loadingState" @click="loginRequest" class="mt-3" color="cyan" outlined>LOGIN
-                        </v-btn>
-                    </v-form>
-                    <p class="mt-3 mb-0 black--text">아직 회원이 아니신가요?
-                        <router-link class="font-weight-bold red--text"
-                                     to="/register">회원가입
-                        </router-link>
-                    </p>
+                            <v-btn :loading="loadingState" @click="loginRequest" class="mt-3" color="cyan" outlined>
+                                LOGIN
+                            </v-btn>
+                        </v-form>
+                        <p class="mt-3 mb-0 black--text">아직 회원이 아니신가요?
+                            <router-link class="font-weight-bold red--text sm"
+                                         to="/register">회원가입
+                            </router-link>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </v-row>
+            </v-row>
+        </v-container>
         <Modal/>
     </div>
 </template>
 
 <script>
-    import {mapActions, mapState, mapMutations} from 'vuex'
     import Modal from "../components/Modal";
 
     export default {
@@ -46,18 +47,23 @@
             }
         },
         computed: {
-            ...mapState(['emailRules', 'passwordRules', 'loadingState'])
+            emailRules() {
+                return this.$store.state.common.emailRules;
+            },
+            loadingState() {
+                return this.$store.state.common.loadingState;
+            },
+            passwordRules() {
+                return this.$store.state.common.passwordRules;
+            }
         },
         components: {
             Modal
         },
         methods: {
-            ...mapActions(['REQUEST_LOGIN']),
-            ...mapMutations(['START_LOADING', 'CLOSE_MODAL']),
             loginRequest() {
                 if (this.$refs.form.validate()) {
-                    this.START_LOADING();
-                    this.REQUEST_LOGIN(this.member);
+                    this.$store.dispatch('REQUEST_LOGIN', this.member);
                 }
             },
         }

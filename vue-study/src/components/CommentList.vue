@@ -8,8 +8,12 @@
                     <v-icon class="mb-2 mr-3">mdi-account</v-icon>
                     <h4 class="d-inline-block">{{comment.name}} <span class="mx-1"/>작성일 : {{comment.createDate |
                         moment('YYYY-MM-DD')}}</h4>
-                    <v-btn @click="deleteComment(comment.commentId)" class="float-right ma-0 px-0 ml-0" text>삭제</v-btn>
-                    <v-btn @click="editComment(index, comment)" class="float-right ma-0 px-0 " text>수정</v-btn>
+                    <v-btn @click="deleteComment(comment.commentId)"
+                           v-if="isSameMember(comment.name)"
+                           class="float-right ma-0 px-0 ml-0" text>삭제</v-btn>
+                    <v-btn @click="editComment(index, comment)"
+                           v-if="isSameMember(comment.name)"
+                           class="float-right ma-0 px-0 " text>수정</v-btn>
                 </div>
                 <hr/>
                 <p class="mt-3 mb-0">{{comment.content}}</p>
@@ -125,7 +129,10 @@
                         boardId: this.$store.getters.getBoardId,
                     });
                 }
-            }
+            },
+            isSameMember(name) {
+                return name === localStorage.getItem('name');
+            },
         },
     }
 </script>

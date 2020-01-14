@@ -1,20 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import actions from './actions'
-import getters from './getters'
-import mutations from "./mutations";
 import comment from "./comment";
-import state from "./state"
 import board from "./board";
+import common from "./common";
+import admin from "./admin";
+import member from "./member";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
+        common,
+        member,
+        admin,
         comment,
         board,
     },
-    state,
-    getters,
-    mutations,
-    actions
 });

@@ -10,7 +10,7 @@ import Boards from "../views/Boards";
 import Board from "../views/Board";
 import BoardModify from "../views/BoardModify";
 import Admin from "../views/Admin";
-import {validateAdmin} from "../api/api";
+import {validateAdmin} from "../apis/admin_api";
 import store from "../store/store";
 
 const isAuthenticationMember = (to, from, next) => {
@@ -23,9 +23,9 @@ const isAuthenticationMember = (to, from, next) => {
 
 const isAdmin = (to, from, next) => {
     validateAdmin().then(() => next())
-        .catch((error) => store.commit('OPEN_MODAL', {
+        .catch(() => store.commit('OPEN_MODAL', {
             title: '접속 권한 없음.',
-            content: '관리자전용 페이지 입니다' + error,
+            content: '관리자전용 페이지 입니다',
             option: '닫기',
         }))
 };
@@ -37,6 +37,10 @@ const router = new VueRouter({
     routes: [
         {
             path: '/',
+            redirect: '/boards',
+        },
+        {
+            path: '/main',
             name: 'main',
             component: Main
         },
@@ -84,7 +88,7 @@ const router = new VueRouter({
             component: BoardModify,
         },
         {
-            path: '/admin/test',
+            path: '/admin',
             component: Admin,
             beforeEnter: (to, form, next) => isAdmin(to, form, next),
         }

@@ -39,8 +39,6 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
-
     export default {
         name: "Main",
         data() {
@@ -51,7 +49,6 @@
             }
         },
         methods: {
-            ...mapActions(['UPLOAD_IMAGE']),
             sendImage() {
                 // this.image = this.$refs.image.files[0];
                 this.UPLOAD_IMAGE(this.files)

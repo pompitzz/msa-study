@@ -19,7 +19,7 @@
             </div>
 
             <v-row v-if="commentList">
-                <v-col class="py-0" cols="8" md="8" offset="2">
+                <v-col class="py-0" cols="12" sm="8" offset-sm="2">
                     <v-card :key="comment.commentId" class="my-2 pa-3" dark v-for="(comment, index) in commentList">
                         <div :style="`max-width: ${getWidth(comment.depth)}%`" class="ma-3">
                             <div>
