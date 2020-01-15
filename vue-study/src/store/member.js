@@ -33,7 +33,9 @@ const actions = {
         try {
             context.commit('START_LOADING');
             const response = await requestJoinMember(member);
-            context.commit('OPEN_MODAL', {title: '회원가입 성공!', content: '로그인 페이지로 이동합니다.', option: '이동',});
+            context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다!', 'info', 'top'));
+            context.commit('END_LOADING');
+            router.push('/login');
             return response;
         } catch (e) {
             context.commit('OPEN_MODAL', {title: e.response.data.message, content: '다시 한번 더 시도해주세요.', option: '닫기',});

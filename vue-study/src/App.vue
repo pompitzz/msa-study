@@ -110,4 +110,8 @@
     .v-menu__content.theme--light.menuable__content__active {
         min-width: auto !important;
     }
+
+    .tui-editor-contents h4 {
+        margin-bottom: 5px !important;
+    }
 </style>

@@ -4,7 +4,7 @@
 
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" color="white"/>
             <v-toolbar-title>
-                <span v-if="!drawer">M S A</span>
+                <span v-if="!drawer">BLOG</span>
             </v-toolbar-title>
 
             <v-spacer/>
@@ -35,7 +35,7 @@
         <v-navigation-drawer app dark v-model="drawer">
             <v-col class="mt-5 text-center">
                 <h2 class="white--text my-3">
-                    M S A
+                    Stranger BLOG
                 </h2>
             </v-col>
             <hr class="ma-3 white my-hr"/>

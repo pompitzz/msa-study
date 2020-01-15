@@ -4,7 +4,7 @@
             <v-col cols="12" md="6" sm="12">
                 <div class="mx-5">
                     <div class="text-center text-uppercase">
-                        <h1>Calendars</h1>
+                        <h1>Calendar</h1>
                     </div>
                     <v-row>
                         <v-col cols="6">
@@ -100,22 +100,8 @@
             </v-col>
             <v-col class="mb-4 controls" cols="12" md="6">
                 <div class="text-center">
-                    <h1>최근 게시물</h1>
-                    <v-row class="mx-5">
-                        <v-col :key="member.email" cols="10" md="8" offset="1" offset-md="2" v-for="member in members">
-                            <v-card class="text-center" dark>
-                                <v-card-title><span class="mx-auto">이름: {{member.name}}</span></v-card-title>
-                                <hr>
-                                <v-card-subtitle>
-                                    <h3>Email: {{member.email}}</h3>
-                                    <br>
-                                    <h3>Role: {{member.role}}</h3>
-                                </v-card-subtitle>
-                            </v-card>
-                        </v-col>
-                    </v-row>
+                    <v-btn color="green" outlined to="/boards">게시글로 가기</v-btn>
                 </div>
-
             </v-col>
         </v-row>
         <Dialog :dialog="true"/>
@@ -146,12 +132,6 @@
                 {text: '4 days', value: 4},
                 {text: '3 days', value: 3},
             ],
-            members: [
-                {name: '이동명', email: '123123', role: 'USER'},
-                {name: '이동명', email: '123123', role: 'USER'},
-                {name: '이동명', email: '123123', role: 'USER'},
-            ]
-            ,
         }),
         components: {
             Dialog
@@ -175,7 +155,8 @@
             moreEvent({date}) {
                 this.start = date;
                 this.type = 'day';
-            }
+            },
+
         },
         computed: {
             events() {

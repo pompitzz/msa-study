@@ -47,7 +47,7 @@ const router = new VueRouter({
             component: Calander
         },
         {
-            path: '/main/temp',
+            path: '/blog/temp',
             name: 'main',
             component: Temp
         },

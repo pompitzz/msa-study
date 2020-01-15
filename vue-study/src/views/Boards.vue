@@ -88,19 +88,19 @@
         methods: {
             next(page) {
                 this.pageRequest.page = page - 1;
-                this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
+                this.$store.dispatch('QUERY_BOARDS_BYTITLE', this.pageRequest);
             },
             moveToBoard(board) {
                 this.articleInfo.id = board.id;
                 this.articleInfo.href = board._links.self.href;
-                this.$store.dispatch('COUNT_MOVE_TO_ARTICLE',this.articleInfo);
+                this.$store.dispatch('COUNT_MOVE_TO_ARTICLE', this.articleInfo);
             },
             titleLimit(title) {
                 return title.length > 70 ? title.substring(0, 40) + '...' : title;
             },
             moveToWritePage() {
                 if (localStorage.getItem('email') === null) {
-                    this.$store.commit('OPEN_MODAL',{
+                    this.$store.commit('OPEN_MODAL', {
                         title: '로그인이 필요합니다.',
                         content: `로그인을 한 사용자만 게시글 작성이 가능합니다.`,
                         option: '닫기',
@@ -114,24 +114,28 @@
                 if (this.sortby.length !== 0) {
                     this.lastSortby = this.sortby[0];
                     this.pageRequest.sort = `${this.lastSortby},DESC`;
-                    this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
+                    this.$store.dispatch('QUERY_BOARDS_BYTITLE', this.pageRequest);
                 } else {
                     this.pageRequest.sort = `${this.lastSortby},ASC`;
-                    this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
+                    this.$store.dispatch('QUERY_BOARDS_BYTITLE', this.pageRequest);
                 }
             },
             serachBoards() {
-                this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
+                this.$store.dispatch('QUERY_BOARDS_BYTITLE', this.pageRequest);
             },
             modalEvent() {
                 this.$store.commit('CLOSE_MODAL');
                 router.push(`/board/${this.articleInfo.id}`);
-            }
+            },
+            queryMember() {
+                let email = localStorage.getItem('email');
+                if (email !== null && localStorage.getItem('name') === null) {
+                    this.$store.dispatch('QUERY_MEMBER', email);
+                }
+            },
 
         },
-        created() {
-            this.$store.dispatch('QUERY_BOARDS_BYTITLE',this.pageRequest);
-        },
+
         computed: {
             loadingState() {
                 return this.$store.state.common.loadingState;
@@ -157,7 +161,11 @@
                     }, 800);
                 }
             }
-        }
+        },
+        created() {
+            this.$store.dispatch('QUERY_BOARDS_BYTITLE', this.pageRequest);
+            this.queryMember();
+        },
     }
 </script>
 

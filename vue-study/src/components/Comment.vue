@@ -10,8 +10,17 @@
                 <v-card-text class="py-0">
                     <v-container class="pb-0">
                         <v-textarea
+                                @keyup.enter="submit"
+                                label="댓글을 작성해주세요."
+                                v-if="comment.id ===''"
+                                outlined
+                                v-model="comment.content"
+                        ></v-textarea>
+                        <v-textarea
+                                @keyup.enter="modify"
                                 label="댓글을 작성해주세요."
                                 outlined
+                                v-else
                                 v-model="comment.content"
                         ></v-textarea>
                     </v-container>

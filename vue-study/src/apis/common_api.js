@@ -35,9 +35,11 @@ axios.interceptors.response.use(
                 store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 재발급 되었습니다.', 'info', 'top')
                 )
             })
-                .catch(error => store.commit('SET_SNACKBAR', setSnackBarInfo('재발급을 실패하였습니다.' + error, 'error', 'top')));
+                .catch(() => {
+                    store.commit('SET_SNACKBAR', setSnackBarInfo('Refresh Token이 만료되었습니다. 다시 한번 로그인해주세요.', 'error', 'top'))
+                    store.commit('LOGOUT');
+                });
         }
-
         return Promise.reject(error);
     }
 );

@@ -34,7 +34,7 @@
                 </div>
             </v-row>
         </v-container>
-        <Modal @pass="modalEvent"/>
+        <Modal/>
     </div>
 </template>
 
@@ -82,9 +82,6 @@
                     this.$store.dispatch('REQUEST_JOIN', this.member);
                 }
             },
-            modalEvent() {
-                this.$store.commit('CLOSE_MODAL_AND_MOVE', '/login');
-            }
         }
     }
 
