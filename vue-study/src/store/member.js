@@ -65,8 +65,8 @@ const actions = {
             context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
             return response.data;
         } catch (e) {
-            context.commit('OPEN_MODAL', {
-                title: '사용자 등록 실패', content: `게시글 등록을 위해선 재 요청이 필요합니다.` + e, option: '재요청',})
+            // context.commit('OPEN_MODAL', {
+            //     title: '사용자 등록 실패', content: `게시글 등록을 위해선 재 요청이 필요합니다.` + e, option: '재요청',})
         }
     },
 };

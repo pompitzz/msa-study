@@ -26,7 +26,10 @@
 <script>
     import AppBar from "./components/AppBar";
     import Modal from "./components/Modal";
-
+    /* TODO
+       - 에러 처리 확인
+       - 스토리지 시간 클리어
+     */
     export default {
         name: 'App',
         data() {
@@ -80,7 +83,31 @@
         border-top: 1px solid black !important;
     }
 
-    .row{
+    .row {
         margin: 0 auto !important;
+    }
+
+    blockquote {
+        border-left: 4px solid #b8b8b8 !important;
+    }
+
+    .v-calendar-monthly .v-present button {
+        background-color: #82b1ff !important;
+    }
+
+    .v-calendar-monthly .v-calendar-weekly__day-label {
+        margin-bottom: 4px;
+    }
+
+    .v-calendar-daily .v-calendar-daily__interval-text {
+        color: white !important;
+    }
+
+    .v-calendar-daily__intervals-body {
+        margin-top: 4px !important;
+    }
+
+    .v-menu__content.theme--light.menuable__content__active {
+        min-width: auto !important;
     }
 </style>

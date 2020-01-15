@@ -5,6 +5,7 @@ import board from "./board";
 import common from "./common";
 import admin from "./admin";
 import member from "./member";
+import calendar from "./calendar";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -14,5 +15,6 @@ export default new Vuex.Store({
         admin,
         comment,
         board,
+        calendar
     },
 });

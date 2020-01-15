@@ -12,6 +12,8 @@ import BoardModify from "../views/BoardModify";
 import Admin from "../views/Admin";
 import {validateAdmin} from "../apis/admin_api";
 import store from "../store/store";
+import Calander from "../views/Calendar";
+import Temp from "../views/Temp";
 
 const isAuthenticationMember = (to, from, next) => {
     if (localStorage.getItem('access_token') !== null) {
@@ -42,7 +44,12 @@ const router = new VueRouter({
         {
             path: '/main',
             name: 'main',
-            component: Main
+            component: Calander
+        },
+        {
+            path: '/main/temp',
+            name: 'main',
+            component: Temp
         },
         {
             path: '/register',
