@@ -117,7 +117,6 @@
             startMenu: false,
             start: '',
             now: null,
-            colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
             names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
             type: 'month',
             typeOptions: [
@@ -140,9 +139,6 @@
             open(date) {
                 console.log(date);
                 this.$store.commit('OPEN_CALENDAR_DIALOG', date)
-            },
-            getEventColor(event) {
-                return event.color
             },
             showIntervalLabel(interval) {
                 // console.log(interval);

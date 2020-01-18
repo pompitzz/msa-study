@@ -3,6 +3,7 @@
         <v-card>
             <v-card-title>
                 <h3>일정 추가</h3>
+                <v-spacer/>
             </v-card-title>
             <v-card-text>
                 <v-form class="px-3" ref="form">
@@ -102,6 +103,8 @@
                         <v-btn @click="close" class="primary white--text mx-2 mt-3" text>
                             닫기
                         </v-btn>
+
+
                     </div>
                 </v-form>
             </v-card-text>
