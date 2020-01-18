@@ -14,8 +14,7 @@ const getters = {
 };
 
 const mutations = {
-    LOGIN(state, responseTokenInfo) {
-        setTokenInLocalStorage(responseTokenInfo);
+    LOGIN(state) {
         state.accessToken = localStorage.getItem('access_token');
         router.push('/');
     },
@@ -38,39 +37,51 @@ const actions = {
             router.push('/login');
             return response;
         } catch (e) {
-            context.commit('OPEN_MODAL', {title: e.response.data.message, content: '다시 한번 더 시도해주세요.', option: '닫기',});
+            context.commit('OPEN_MODAL', {title: e.response.data.message, content: '다시 한번 더 시도해주세요.', option1: '닫기',});
         }
     },
     async REQUEST_LOGIN(context, member) {
         try {
             context.commit('START_LOADING');
             const response = await requestLogin(member);
-            localStorage.setItem('email', member.email);
+            setTokenInLocalStorage(response.data);
+
+            const getMember = await queryMember();
             context.commit('LOGIN', response.data);
+            greetingMember(context, getMember.data);
             context.commit('END_LOADING', response.data);
+
             return response;
         } catch (e) {
-            context.commit('OPEN_MODAL', {title: '로그인 실패', content: '아이디 혹은 비밀번호를 확인해주세요.', option: '닫기',}
+            context.commit('OPEN_MODAL', {title: '로그인 실패', content: '아이디 혹은 비밀번호를 확인해주세요.', option1: '닫기',}
             )
         }
     },
-    async QUERY_MEMBER(context, email) {
-        try {
-            const response = await queryMember(email);
-            let text = '';
-            if (response.data.role === 'USER') {
-                text = `안녕하세요 ${response.data.name} 님!`;
-            } else if (response.data.role === 'ADMIN') {
-                text = `안녕하세요 마스터 님!`;
-            }
-            localStorage.setItem('name', response.data.name);
-            context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
-            return response.data;
-        } catch (e) {
-            // context.commit('OPEN_MODAL', {
-            //     title: '사용자 등록 실패', content: `게시글 등록을 위해선 재 요청이 필요합니다.` + e, option: '재요청',})
-        }
-    },
+    // async QUERY_MEMBER(context) {
+    //     try {
+    //         let text = '';
+    //         if (response.data.role === 'USER') {
+    //             text = `안녕하세요 ${response.data.name} 님!`;
+    //         } else if (response.data.role === 'ADMIN') {
+    //             text = `안녕하세요 마스터 님!`;
+    //         }
+    //         context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
+    //         return response.data;
+    //     } catch (e) {
+    //         // context.commit('OPEN_MODAL', {
+    //         //     title: '사용자 등록 실패', content: `게시글 등록을 위해선 재 요청이 필요합니다.` + e, option1: '재요청',})
+    //     }
+    // },
+};
+
+const greetingMember = (context, data) => {
+    let text = '';
+    if (data.role === 'USER') {
+        text = `안녕하세요 ${data.name} 님!`;
+    } else if (data.role === 'ADMIN') {
+        text = `안녕하세요 마스터 님!`;
+    }
+    context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
 };
 
 export default {mutations, state, actions, getters};

@@ -3,7 +3,7 @@
         <v-row align="center" class="fill-height" justify="center">
             <h1 class="display-2">Main Page</h1>
         </v-row>
-        <Modal @pass="modalEvnet"/>
+        <Modal/>
     </div>
 </template>
 
@@ -23,20 +23,6 @@
                 model: 'Foo',
             }
         },
-        methods: {
-            queryMember() {
-                let email = localStorage.getItem('email');
-                if (localStorage.getItem('name') === null && email !== null) {
-                    this.$store.dispatch('QUERY_MEMBER',email);
-                }
-            },
-            modalEvnet() {
-                this.queryMember();
-            }
-        },
-        created() {
-            this.queryMember();
-        }
     }
 </script>
 

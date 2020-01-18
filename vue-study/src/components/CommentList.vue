@@ -89,7 +89,7 @@
                         this.$store.commit('OPEN_MODAL', {
                             title: '댓글 더보기 실패',
                             content: '다시 한번 더 시도해주세요.',
-                            option: '닫기',
+                            option1: '닫기',
                         });
                     });
             },
@@ -107,14 +107,13 @@
                 this.$store.dispatch('QUERY_BOARD', this.pageRequest);
             },
             successModifyComment() {
-                console.log('aa', this.pageRequest);
                 this.$store.dispatch('QUERY_BOARD', this.pageRequest);
             },
             deleteComment(commentId) {
                 this.$store.dispatch('DELETE_COMMENT', commentId).then(() => this.$store.dispatch('QUERY_BOARD', this.pageRequest))
             },
             createCommentofComment(parentId) {
-                if (localStorage.getItem('email') == null) {
+                if (localStorage.getItem('access_token') == null) {
                     this.$store.commit('SET_SNACKBAR', {
                         text: '댓글 작성을 위해 로그인하셔야 합니다.',
                         color: 'error',

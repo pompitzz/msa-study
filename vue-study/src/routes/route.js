@@ -28,7 +28,7 @@ const isAdmin = (to, from, next) => {
         .catch(() => store.commit('OPEN_MODAL', {
             title: '접속 권한 없음.',
             content: '관리자전용 페이지 입니다',
-            option: '닫기',
+            option1: '닫기',
         }))
 };
 

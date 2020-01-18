@@ -3,7 +3,7 @@ import {router} from "../routes/route";
 const state = {
     loadingState: false,
     snackbar: {open: false, text: '', location: 'top',},
-    modal: {open: false, title: '', content: '', option: '',},
+    modal: {open: false, title: '', content: '', option1: '', option2: '',},
     // ============ Rules ============ //
     emailRules: [
         v => !!v || '이메일을 작성해주세요.',
@@ -36,7 +36,8 @@ const mutations = {
         state.loadingState = false;
         state.modal.title = modalTexts.title;
         state.modal.content = modalTexts.content;
-        state.modal.option = modalTexts.option;
+        state.modal.option1 = modalTexts.option1;
+        state.modal.option2 = modalTexts.option2 ? modalTexts.option2 : null;
         state.modal.open = true;
     },
     START_LOADING(state) {

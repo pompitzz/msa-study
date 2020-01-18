@@ -17,7 +17,6 @@ const mutations = {
         state.dialog = false;
     },
     SET_COMMENT_LIST(state, commentList) {
-        console.log('commentList', commentList);
         state.commentList = commentList.content.reverse();
         state.isLast = commentList.last;
     },
@@ -48,7 +47,7 @@ const actions = {
             context.commit('OPEN_MODAL', {
                 title: '댓글 작성 실패.',
                 content: `댓글 작성에 실패했습니다.` + e,
-                option: '닫기',
+                option1: '닫기',
             });
             return Promise.reject(e);
         }
@@ -63,7 +62,7 @@ const actions = {
             context.commit('OPEN_MODAL', {
                 title: '댓글 작성 실패.',
                 content: `댓글 작성에 실패했습니다.` + e,
-                option: '닫기',
+                option1: '닫기',
             });
             return Promise.reject(e);
         }
@@ -72,6 +71,7 @@ const actions = {
     async DELETE_COMMENT(context, id) {
         try {
             const response = await requestDeleteComment(id);
+            context.commit('CLOSE_MODAL');
             context.commit('SET_SNACKBAR', {text: '댓글 삭제 성공!', color: 'info', location: 'bottom'});
             return response.data;
         } catch (e) {
@@ -82,7 +82,6 @@ const actions = {
     async QUERY_SAME_PARENT_COMMENTS(context, payload) {
         try {
             const response = await querySamParentComments(payload);
-            console.log('query same res', response.data);
             return response.data;
         } catch (e) {
             alert(e, e.response);

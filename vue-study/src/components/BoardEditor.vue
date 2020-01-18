@@ -4,7 +4,7 @@
                 label="카테고리"
                 :items="items"
                 @input="setBoardType"
-                v-model="model"
+                v-model="boardWrite.boardType"
                 dark
                 dense
                 outlined
@@ -35,8 +35,11 @@
         name: "Writer",
         data() {
             return {
-                items: ['공지사항', '자유게시판', '공부'],
-                model: '',
+                items: [
+                    {text: '공지사항', value: 'NOTICE'},
+                    {text: '자유게시판', value: 'FREE'},
+                    {text: '공부', value: 'STUDY'},
+                ],
             }
         },
         computed: {
@@ -52,15 +55,6 @@
             isNotEmpty() {
                 return !(this.boardWrite.title === '' || this.boardWrite.content === '' || this.boardWrite.boardType === '');
             },
-            setBoardType(value) {
-                if (value === '공부') {
-                    this.boardWrite.boardType = 'STUDY';
-                } else if (value === '자유게시판') {
-                    this.boardWrite.boardType = 'FREE'
-                } else if (value === '공지사항') {
-                    this.boardWrite.boardType = 'NOTICE'
-                }
-            },
             writeBoard() {
                 if (this.isNotEmpty()) {
                     return this.$emit("submit", this.boardWrite);
@@ -68,25 +62,7 @@
                     this.$store.commit('SET_SNACKBAR', {text: '빈칸을 모두 작성해주세요', color: 'error', location: 'top'});
                 }
             },
-            setItems(boardType) {
-                if (boardType === 'NOTICE') {
-                    this.items = ['공지사항', '자유게시판', '공부'];
-                } else if (boardType === 'FREE') {
-                    this.items = ['자유게시판', '공지사항', '공부'];
-                } else if (boardType === 'STUDY') {
-                    this.items = ['공부', '자유게시판', '공지사항'];
-                }
-            }
-        },
-        created() {
-            let boardType = this.boardWrite.boardType;
-            if (boardType !== '') {
-                this.model = boardType;
-                this.setItems(boardType);
 
-
-            }
-            console.log(this.boardWrite.boardType);
         },
         destroyed() {
             this.$store.commit('CLEAR_BOARD_WRITE');

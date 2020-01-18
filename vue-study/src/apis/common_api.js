@@ -7,7 +7,10 @@ import {setTokenInLocalStorage} from "../utils/oauth";
  */
 axios.interceptors.request.use(
     config => {
-        config.headers.Authorization = localStorage.getItem('access_token');
+        let accessToken = localStorage.getItem('access_token');
+        if (accessToken !== null) {
+            config.headers.Authorization = accessToken;
+        }
         console.log('Interceptors Request is', config, new Date());
         return config
     },

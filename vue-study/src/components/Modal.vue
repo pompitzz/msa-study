@@ -10,7 +10,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn @click="modalOption" class="white--text mb-3 mr-3" color="indigo">{{modal.option}}</v-btn>
+                <v-btn @click="submit" class="white--text mb-3 mr-3" color="indigo" v-if="modal.option2 !== null">
+                    {{modal.option2}}
+                </v-btn>
+                <v-btn @click="modalOption" class="white--text mb-3 mr-3" color="indigo">{{modal.option1}}</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -27,12 +30,14 @@
         },
         methods: {
             modalOption() {
-                if (this.modal.option === '닫기') {
+                if (this.modal.option1 === '닫기') {
                     this.$store.commit('CLOSE_MODAL');
-                    window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
                 } else {
                     this.$emit('pass');
                 }
+            },
+            submit() {
+                this.$emit('pass');
             }
         }
     }

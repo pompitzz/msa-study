@@ -6,9 +6,9 @@
                 <span class="mx-5">|</span> 최근 작성일 : <span class="ml-2">{{board.lastModifiedDate |
                     moment('YYYY-MM-DD')}}</span>
             </p>
-            <div class="mb-3">
-                <v-btn @click="modifyBoard" class="mx-2" color="grey" dark outlined small v-if="isAuthor">수정</v-btn>
-                <v-btn @click="deleteBoard" class="mx-2" color="grey" dark outlined small v-if="isAuthor">삭제</v-btn>
+            <div class="mb-3" v-if="hasToken">
+                <v-btn @click="modifyBoard" class="mx-2" color="grey" dark outlined small>수정</v-btn>
+                <v-btn @click="openModal('게시글 삭제')" class="mx-2" color="grey" dark outlined small>삭제</v-btn>
             </div>
             <v-card class="pa-5" light>
                 <viewer :value="board.content" dark="false"/>
@@ -26,15 +26,15 @@
                                 <v-icon class="mb-2 mr-3">mdi-account</v-icon>
                                 <h4 class="d-inline-block">{{comment.name}} <span class="mx-1"/>작성일 :
                                     {{comment.createDate | moment('YYYY-MM-DD')}}</h4>
-                                <v-btn @click="deleteComment(index, comment.commentId)"
+                                <v-btn @click="openModal('댓글 삭제', comment.commentId)"
                                        class="float-right ma-0 px-0 ml-0"
-                                       v-if="isSameMember(comment.name)"
+                                       v-if="hasToken"
                                        text>
                                     삭제
                                 </v-btn>
                                 <v-btn @click="editComment(index, comment.content, comment.commentId)"
                                        class="float-right ma-0 px-0 "
-                                       v-if="isSameMember(comment.name)"
+                                       v-if="hasToken"
                                        text>수정
                                 </v-btn>
                             </div>
@@ -59,7 +59,7 @@
 
 
         </v-container>
-        <Modal/>
+        <Modal @pass="deleteBoardOrComment"/>
         <Comment
                 @submit="successSaveComment"
                 @modify="successModifyComment"
@@ -75,6 +75,12 @@
 
     export default {
         name: "Board",
+        data() {
+            return {
+                commentId: '',
+                title: '',
+            }
+        },
         components: {CommentList, Comment, Viewer, Modal},
         computed: {
             commentList() {
@@ -83,41 +89,24 @@
             board() {
                 return this.$store.state.board.board;
             },
-            isAuthor() {
-                return this.$store.state.board.isAuthor;
-            },
             isLast() {
                 return this.$store.state.comment.isLast;
             },
             pageRequest() {
                 return this.$store.state.board.pageRequest;
+            },
+            hasToken() {
+                return this.$store.state.member.accessToken !== null;
             }
         },
 
         methods: {
             modifyBoard() {
-                if (this.isAuthor) {
-                    this.$store.dispatch('MODIFY_VALIDATE_BOARD', this.$route.params.id);
-                } else {
-                    this.openModal()
-                }
+                this.$store.dispatch('MODIFY_VALIDATE_BOARD', this.$route.params.id);
             },
-            deleteBoard() {
-                if (this.isAuthor) {
-                    this.$store.dispatch('DELETE_BOARD', this.$route.params.id);
-                } else {
-                    this.openModal()
-                }
-            },
-            openModal() {
-                this.$store.commit('OPEN_MODAL', {
-                    title: '인증되지 않은 사용자',
-                    content: '로그인 후 게시자인지 확인이 필요합니다.',
-                    option: '닫기'
-                });
-            },
+
             createComment() {
-                if (localStorage.getItem('email') == null) {
+                if (localStorage.getItem('access_token') == null) {
                     this.$store.commit('SET_SNACKBAR', {
                         text: '댓글 작성을 위해 로그인하셔야 합니다.',
                         color: 'error',
@@ -133,11 +122,7 @@
                     });
                 }
             },
-            deleteComment(index, commentId) {
-                this.$store.dispatch('DELETE_COMMENT', commentId)
-                    .then(() => this.$store.dispatch('QUERY_BOARD', this.pageRequest))
 
-            },
             editComment(index, content, commentId) {
                 this.$store.commit('OPEN_COMMENT_MODAL', {
                     id: commentId,
@@ -196,7 +181,7 @@
                         this.$store.commit('OPEN_MODAL', {
                             title: '댓글 더보기 실패',
                             content: '다시 한번 더 시도해주세요.',
-                            option: '닫기',
+                            option1: '닫기',
                         });
                     });
             },
@@ -206,11 +191,8 @@
                 }
                 return null;
             },
-            isSameMember(name) {
-                return name === localStorage.getItem('name');
-            },
             createCommentofComment(parentId) {
-                if (localStorage.getItem('email') == null) {
+                if (localStorage.getItem('access_token') == null) {
                     this.$store.commit('SET_SNACKBAR', {
                         text: '댓글 작성을 위해 로그인하셔야 합니다.',
                         color: 'error',
@@ -225,8 +207,28 @@
                         boardId: this.board.id,
                     });
                 }
+            },
+            deleteBoardOrComment() {
+                console.log('deleteBoardOrComment');
+                console.log(this.title);
+                if (this.title === '게시글 삭제') {
+                    this.$store.dispatch('DELETE_BOARD', this.$route.params.id);
+                } else if (this.title === '댓글 삭제') {
+                    this.$store.dispatch('DELETE_COMMENT', this.commentId)
+                        .then(() => this.$store.dispatch('QUERY_BOARD', this.pageRequest))
+                }
+            },
+            openModal(title, commentId) {
+                this.title = title;
+                console.log(this.title, commentId);
+                if (!!commentId) this.commentId = commentId;
+                this.$store.commit('OPEN_MODAL', {
+                    title: title,
+                    content: '정말로 삭제하시겠습니까?',
+                    option1: '닫기',
+                    option2: '삭제',
+                });
             }
-
         },
         created() {
             this.$store.commit('SET_BOARD_ID', this.$route.params.id);

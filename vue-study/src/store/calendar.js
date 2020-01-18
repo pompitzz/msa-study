@@ -33,7 +33,6 @@ const mutations = {
 
 const actions = {
     REQUEST_ADD_EVENT(context, calendar) {
-        console.log(calendar);
         const event = {
             name: calendar.title,
             start: calendar.startDate + getTime(calendar.startTime),

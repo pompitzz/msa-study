@@ -99,11 +99,11 @@
                 return title.length > 70 ? title.substring(0, 40) + '...' : title;
             },
             moveToWritePage() {
-                if (localStorage.getItem('email') === null) {
+                if (localStorage.getItem('access_token') === null) {
                     this.$store.commit('OPEN_MODAL', {
                         title: '로그인이 필요합니다.',
                         content: `로그인을 한 사용자만 게시글 작성이 가능합니다.`,
-                        option: '닫기',
+                        option1: '닫기',
                     })
                 } else {
                     router.push('/board-write');
@@ -127,13 +127,6 @@
                 this.$store.commit('CLOSE_MODAL');
                 router.push(`/board/${this.articleInfo.id}`);
             },
-            queryMember() {
-                let email = localStorage.getItem('email');
-                if (email !== null && localStorage.getItem('name') === null) {
-                    this.$store.dispatch('QUERY_MEMBER', email);
-                }
-            },
-
         },
 
         computed: {
@@ -164,7 +157,6 @@
         },
         created() {
             this.$store.dispatch('QUERY_BOARDS_BYTITLE', this.pageRequest);
-            this.queryMember();
         },
     }
 </script>

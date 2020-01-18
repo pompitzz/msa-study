@@ -1,12 +1,10 @@
 import axios from "axios";
 
 function requestSaveBoard(board) {
-    console.log('saveboard', board);
     return axios.post(`${process.env.VUE_APP_BASEURL}/api/boards`, board);
 }
 
 function requesUpdateBoard(payload) {
-    console.log('payloadUpdate', payload);
     return axios.put(`${process.env.VUE_APP_BASEURL}/api/boards/${payload.id}`, payload.boardWrite);
 }
 
@@ -37,7 +35,7 @@ function requestBoardContentForModifyBoard(boardId) {
 }
 
 function deleteBoardRequest(boardId) {
-    return axios.delete(`${process.env.VUE_APP_BASEURL}/api/boards/validate/${boardId}`);
+    return axios.delete(`${process.env.VUE_APP_BASEURL}/api/boards/${boardId}`);
 }
 
 function countBoardViews(id) {

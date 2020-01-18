@@ -23,10 +23,8 @@ function requestLogin(member) {
     return axios(requestData);
 }
 
-
-function queryMember(email) {
-    console.log('query');
-    return axios.get(`${process.env.VUE_APP_BASEURL}/api/members`, {params: {email: email}})
+function queryMember() {
+    return axios.get(`${process.env.VUE_APP_BASEURL}/api/members`);
 }
 
 export {

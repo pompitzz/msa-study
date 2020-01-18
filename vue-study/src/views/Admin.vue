@@ -3,6 +3,7 @@
         <v-row class="mx-5">
             <v-col :key="member.email" cols="10" lg="3" md="4" offset="1" offset-sm="0"
                    sm="6" v-for="member in members">
+                <v-btn @click="findMembers">사용자 조회</v-btn>
                 <v-card class="text-center" dark>
                     <v-card-title><span class="mx-auto">이름: {{member.name}}</span></v-card-title>
                     <hr>
@@ -25,7 +26,7 @@
                 </v-card>
             </v-col>
         </v-row>
-        <Modal @pass="modalEvent"/>
+        <Modal/>
     </div>
 </template>
 
@@ -41,7 +42,7 @@
             }
         },
         methods: {
-            modalEvent() {
+            findMembers() {
                 this.$store.dispatch('QUERY_MEMBERS_FOR_ADMIN').then(res => this.members = res)
             }
         },
