@@ -23,15 +23,14 @@ script: "./gradlew clean build"
 # S3 설정
 ## CodeDeploy는 jar 파일을 인식하지 못하므로 jar와 기타 설정 파일들을 로 압축한다.
 before_deploy:
-  - ls -all
-  - mkdir -p before-deploy
+  - mkdir -p before-deploy # -p는 부모 폴더 까지 생성하는 것
   - cp scripts/*.sh before-deploy/
   - cp /home/travis/build/DongmyeongLee22/msa-study/appspec.yml before-deploy/
   - cp build/libs/*.jar before-deploy/
-  - cd before-deploy && zip -r before-deploy *
+  - cd before-deploy && zip -r before-deploy * # -r로 하위폴더 까지 압축한다.
   - cd ../ && mkdir -p deploy
   - mv before-deploy/before-deploy.zip deploy/spring-boot-study.zip
-## Travis CI는 S3로 특정 파일만 업로두가 안된다.
+## Travis CI는 S3로 특정 파일만 업로드가 안된다.
 ## 그렇기 때문에 항상 deploy 디렉토리를 생성한다.
 
 # S3로 파일 업로드 혹운 CodeDeploy로 배포 등 외부 서비스와 연동될 행위들을 선언
@@ -42,7 +41,7 @@ deploy:
     bucket: springboot2-restapi-s3
     region: ap-northeast-2
     skip_cleanup: true
-    acl: private # zip 파을 접근 private
+    acl: private # zip 파일 접근 권한 private
     local_dir: deploy # deploy 폴더만 s3로 전송
     wait-until-deployed: true
 

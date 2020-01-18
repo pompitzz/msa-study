@@ -1,0 +1,79 @@
+a {
+    text-decoration: none;
+}
+
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1000px !important;
+    }
+}
+
+.v-application code:after {
+    content: none !important;
+}
+
+.v-application code {
+    box-shadow: none !important;
+}
+
+.theme--light.v-card {
+    background-color: #e0e0e0 !important;
+}
+
+.tui-editor-contents pre {
+    background-color: #f5f5f5 !important;
+    margin-top: 8 ox !important;
+}
+
+.tui-editor-contents hr {
+    border-top: 1px solid black !important;
+}
+
+.row {
+    margin: 0 auto !important;
+}
+
+blockquote {
+    border-left: 4px solid #b8b8b8 !important;
+}
+
+.v-calendar-monthly .v-present button {
+    background-color: #82b1ff !important;
+}
+
+.v-calendar-monthly .v-calendar-weekly__day-label {
+    margin-bottom: 4px;
+}
+
+.v-calendar-daily .v-calendar-daily__interval-text {
+    color: white !important;
+}
+
+.v-calendar-daily__intervals-body {
+    margin-top: 4px !important;
+}
+
+.v-menu__content.theme--light.menuable__content__active {
+    min-width: auto !important;
+}
+
+.tui-editor-contents h4 {
+    margin-bottom: 5px !important;
+}
+
+code:before {
+    content: none !important;
+}
+
+code {
+    font-size: 14px !important;
+}
+
+.hljs-keyword {
+    color: #82b1ff !important;
+}
+
+.hljs-params {
+    color: coral !important;
+}

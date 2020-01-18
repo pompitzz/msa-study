@@ -14,12 +14,13 @@ sleep 10
 
 for RETRY_COUNT in {1..10}
 do
-  RESPONSE=$(curl -s http://localhost:${IDLE_PORT}/profile)
-  UP_COUNT=$(echo ${RESPONSE} | grep 'real' | wc -l)
+  RESPONSE=$(curl -s http://localhost:${IDLE_PORT}/profile) # 배포된 포트의 profile 값을 가져온다.
+  UP_COUNT=$(echo ${RESPONSE} | grep 'real' | wc -l)  # 그 값에 real이 있는지 확인한다. 있다면 1, 없다면 0일 것이다.
 
-  if [ ${UP_COUNT} -ge 1 ]
+  if [ ${UP_COUNT} -ge 1 ] # -ge : UP_COUNT >= 1
   then # $up_count >= 1 ("real" 문자열이 있는지 검증)
-    echo ">>> Health Check 성공"
+    echo ">>>> UP_COUNT: $UP_COUNT"
+    echo ">>>> Health Check 성공"
     switch_proxy
     break
   else
@@ -28,7 +29,7 @@ do
     echo ">>>> Health Check: $RESPONSE"
   fi
 
-  if [ ${RETRY_COUNT} -eq 10 ]
+  if [ ${RETRY_COUNT} -eq 10 ] # -eq : =
   then
     echo ">>>> Health Check 실패"
     echo ">>>> 엔진엑스에 연결하지 않고 배포를 종료합니다."

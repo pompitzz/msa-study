@@ -8,6 +8,7 @@ function queryMembers() {
     return axios.get(`${process.env.VUE_APP_BASEURL}/api/admin/members`);
 }
 
+
 export {
     validateAdmin,
     queryMembers
