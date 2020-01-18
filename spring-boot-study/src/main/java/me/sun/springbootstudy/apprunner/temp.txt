@@ -22,3 +22,70 @@
 //                .boardType(BoardType.STUDY)
 //                .member(member)
 //                .build()));
+
+///////// 댓글 계층 구조 확인 ///////////////
+@Override
+    public void run(ApplicationArguments args) throws Exception {
+
+        Long mem = memberService.save(MemberJoinRequestDto.builder()
+                .email("123@123.com")
+                .password("123")
+                .name("John")
+                .role(MemberRole.ADMIN)
+                .build());
+
+        Member member = memberRepository.findById(mem).get();
+
+        Board board = Board.builder()
+                .title("Web Server Developement Using SpringBoot")
+                .content("So Hard...")
+                .viewsCount(1)
+                .boardType(BoardType.STUDY)
+                .member(member)
+                .build();
+        boardRepository.save(board);
+
+        // 최상위 부모
+        Comment content1 = saveComment(member, board, null, "content1");
+        Comment content2 = saveComment(member, board, null, "content1");
+        Comment content3 = saveComment(member, board, null, "content3");
+        Comment content4 = saveComment(member, board, null, "content4");
+        Comment content5 = saveComment(member, board, null, "content5");
+
+        // 1 첫번째 자식
+        Comment ch1 = saveThreeChildrenAndOneReturn(member, board, content1, 1);
+        Comment ch2 = saveThreeChildrenAndOneReturn(member, board, content2, 1);
+        Comment ch3 = saveThreeChildrenAndOneReturn(member, board, content3, 1);
+        Comment ch4 = saveThreeChildrenAndOneReturn(member, board, content4, 1);
+        Comment ch5 = saveThreeChildrenAndOneReturn(member, board, content5, 1);
+
+        Comment chch1 = saveThreeChildrenAndOneReturn(member, board, ch1, 1);
+        Comment chch2 = saveThreeChildrenAndOneReturn(member, board, ch2, 1);
+        Comment chch3 = saveThreeChildrenAndOneReturn(member, board, ch3, 1);
+        Comment chch4 = saveThreeChildrenAndOneReturn(member, board, ch4, 1);
+        Comment chch5 = saveThreeChildrenAndOneReturn(member, board, ch5, 1);
+
+        Comment chchch1 = saveThreeChildrenAndOneReturn(member, board, chch1, 1);
+        Comment chchch2 = saveThreeChildrenAndOneReturn(member, board, chch2, 1);
+        Comment chchch3 = saveThreeChildrenAndOneReturn(member, board, chch3, 1);
+        Comment chchch4 = saveThreeChildrenAndOneReturn(member, board, chch4, 1);
+        Comment chchch5 = saveThreeChildrenAndOneReturn(member, board, chch5, 1);
+
+
+    }
+
+    private Comment saveThreeChildrenAndOneReturn(Member member, Board board, Comment content1, int num) {
+        String string = content1.getContent() + " -> " + num;
+        Comment comment = Comment.createComment(member, board, content1, string + " -> " + 0);
+        commentRepository.save(comment);
+        IntStream.rangeClosed(1, 3).forEach(i -> commentRepository.save(Comment.createComment(member, board,
+                content1, string + " -> " + i)));
+
+        return comment;
+    }
+
+    private Comment saveComment(Member member, Board board, Comment o, String content12) {
+        Comment content1 = Comment.createComment(member, board,
+                o, content12);
+        return commentRepository.save(content1);
+    }

@@ -18,6 +18,7 @@ public class BoardUpdateRequestDto {
     @NotNull
     private BoardType boardType;
 
+
     @Builder
     public BoardUpdateRequestDto(String title, String content, BoardType boardType) {
         this.title = title;

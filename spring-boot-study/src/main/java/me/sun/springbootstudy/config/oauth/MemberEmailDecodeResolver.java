@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.sun.springbootstudy.domain.common.TokenMemberEmail;
+import me.sun.springbootstudy.exception.NotHaveAccessTokenException;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
@@ -35,7 +36,11 @@ public class MemberEmailDecodeResolver implements HandlerMethodArgumentResolver 
         String authorizationHeader = webRequest.getHeader("Authorization");
         log.info("Authorization Header ::: " + authorizationHeader);
 
-        assert authorizationHeader != null;
+        if (authorizationHeader == null) {
+            throw new NotHaveAccessTokenException("Access Token이 존재하지 않습니다.");
+        }
+        ;
+
         String jwtToken = authorizationHeader.substring(7);
         Jwt decodedToken = JwtHelper.decode(jwtToken);
 

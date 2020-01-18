@@ -132,6 +132,7 @@ public class BoardAndCommentService {
         return topParents.stream().map(CommentResponseDto::getCommentId).collect(Collectors.toList());
     }
 
+
     private Map<Long, List<CommentResponseDto>> groupByParentId(List<CommentResponseDto> children) {
         return children.stream().collect(Collectors.groupingBy(CommentResponseDto::getParentId));
     }

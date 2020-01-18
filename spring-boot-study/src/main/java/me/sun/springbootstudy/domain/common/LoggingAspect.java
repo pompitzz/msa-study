@@ -14,12 +14,12 @@ public class LoggingAspect {
 
 
     @Pointcut("execution(* me.sun.springbootstudy.web..*Controller.*(..))")
-    public void getControllers() {
+    public void getControllerMethods() {
     }
 
     ;
 
-    @Around("getControllers()")
+    @Around("getControllerMethods()")
     public Object logPerf(ProceedingJoinPoint pjp) throws Throwable {
         System.out.println();
         log.info("실행 시간 측정 시작 ::: ");

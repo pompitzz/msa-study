@@ -23,6 +23,8 @@ public class CommentRepositodyCustom {
                         " where c.parent.id in :parentIds" +
                         " order by c.createDate asc", CommentResponseDto.class)
                 .setParameter("parentIds", parentIds)
+                .setFirstResult(0)
+                .setMaxResults(2)
                 .getResultList();
     }
 }

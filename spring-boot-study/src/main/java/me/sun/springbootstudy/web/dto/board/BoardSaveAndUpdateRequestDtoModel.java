@@ -1,4 +1,4 @@
-package me.sun.springbootstudy.domain.board;
+package me.sun.springbootstudy.web.dto.board;
 
 import me.sun.springbootstudy.web.BoardApiController;
 import org.springframework.hateoas.EntityModel;

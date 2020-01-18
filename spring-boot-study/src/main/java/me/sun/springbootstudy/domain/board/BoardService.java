@@ -35,13 +35,21 @@ public class BoardService {
     }
 
     @Transactional
-    public Long update(Long id, BoardUpdateRequestDto dto) {
-        Board findBoard = boardRepository.findById(id)
+    public Long update(Long id, BoardUpdateRequestDto dto, String email) {
+        Board findBoard = boardRepository.findWithMemberBy(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시판이 존재하지 않습니다."));
+
+        isAuthor(findBoard, email);
 
         findBoard.update(dto.getTitle(), dto.getContent(), dto.getBoardType());
 
         return id;
+    }
+
+    private void isAuthor(Board findBoard, String email) {
+        if (!findBoard.getMember().getEmail().equals(email)) {
+            throw new IllegalArgumentException("작성자가 아닙니다.");
+        }
     }
 
     @Transactional
@@ -67,9 +75,7 @@ public class BoardService {
         Board board = boardRepository.findWithMemberBy(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 존재하지 않습니다."));
 
-        if (!board.getMember().getEmail().equals(email)) {
-            throw new IllegalArgumentException("게시글 작성자만 삭제가 가능합니다.");
-        }
+        isAuthor(board, email);
 
         boardRepository.delete(board);
     }

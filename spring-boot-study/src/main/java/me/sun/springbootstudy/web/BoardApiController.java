@@ -1,16 +1,10 @@
 package me.sun.springbootstudy.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.sun.springbootstudy.domain.board.BoardAndCommentService;
-import me.sun.springbootstudy.domain.board.BoardSaveAndUpdateRequestDtoModel;
 import me.sun.springbootstudy.domain.board.BoardService;
 import me.sun.springbootstudy.domain.common.TokenMemberEmail;
-import me.sun.springbootstudy.web.dto.board.BoardListResponseDto;
-import me.sun.springbootstudy.web.dto.board.BoardResponseDtoModel;
-import me.sun.springbootstudy.web.dto.board.BoardSaveRequestDto;
-import me.sun.springbootstudy.web.dto.board.BoardUpdateRequestDto;
+import me.sun.springbootstudy.web.dto.board.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -28,8 +22,6 @@ import javax.validation.Valid;
 public class BoardApiController {
 
     private final BoardService boardService;
-    private final ObjectMapper objectMapper;
-    private final BoardAndCommentService boardAndCommentService;
 
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid BoardSaveRequestDto dto,
@@ -45,6 +37,7 @@ public class BoardApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateBoard(@PathVariable Long id,
+                                      @TokenMemberEmail String email,
                                       @RequestBody BoardUpdateRequestDto dto,
                                       Errors errors) {
 
@@ -52,7 +45,7 @@ public class BoardApiController {
             return ResponseEntity.badRequest().build();
         }
 
-        boardService.update(id, dto);
+        boardService.update(id, dto, email);
 
         return ResponseEntity.ok(new BoardSaveAndUpdateRequestDtoModel(id));
     }

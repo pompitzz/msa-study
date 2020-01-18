@@ -1,6 +1,7 @@
 package me.sun.springbootstudy.web;
 
 import lombok.RequiredArgsConstructor;
+import me.sun.springbootstudy.domain.common.TokenMemberEmail;
 import me.sun.springbootstudy.domain.member.MemberService;
 import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
 import me.sun.springbootstudy.web.dto.member.MemberResponseDto;
@@ -35,7 +36,7 @@ public class MemberApiController {
     }
 
     @GetMapping
-    public ResponseEntity queryMemberRole(@RequestParam("email") String email) {
+    public ResponseEntity queryMemberRole(@TokenMemberEmail String email) {
         MemberResponseDto dto = memberService.findByEmail(email);
         return ResponseEntity.ok(dto);
     }

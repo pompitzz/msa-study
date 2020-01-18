@@ -2,6 +2,7 @@ package me.sun.springbootstudy.domain.member;
 
 import me.sun.springbootstudy.web.dto.member.MemberJoinRequestDto;
 import me.sun.springbootstudy.web.dto.member.MemberResponseDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ class MemberServiceTest {
     MemberRepository memberRepository;
 
     @Test
+    @DisplayName("정상적으로 회원가입을 하는 테스트")
     void joinMemberAndFind() throws Exception {
         //given
         MemberJoinRequestDto joinDto = MemberJoinRequestDto.builder()

@@ -121,7 +121,7 @@ class BoardServiceTest {
                 .boardType(updatedBoardType)
                 .build();
 
-        Long updatedId = boardService.update(board.getId(), dto);
+        Long updatedId = boardService.update(board.getId(), dto, member.getEmail());
         em.flush();
         em.clear();
 
