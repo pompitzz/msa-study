@@ -82,7 +82,6 @@ const actions = {
             context.commit('SET_COMMENT_LIST', response.data.commentResponseDtoList);
             return response.data;
         } catch (e) {
-            context.commit('OPEN_MODAL', {title: '게시글 조회 실패', content: '다시 한번 더 시도해주세요.', option1: '닫기',});
             return Promise.reject(e);
         }
     },

@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Register from "../views/Register";
 import Login from "../views/Login";
 import NoAuth from "../views/NoAuth";
-import Main from "../views/Main";
 import Memo from "../views/Memo";
 import BoardWrite from "../views/BoardWrite";
 import Boards from "../views/Boards";
@@ -14,6 +13,7 @@ import {validateAdmin} from "../apis/admin_api";
 import store from "../store/store";
 import Calander from "../views/Calendar";
 import Temp from "../views/Temp";
+import Error from "../views/Error";
 
 const isAuthenticationMember = (to, from, next) => {
     if (localStorage.getItem('access_token') !== null) {
@@ -98,7 +98,12 @@ const router = new VueRouter({
             path: '/admin',
             component: Admin,
             beforeEnter: (to, form, next) => isAdmin(to, form, next),
-        }
+        },
+        {
+            path: '/error',
+            name: 'error`',
+            component: Error,
+        },
 
 
     ]

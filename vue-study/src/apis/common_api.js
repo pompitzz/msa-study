@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "../store/store";
+import {router} from "../routes/route";
 import {setTokenInLocalStorage} from "../utils/oauth";
 
 /*
@@ -31,6 +32,15 @@ axios.interceptors.response.use(
     function (error) {
         console.log('Interceptors Response Error is ', error.response, new Date());
 
+        if (!error.response) {
+            router.push('/error');
+        }
+
+        if (error.response.status === 500) {
+            store.commit('PUSH_ERROR_PAGE', error.response.data.message);
+            return Promise.reject(error);
+        }
+
         if (isExpiredToken(error)) {
             store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 만료되어 재발급 합니다.', 'error', 'top'));
             return requestRefreshToken().then(res => {
@@ -43,6 +53,8 @@ axios.interceptors.response.use(
                     store.commit('LOGOUT');
                 });
         }
+
+
         return Promise.reject(error);
     }
 );

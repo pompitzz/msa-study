@@ -4,6 +4,9 @@ const state = {
     loadingState: false,
     snackbar: {open: false, text: '', location: 'top',},
     modal: {open: false, title: '', content: '', option1: '', option2: '',},
+    errorMessage: '잘못된 요청입니다.',
+
+
     // ============ Rules ============ //
     emailRules: [
         v => !!v || '이메일을 작성해주세요.',
@@ -43,7 +46,7 @@ const mutations = {
     START_LOADING(state) {
         state.loadingState = true;
     },
-    END_LOADING(state){
+    END_LOADING(state) {
         state.loadingState = false;
     },
     SET_SNACKBAR(state, snackbarInfo) {
@@ -51,7 +54,12 @@ const mutations = {
         state.snackbar.text = snackbarInfo.text;
         state.snackbar.color = snackbarInfo.color;
         state.snackbar.location = snackbarInfo.location;
+    },
+    PUSH_ERROR_PAGE(state, errorMessage) {
+        state.errorMessage = errorMessage;
+        router.push('/error');
     }
+
 };
 
 const actions = {
