@@ -13,19 +13,28 @@ const getters = {
     },
 };
 
+function resetToken(state) {
+    deleteTokenInLocalStorage();
+    deleteAccessTokenInHeader();
+    state.accessToken = null;
+}
+
 const mutations = {
     LOGIN(state) {
         state.accessToken = localStorage.getItem('access_token');
         router.push('/');
     },
     LOGOUT(state) {
-        deleteTokenInLocalStorage();
-        deleteAccessTokenInHeader();
-        state.accessToken = null;
+        resetToken(state);
+        this.commit('SET_SNACKBAR', setSnackBarInfo('로그아웃 완료', 'success', 'top'));
+
+    },
+    LOGOUT_WITH_TOKEN_INVALIDE(state) {
+        resetToken(state);
         if (router.currentRoute.name !== 'boards') {
             router.push('/');
         }
-    },
+    }
 };
 
 const actions = {
@@ -59,21 +68,6 @@ const actions = {
             )
         }
     },
-    // async QUERY_MEMBER(context) {
-    //     try {
-    //         let text = '';
-    //         if (response.data.role === 'USER') {
-    //             text = `안녕하세요 ${response.data.name} 님!`;
-    //         } else if (response.data.role === 'ADMIN') {
-    //             text = `안녕하세요 마스터 님!`;
-    //         }
-    //         context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
-    //         return response.data;
-    //     } catch (e) {
-    //         // context.commit('OPEN_MODAL', {
-    //         //     title: '사용자 등록 실패', content: `게시글 등록을 위해선 재 요청이 필요합니다.` + e, option1: '재요청',})
-    //     }
-    // },
 };
 
 const greetingMember = (context, data) => {
@@ -85,5 +79,6 @@ const greetingMember = (context, data) => {
     }
     context.commit('SET_SNACKBAR', setSnackBarInfo(text, 'info', 'top'));
 };
+
 
 export default {mutations, state, actions, getters};

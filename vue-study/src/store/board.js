@@ -83,6 +83,8 @@ const actions = {
             return response.data;
         } catch (e) {
             return Promise.reject(e);
+        } finally {
+            context.commit('END_SPINNER');
         }
     },
     async QUERY_MORE_COMMENT(context, pageRequest) {
@@ -149,6 +151,7 @@ const actions = {
             context.commit('MOVE_TO_ARTICLE', articleInfo);
             return response.data;
         } catch (e) {
+            context.commit('END_SPINNER');
             context.commit('OPEN_MODAL', {
                 title: '게시글 조회에 실패하였습니다.',
                 content: `다시 한번 더 시도해주세요.\n` + e,

@@ -15,7 +15,7 @@
             </v-card>
 
             <div class="mt-2 text-center" v-if="!isLast">
-                <v-btn @click="requestMoreComments" class="mx-3"> 이전 댓글 더 보기</v-btn>
+                <v-btn @click="requestMoreComments" class="mx-3" color="white" outlined>더보기</v-btn>
             </div>
 
             <v-row v-if="commentList">
@@ -51,12 +51,14 @@
                                     :commentArr="comment.childrenResponseDto"/>
                         </div>
                     </v-card>
-                    <div class="mt-2 text-right">
-                        <v-btn @click="createComment" class="mx-3">댓글 작성</v-btn>
-                    </div>
                 </v-col>
             </v-row>
-
+            <div class="mt-2 text-center">
+                <v-btn @click="createComment" class="mx-3" color="white" large text>
+                    <v-icon left size="21">mdi-pencil</v-icon>
+                    <h3>댓글 작성</h3>
+                </v-btn>
+            </div>
 
         </v-container>
         <Modal @pass="deleteBoardOrComment"/>
@@ -222,6 +224,9 @@
         created() {
             this.$store.commit('SET_BOARD_ID', this.$route.params.id);
             this.$store.dispatch('QUERY_BOARD', this.pageRequest);
+        },
+        beforeDestroy() {
+            this.$store.state.board.board = {};
         }
     }
 </script>

@@ -2,6 +2,7 @@ import {router} from "../routes/route";
 
 const state = {
     loadingState: false,
+    spinnerLoading: false,
     snackbar: {open: false, text: '', location: 'top',},
     modal: {open: false, title: '', content: '', option1: '', option2: '',},
     errorMessage: '잘못된 요청입니다.',
@@ -23,17 +24,11 @@ const state = {
     ],
 };
 
-const getters = {
-
-};
+const getters = {};
 
 const mutations = {
     CLOSE_MODAL(state) {
         state.modal.open = false;
-    },
-    CLOSE_MODAL_AND_MOVE(state, route){
-        state.modal.open = false;
-        router.push(route);
     },
     OPEN_MODAL(state, modalTexts) {
         state.loadingState = false;
@@ -58,11 +53,16 @@ const mutations = {
     PUSH_ERROR_PAGE(state) {
         state.errorMessage = '잘못된 요청입니다.';
         router.push('/error');
+    },
+    START_SPINNER(state) {
+        state.spinnerLoading = true;
+    },
+    END_SPINNER(state) {
+        state.spinnerLoading = false;
     }
 
 };
 
-const actions = {
-};
+const actions = {};
 
 export default {mutations, state, actions, getters};

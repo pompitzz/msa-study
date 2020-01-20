@@ -51,7 +51,7 @@ axios.interceptors.response.use(
             if (isExpiredToken(errorData)) {
                 return attemptRefreshToken();
             } else {
-                store.commit('LOGOUT');
+                store.commit('LOGOUT_WITH_TOKEN_INVALIDE');
                 store.commit('SET_SNACKBAR', setSnackBarInfo('토큰 정보가 잘못되었습니다. 다시 로그인 해주세요', 'error', 'top'));
             }
         }
@@ -90,7 +90,7 @@ function attemptRefreshToken() {
     })
         .catch(() => {
             store.commit('SET_SNACKBAR', setSnackBarInfo('Refresh Token이 만료되었습니다. 다시 한번 로그인해주세요.', 'error', 'top'))
-            store.commit('LOGOUT');
+            store.commit('LOGOUT_WITH_TOKEN_INVALIDE');
         });
 }
 

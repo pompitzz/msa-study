@@ -23,15 +23,26 @@
                     >
 
                         <template v-slot:item.title="{item}">
-                            <v-btn @click="moveToBoard(item)" class="text-none px-1 my-td" text>
-                                {{titleLimit(item.title)}} <span class="ml-1" v-if="item.commentCount !== 0">({{item.commentCount}})</span>
-                            </v-btn>
+                            <div @click="moveToBoard(item)" class="my-cursor">
+                                <v-btn @click="moveToBoard(item)" class="text-none px-1 my-td" text>
+                                    {{titleLimit(item.title)}} <span class="ml-1" v-if="item.commentCount !== 0">({{item.commentCount}})</span>
+                                </v-btn>
+                            </div>
+                        </template>
+                        <template v-slot:item.author="{item}">
+                            <div @click="moveToBoard(item)" class="my-cursor">
+                                {{item.author}}
+                            </div>
                         </template>
                         <template v-slot:item.viewsCount="{item}" class="text-center">
-                            <span class="text-center mx-3">{{item.viewsCount}}</span>
+                            <div @click="moveToBoard(item)" class="my-cursor">
+                                <span class="text-center mx-3">{{item.viewsCount}}</span>
+                            </div>
                         </template>
                         <template v-slot:item.lastModifiedDate="{item}" class="text-center">
-                            {{item.lastModifiedDate | moment('YYYY-MM-DD')}}
+                            <div @click="moveToBoard(item)" class="my-cursor">
+                                {{item.lastModifiedDate | moment('YYYY-MM-DD')}}
+                            </div>
                         </template>
                     </v-data-table>
                     <div class="text-right">
@@ -93,6 +104,7 @@
             moveToBoard(board) {
                 this.articleInfo.id = board.id;
                 this.articleInfo.href = board._links.self.href;
+                this.$store.commit('START_SPINNER');
                 this.$store.dispatch('COUNT_MOVE_TO_ARTICLE', this.articleInfo);
             },
             titleLimit(title) {
@@ -170,5 +182,9 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+    }
+
+    .my-cursor {
+        cursor: pointer;
     }
 </style>
