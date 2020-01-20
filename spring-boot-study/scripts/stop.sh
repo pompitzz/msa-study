@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ABSPATH=$(readlink -f $0)
+ABSPATH=$(readlink -f $0) # stop.sh가 존재하는 경로를 가져온다
 ABSDIR=$(dirname $ABSPATH)  # 현재 stop.sh가 속해있는 경로를 찾는다.
 source ${ABSDIR}/profile.sh # profile.sh 설정들을 여기에 추가한다.
 
