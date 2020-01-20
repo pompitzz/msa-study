@@ -65,7 +65,9 @@ const mutations = {
     },
     MOVE_TO_ARTICLE(state, articleInfo) {
         state.boardUrl = articleInfo.href;
-        router.push(`/board/${articleInfo.id}`);
+        router.push(`/board/${articleInfo.id}`, () => {
+        });
+
     }
     ,
 

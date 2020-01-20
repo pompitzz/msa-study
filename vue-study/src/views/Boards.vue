@@ -24,7 +24,7 @@
 
                         <template v-slot:item.title="{item}">
                             <div @click="moveToBoard(item)" class="my-cursor">
-                                <v-btn @click="moveToBoard(item)" class="text-none px-1 my-td" text>
+                                <v-btn class="text-none px-1 my-td" text>
                                     {{titleLimit(item.title)}} <span class="ml-1" v-if="item.commentCount !== 0">({{item.commentCount}})</span>
                                 </v-btn>
                             </div>
