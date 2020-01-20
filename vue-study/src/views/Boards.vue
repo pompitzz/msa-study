@@ -108,7 +108,7 @@
                 this.$store.dispatch('COUNT_MOVE_TO_ARTICLE', this.articleInfo);
             },
             titleLimit(title) {
-                return title.length > 70 ? title.substring(0, 40) + '...' : title;
+                return title.length > 22 ? title.substring(0, 20) + '...' : title;
             },
             moveToWritePage() {
                 if (localStorage.getItem('access_token') === null) {

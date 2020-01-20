@@ -1,7 +1,7 @@
 <template>
     <div ref="container">
         <v-container>
-            <h1 class="my-5 text-center">{{board.title}}</h1>
+            <h2 class="my-5 px-5 text-center">{{board.title}}</h2>
             <p>작성자 : <span class="ml-2">{{board.author}}</span>
                 <span class="mx-5">|</span> 최근 작성일 : <span class="ml-2">{{board.lastModifiedDate |
                     moment('YYYY-MM-DD')}}</span>

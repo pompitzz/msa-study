@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <v-app-bar app class="white--text" color="#404242" flat>
+        <v-app-bar app class="white--text" color="#404242" v-if="!drawer">
 
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" color="white"/>
             <v-toolbar-title>
@@ -10,7 +10,9 @@
             <v-spacer/>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-icon color="white" v-on="on">mdi-apps</v-icon>
+                    <v-btn icon>
+                        <v-icon color="white" v-on="on">mdi-apps</v-icon>
+                    </v-btn>
                 </template>
 
                 <v-list>
@@ -36,7 +38,12 @@
                              dark
                              v-model="drawer"
         >
-            <v-col class="mt-5 text-center">
+            <div class="text-right">
+                <v-btn @click="drawer = false" class="mr-3 mt-3" icon text>
+                    <v-icon large>mdi-menu-left</v-icon>
+                </v-btn>
+            </div>
+            <v-col class="text-center">
                 <h2 class="white--text my-3">
                     Stranger BLOG
                 </h2>
