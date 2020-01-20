@@ -4,8 +4,10 @@
         <v-content>
             <router-view/>
         </v-content>
+
         <v-footer fixed app class="theme--dark"><span class="mx-auto">Copyright © {{new Date() | moment('YYYY')}} All Rights Reserved.</span>
         </v-footer>
+
         <Modal/>
 
         <v-snackbar

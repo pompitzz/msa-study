@@ -133,10 +133,8 @@
                 })
             },
             successSaveComment() {
-                console.log('successSaveComment 후 페이지 사이즈 증가');
-                console.log(this.pageRequest.size);
+                //successSaveComment 후 페이지 사이즈 증가
                 this.pageRequest.size++;
-                console.log(this.pageRequest.size);
                 this.$store.dispatch('QUERY_BOARD', this.pageRequest);
                 window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
             },
@@ -147,15 +145,11 @@
                 return String(95 - (5 * depth));
             },
             requestMoreComments() {
-                console.log('requestMoreComments 후 페이지 사이즈 증가');
-                console.log(this.pageRequest.page);
+                // requestMoreComments 후 페이지 사이즈 증가
                 this.pageRequest.size = this.pageRequest.size + 3;
-                console.log(this.pageRequest.page);
                 this.$store.dispatch('QUERY_MORE_COMMENT', this.pageRequest);
             },
             querySameParentComments(comment) {
-                console.log('commnet is ', comment);
-                console.log('id is ', comment.commentId);
                 let page = 1;
                 if (comment.page !== undefined) {
                     page = comment.page;
@@ -169,12 +163,10 @@
                     }
                 })
                     .then(res => {
-                        console.log('response', res);
                         comment.isMore = !res.last;
                         comment.page = res.number + 1;
                         let content = res.content.reverse();
                         comment.childrenResponseDto = content.concat(comment.childrenResponseDto);
-                        console.log('updated comment is ', comment);
 
                     })
                     .catch(() => {
@@ -209,8 +201,6 @@
                 }
             },
             deleteBoardOrComment() {
-                console.log('deleteBoardOrComment');
-                console.log(this.title);
                 if (this.title === '게시글 삭제') {
                     this.$store.dispatch('DELETE_BOARD', this.$route.params.id);
                 } else if (this.title === '댓글 삭제') {
@@ -220,7 +210,6 @@
             },
             openModal(title, commentId) {
                 this.title = title;
-                console.log(this.title, commentId);
                 if (!!commentId) this.commentId = commentId;
                 this.$store.commit('OPEN_MODAL', {
                     title: title,

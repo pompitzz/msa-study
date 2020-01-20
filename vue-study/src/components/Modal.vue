@@ -39,6 +39,9 @@
             submit() {
                 this.$emit('pass');
             }
+        },
+        destroyed() {
+            this.$store.commit('CLOSE_MODAL');
         }
     }
 </script>

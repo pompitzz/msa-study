@@ -32,7 +32,10 @@
 
         <!-- SECTION: 옆쪽 Drawer
         ====================================================================== -->
-        <v-navigation-drawer app dark v-model="drawer">
+        <v-navigation-drawer app
+                             dark
+                             v-model="drawer"
+        >
             <v-col class="mt-5 text-center">
                 <h2 class="white--text my-3">
                     Stranger BLOG
@@ -72,7 +75,7 @@
         name: "AppBar",
         data() {
             return {
-                drawer: true,
+                drawer: null,
                 links: [
                     {name: '메인', icon: 'mdi-home', route: '/main'},
                     {name: '메모장', icon: 'mdi-note-text', route: '/memo'},

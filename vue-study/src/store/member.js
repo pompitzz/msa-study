@@ -22,8 +22,9 @@ const mutations = {
         deleteTokenInLocalStorage();
         deleteAccessTokenInHeader();
         state.accessToken = null;
-        localStorage.removeItem("email");
-        router.push('/');
+        if (router.currentRoute.name !== 'boards') {
+            router.push('/');
+        }
     },
 };
 
@@ -38,7 +39,7 @@ const actions = {
             return response;
         } catch (e) {
             context.commit('END_LOADING');
-            context.commit('OPEN_MODAL', {title: '회원가입에 실패하였습니다.', content: '다시 한번 더 시도해주세요.', option1: '닫기',});
+            context.commit('OPEN_MODAL', {title: '회원가입에 실패', content: e.response.data.message, option1: '닫기',});
         }
     },
     async REQUEST_LOGIN(context, member) {

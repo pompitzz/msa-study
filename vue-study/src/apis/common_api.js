@@ -36,24 +36,25 @@ axios.interceptors.response.use(
             router.push('/error');
         }
 
-        if (error.response.status === 500) {
-            store.commit('PUSH_ERROR_PAGE', error.response.data.message);
+        let status = error.response.status;
+        if (status === 500) {
+            store.commit('PUSH_ERROR_PAGE');
             return Promise.reject(error);
         }
 
-        if (isExpiredToken(error)) {
-            store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 만료되어 재발급 합니다.', 'error', 'top'));
-            return requestRefreshToken().then(res => {
-                setTokenInLocalStorage(res.data);
-                store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 재발급 되었습니다.', 'info', 'top')
-                )
-            })
-                .catch(() => {
-                    store.commit('SET_SNACKBAR', setSnackBarInfo('Refresh Token이 만료되었습니다. 다시 한번 로그인해주세요.', 'error', 'top'))
-                    store.commit('LOGOUT');
-                });
-        }
+        if (status === 401) {
+            let errorData = error.response.data;
+            if (errorData.error !== 'invalid_token') {
+                return Promise.reject(error);
+            }
 
+            if (isExpiredToken(errorData)) {
+                return attemptRefreshToken();
+            } else {
+                store.commit('LOGOUT');
+                store.commit('SET_SNACKBAR', setSnackBarInfo('토큰 정보가 잘못되었습니다. 다시 로그인 해주세요', 'error', 'top'));
+            }
+        }
 
         return Promise.reject(error);
     }
@@ -75,9 +76,22 @@ function requestRefreshToken() {
     return axios(requestData);
 }
 
-function isExpiredToken(error) {
-    let errorDescription = error.response.data.error_description;
+function isExpiredToken(errorData) {
+    let errorDescription = errorData.error_description;
     return errorDescription.substring(0, 20) === 'Access token expired';
+}
+
+function attemptRefreshToken() {
+    store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 만료되어 재발급 합니다.', 'error', 'top'));
+    return requestRefreshToken().then(res => {
+        setTokenInLocalStorage(res.data);
+        store.commit('SET_SNACKBAR', setSnackBarInfo('토큰이 재발급 되었습니다.', 'info', 'top')
+        )
+    })
+        .catch(() => {
+            store.commit('SET_SNACKBAR', setSnackBarInfo('Refresh Token이 만료되었습니다. 다시 한번 로그인해주세요.', 'error', 'top'))
+            store.commit('LOGOUT');
+        });
 }
 
 function setSnackBarInfo(text, color, location) {

@@ -1,19 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Register from "../views/Register";
-import Login from "../views/Login";
-import NoAuth from "../views/NoAuth";
-import Memo from "../views/Memo";
-import BoardWrite from "../views/BoardWrite";
-import Boards from "../views/Boards";
-import Board from "../views/Board";
-import BoardModify from "../views/BoardModify";
-import Admin from "../views/Admin";
 import {validateAdmin} from "../apis/admin_api";
 import store from "../store/store";
-import Calander from "../views/Calendar";
-import Temp from "../views/Temp";
-import Error from "../views/Error";
 
 const isAuthenticationMember = (to, from, next) => {
     if (localStorage.getItem('access_token') !== null) {
@@ -44,66 +32,70 @@ const router = new VueRouter({
         {
             path: '/main',
             name: 'main',
-            component: Calander
+            component: () => import('../views/Calendar')
         },
         {
             path: '/blog/temp',
-            name: 'main',
-            component: Temp
+            component: () => import('../views/Temp')
         },
         {
             path: '/register',
             name: 'register',
-            component: Register
+            component: () => import('../views/Register')
         },
         {
             path: '/login',
             name: 'login',
-            component: Login
+            component: () => import('../views/Login')
         },
         {
             path: '/memo',
             name: 'memo',
-            component: Memo,
+            component: () => import('../views/Memo'),
             beforeEnter: (to, from, next) => isAuthenticationMember(to, from, next),
         },
         {
             path: '/no-auth',
             name: 'no-auth',
-            component: NoAuth
+            component: () => import('../views/NoAuth')
         },
         {
             path: '/board-write',
             name: 'boardWrite',
-            component: BoardWrite,
+            component: () => import('../views/BoardWrite'),
             beforeEnter: (to, from, next) => isAuthenticationMember(to, from, next),
 
         },
         {
             path: '/boards',
             name: 'boards',
-            component: Boards,
+            component: () => import('../views/Boards')
         },
         {
             path: '/board/:id',
             name: 'board',
-            component: Board,
+            component: () => import('../views/Board'),
         },
         {
             path: '/board-modify/:id',
             name: 'boardModify',
-            component: BoardModify,
+            component: () => import('../views/BoardModify'),
         },
         {
             path: '/admin',
-            component: Admin,
+            component: () => import('../views/Admin'),
             beforeEnter: (to, form, next) => isAdmin(to, form, next),
         },
         {
             path: '/error',
             name: 'error`',
-            component: Error,
+            component: () => import('../views/Error'),
         },
+        {
+            path: '*',
+            name: 'NoPage',
+            component: () => import('../views/NoPage')
+        }
 
 
     ]

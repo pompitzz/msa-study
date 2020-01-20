@@ -69,6 +69,9 @@
                 return this.$store.state.comment.dialog;
             }
 
+        },
+        destroyed() {
+            this.$store.commit('CLOSE_COMMENT_MODAL')
         }
     }
 </script>

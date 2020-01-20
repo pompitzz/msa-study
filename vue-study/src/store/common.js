@@ -55,8 +55,8 @@ const mutations = {
         state.snackbar.color = snackbarInfo.color;
         state.snackbar.location = snackbarInfo.location;
     },
-    PUSH_ERROR_PAGE(state, errorMessage) {
-        state.errorMessage = errorMessage;
+    PUSH_ERROR_PAGE(state) {
+        state.errorMessage = '잘못된 요청입니다.';
         router.push('/error');
     }
 
