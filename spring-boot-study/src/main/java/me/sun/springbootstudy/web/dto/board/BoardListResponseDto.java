@@ -13,7 +13,7 @@ public class BoardListResponseDto {
     Long id;
     String title;
     String author;
-    LocalDateTime lastModifiedDate;
+    LocalDateTime createDate;
 
     int viewsCount;
     int commentCount;
@@ -22,7 +22,7 @@ public class BoardListResponseDto {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.author = entity.getMember().getName();
-        this.lastModifiedDate = entity.getLastModifiedDate();
+        this.createDate = entity.getCreateDate();
         this.viewsCount = entity.getViewsCount();
         this.commentCount = entity.getCommentCount();
     }

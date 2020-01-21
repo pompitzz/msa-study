@@ -39,9 +39,9 @@
                                 <span class="text-center mx-3">{{item.viewsCount}}</span>
                             </div>
                         </template>
-                        <template v-slot:item.lastModifiedDate="{item}" class="text-center">
+                        <template v-slot:item.createDate="{item}" class="text-center">
                             <div @click="moveToBoard(item)" class="my-cursor">
-                                {{item.lastModifiedDate | moment('YYYY-MM-DD')}}
+                                {{item.createDate | moment('YYYY-MM-DD')}}
                             </div>
                         </template>
                     </v-data-table>
@@ -79,7 +79,7 @@
                     {text: '제목', value: 'title', align: 'left'},
                     {text: '작성자', value: 'author', sortable: false},
                     {text: '조회수', value: 'viewsCount'},
-                    {text: '최근 수정일', value: 'lastModifiedDate'},
+                    {text: '작성일', value: 'createDate'},
                 ],
                 pageRequest: {
                     page: 0,

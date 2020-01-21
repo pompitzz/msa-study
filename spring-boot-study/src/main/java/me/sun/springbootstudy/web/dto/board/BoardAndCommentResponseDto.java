@@ -17,7 +17,7 @@ public class BoardAndCommentResponseDto {
     private String content;
     private String author;
     private String email;
-    private LocalDateTime lastModifiedDate;
+    private LocalDateTime createDate;
     private Slice<CommentResponseDto> commentResponseDtoList;
 
     public BoardAndCommentResponseDto(Board board) {
@@ -25,7 +25,7 @@ public class BoardAndCommentResponseDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.author = board.getMember().getName();
-        this.lastModifiedDate = board.getLastModifiedDate();
+        this.createDate = board.getCreateDate();
         this.email = board.getMember().getEmail();
     }
 

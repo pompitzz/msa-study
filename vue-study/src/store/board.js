@@ -9,7 +9,7 @@ const state = {
     pageLoading: false,
     pageInfo: {},
     boardUrl: '',
-    board: {id: '', title: '', author: '', content: '', email: '', lastModifiedDate: '',},
+    board: {id: '', title: '', author: '', content: '', email: '', createDate: '',},
     boardWrite: {title: '', content: '', boardType: '',},
     pageRequest: {id: '', page: 0, sort: 'createDate,DESC', size: 3,},
 };
@@ -27,7 +27,7 @@ const mutations = {
         state.board.author = boardInfo.author;
         state.board.content = boardInfo.content;
         state.board.email = boardInfo.email;
-        state.board.lastModifiedDate = boardInfo.lastModifiedDate;
+        state.board.createDate = boardInfo.createDate;
     },
     ACEEPT_MODIFY_BOARD(state, payload) {
         state.boardWrite.title = payload.title;

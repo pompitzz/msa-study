@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # 쉬고 있는 profile 찾기
-function find_idle_profile()
-{
+function find_idle_profile() {
   # 엔직엑스가 바라보고 있는 웹 애플리케이션이 정상적으로 수행중인지 확인하다.
   # 에러가 발생하면 real2를 profile로 사용한다.
   # -s: --silent로 진행내역이나 메시지를 출력하지 않는다.

@@ -3,8 +3,8 @@
         <v-container>
             <h2 class="my-5 px-5 text-center">{{board.title}}</h2>
             <p>작성자 : <span class="ml-2">{{board.author}}</span>
-                <span class="mx-5">|</span> 최근 작성일 : <span class="ml-2">
-                    {{board.lastModifiedDate === undefined ? '0000-00-00' : board.lastModifiedDate | moment('YYYY-MM-DD')}}
+                <span class="mx-5">|</span> 작성일 : <span class="ml-2">
+                    {{board.createDate === undefined ? '0000-00-00' : board.createDate | moment('YYYY-MM-DD')}}
                 </span>
             </p>
             <div class="mb-3" v-if="hasToken">
@@ -26,7 +26,7 @@
                             <div>
                                 <v-icon class="mb-2 mr-3">mdi-account</v-icon>
                                 <h4 class="d-inline-block">{{comment.name}} <span class="mx-1"/>작성일 :
-                                    {{comment.createDate === undefined ? '0000-00-00' : board.lastModifiedDate |
+                                    {{comment.createDate === undefined ? '0000-00-00' : comment.createDate |
                                     moment('YYYY-MM-DD')}}
                                 </h4>
                                 <v-btn @click="openModal('댓글 삭제', comment.commentId)"
@@ -230,7 +230,7 @@
         },
         beforeDestroy() {
             this.$store.state.board.board = {};
-            this.$store.state.board.board.lastModifiedDate = new Date();
+            this.$store.state.board.board.createDate = new Date();
         }
     }
 </script>
