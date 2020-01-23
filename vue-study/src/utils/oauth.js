@@ -1,5 +1,5 @@
 const setTokenInLocalStorage = (tokenInfo) => {
-    console.log('SET LOCAL STORAGE')
+    // console.log('SET LOCAL STORAGE')
     localStorage.setItem("access_token", 'Bearer ' + tokenInfo.access_token);
     localStorage.setItem("refresh_token", tokenInfo.refresh_token);
 };

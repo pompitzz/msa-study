@@ -12,7 +12,7 @@ const mutations = {
     OPEN_CALENDAR_DIALOG(state, payload) {
         state.event.startDate = payload.date;
         state.event.startTime = payload.time;
-        console.log(state.calendar);
+        // console.log(state.calendar);
         state.dialog = true;
     },
     CLOSE_CALENDAR_DIALOG(state) {
@@ -42,23 +42,23 @@ const actions = {
     async REQEUST_QUERY_EVENTS_BY_MONTH(context, startDate) {
         try {
             const response = await requestQueryEvents(startDate);
-            console.log('일정 조회');
-            console.log(response.data);
+            // console.log('일정 조회');
+            // console.log(response.data);
             // 이벤트 채워 넣기
         } catch (e) {
-            console.log('일정 조회 에러' + e);
+            // console.log('일정 조회 에러' + e);
         }
     },
 
     async REQEUST_DELETE_EVENT(context, eventId) {
         try {
             const response = await requestDelteEvent(eventId);
-            console.log('일정 삭제 성공');
+            // console.log('일정 삭제 성공');
             // 이벤트를 뺼껀지, 혹은 다시 조회할껀지
             store.commit('SET_SNACKBAR', setSnackBarInfo('일정이 삭제 되었습니다.', 'info', 'top'))
 
         } catch (e) {
-            console.log('일정 삭제 실패' + e)
+            // console.log('일정 삭제 실패' + e)
         }
     },
 
@@ -71,10 +71,10 @@ const actions = {
             };
 
             const response = await requestUpdateEvent(event);
-            console.log('업데이트 성공');
+            // console.log('업데이트 성공');
             // 이벤트를 변경할 것인지, 다시 조회할것인지
         } catch (e) {
-            console.log('이벤트 수정 실패')
+            // console.log('이벤트 수정 실패')
         }
     }
 };

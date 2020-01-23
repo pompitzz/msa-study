@@ -12,11 +12,11 @@ axios.interceptors.request.use(
         if (accessToken !== null) {
             config.headers.Authorization = accessToken;
         }
-        console.log('Interceptors Request is', config, new Date());
+        // console.log('Interceptors Request is', config, new Date());
         return config
     },
     error => {
-        console.log('Interceptors Request Error is', error.response, new Date());
+        // console.log('Interceptors Request Error is', error.response, new Date());
         return Promise.reject(error);
     }
 );
@@ -26,11 +26,11 @@ axios.interceptors.request.use(
  */
 axios.interceptors.response.use(
     response => {
-        console.log('Interceptors Response is ', response, new Date());
+        // console.log('Interceptors Response is ', response, new Date());
         return response;
     },
     function (error) {
-        console.log('Interceptors Response Error is ', error.response, new Date());
+        // console.log('Interceptors Response Error is ', error.response, new Date());
 
         if (!error.response) {
             router.push('/error');

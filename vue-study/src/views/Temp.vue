@@ -96,8 +96,8 @@
                 return interval.minute === 0
             },
             showEvent({event, day}) {
-                console.log(event);
-                console.log(day);
+                // console.log(event);
+                // console.log(day);
             },
             moreEvent({date}) {
                 this.start = date;

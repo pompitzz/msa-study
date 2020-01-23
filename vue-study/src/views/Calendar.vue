@@ -129,7 +129,7 @@
         },
         methods: {
             open(date) {
-                console.log(date);
+                // console.log(date);
                 if (localStorage.getItem('access_token') === null) {
                     store.commit('SET_SNACKBAR', setSnackBarInfo('로그인 후 이용해주세요.', 'error', 'top'));
                 } else {
@@ -141,9 +141,9 @@
                 return interval.minute === 0
             },
             showEvent({event, day}) {
-                console.log('showEvent');
-                console.log(event);
-                console.log(day);
+                // console.log('showEvent');
+                // console.log(event);
+                // console.log(day);
             },
             moreEvent({date}) {
                 this.start = date;

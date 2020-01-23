@@ -144,7 +144,7 @@ const actions = {
             context.commit('SET_MODIFY_BOARD', response.data);
             return response.data;
         } catch (e) {
-            console.log('QUERY_MODIFY_BOARD 에러');
+            // console.log('QUERY_MODIFY_BOARD 에러');
         }
     },
     async COUNT_MOVE_TO_ARTICLE(context, articleInfo) {
