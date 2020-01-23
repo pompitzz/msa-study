@@ -9,6 +9,8 @@ a {
     }
 }
 
+
+/* tui 에디터 스타일 */
 .v-application code:after {
     content: none !important;
 }
@@ -23,11 +25,34 @@ a {
 
 .tui-editor-contents pre {
     background-color: #f5f5f5 !important;
-    margin-top: 8 ox !important;
+    margin-top: 8px !important;
 }
 
 .tui-editor-contents hr {
     border-top: 1px solid black !important;
+}
+
+.tui-editor-contents p {
+    font-size: 1rem;
+}
+
+.tui-editor-contents ul {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.tui-editor-contents li {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+.tui-editor-contents h3, h4 {
+    margin-bottom: 20px !important;
+    margin-top: 30px !important;
+}
+
+.tui-editor-contents h3 {
+    font-size: 1.3125rem;
 }
 
 .row {
@@ -38,6 +63,23 @@ blockquote {
     border-left: 4px solid #b8b8b8 !important;
 }
 
+code:before {
+    content: none !important;
+}
+
+code {
+    font-size: 14px !important;
+}
+
+.hljs-keyword {
+    color: #82b1ff !important;
+}
+
+.hljs-params {
+    color: coral !important;
+}
+
+/* 캘린더 스타일 */
 .v-calendar-monthly .v-present button {
     background-color: #82b1ff !important;
 }
@@ -58,22 +100,3 @@ blockquote {
     min-width: auto !important;
 }
 
-.tui-editor-contents h4 {
-    margin-bottom: 5px !important;
-}
-
-code:before {
-    content: none !important;
-}
-
-code {
-    font-size: 14px !important;
-}
-
-.hljs-keyword {
-    color: #82b1ff !important;
-}
-
-.hljs-params {
-    color: coral !important;
-}
