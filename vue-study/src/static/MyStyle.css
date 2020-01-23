@@ -46,6 +46,10 @@ a {
     font-size: 15px;
 }
 
+.tui-editor-contents .hljs-meta {
+    color: #1b8620;
+}
+
 .tui-editor-contents h3, h4 {
     margin-bottom: 20px !important;
     margin-top: 30px !important;
@@ -63,12 +67,14 @@ blockquote {
     border-left: 4px solid #b8b8b8 !important;
 }
 
-code:before {
+.tui-editor-contents code:before {
     content: none !important;
 }
 
-code {
+.tui-editor-contents code {
     font-size: 14px !important;
+    max-width: 100%;
+
 }
 
 .hljs-keyword {
@@ -99,4 +105,3 @@ code {
 .v-menu__content.theme--light.menuable__content__active {
     min-width: auto !important;
 }
-

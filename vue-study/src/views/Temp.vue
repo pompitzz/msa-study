@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import Dialog from "../components/Dialog";
+    import Dialog from "../components/EventDialog";
 
     export default {
         data() {

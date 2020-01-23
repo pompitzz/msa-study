@@ -22,6 +22,7 @@ const state = {
         v => !!v || '비밀번호를 작성해주세요',
         v => v.search(/\s/) === -1 || '공백을 제거해주세요!'
     ],
+
 };
 
 const getters = {};

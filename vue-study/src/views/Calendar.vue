@@ -83,7 +83,6 @@
                         <v-calendar
                                 :event-color="getEventColor"
                                 :events="events"
-                                :show-interval-label="showIntervalLabel"
                                 :start="start"
                                 :type="type"
                                 @click:date="open"
@@ -104,47 +103,45 @@
                 </div>
             </v-col>
         </v-row>
-        <Dialog :dialog="true"/>
+        <EventDialog :dialog="true"/>
     </div>
 </template>
 
 <script>
-    import Dialog from "../components/Dialog";
+    import EventDialog from "../components/EventDialog";
+    import store from "../store/store";
+    import {setSnackBarInfo} from "../apis/common_api";
 
     export default {
         data: () => ({
             dark: true,
             startMenu: false,
             start: '',
-            now: null,
-            names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
             type: 'month',
             typeOptions: [
                 {text: 'Day', value: 'day'},
                 {text: 'Week', value: 'week'},
                 {text: 'Month', value: 'month'},
             ],
-            maxDays: 7,
-            maxDaysOptions: [
-                {text: '7 days', value: 7},
-                {text: '5 days', value: 5},
-                {text: '4 days', value: 4},
-                {text: '3 days', value: 3},
-            ],
         }),
         components: {
-            Dialog
+            EventDialog
         },
         methods: {
             open(date) {
                 console.log(date);
-                this.$store.commit('OPEN_CALENDAR_DIALOG', date)
+                if (localStorage.getItem('access_token') === null) {
+                    store.commit('SET_SNACKBAR', setSnackBarInfo('로그인 후 이용해주세요.', 'error', 'top'));
+                } else {
+                    this.$store.commit('OPEN_CALENDAR_DIALOG', date)
+                }
             },
             showIntervalLabel(interval) {
                 // console.log(interval);
                 return interval.minute === 0
             },
             showEvent({event, day}) {
+                console.log('showEvent');
                 console.log(event);
                 console.log(day);
             },
@@ -152,6 +149,9 @@
                 this.start = date;
                 this.type = 'day';
             },
+            getEventColor(event) {
+                return event.color;
+            }
 
         },
         computed: {
