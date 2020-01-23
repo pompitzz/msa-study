@@ -39,7 +39,6 @@ public class MemberEmailDecodeResolver implements HandlerMethodArgumentResolver 
         if (authorizationHeader == null) {
             throw new NotHaveAccessTokenException("Access Token이 존재하지 않습니다.");
         }
-        ;
 
         String jwtToken = authorizationHeader.substring(7);
         Jwt decodedToken = JwtHelper.decode(jwtToken);

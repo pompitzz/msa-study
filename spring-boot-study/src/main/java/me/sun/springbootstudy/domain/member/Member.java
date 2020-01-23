@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import me.sun.springbootstudy.domain.board.Board;
 import me.sun.springbootstudy.domain.comment.Comment;
 import me.sun.springbootstudy.domain.common.BaseTimeEntity;
+import me.sun.springbootstudy.domain.event.Event;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,6 +44,10 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Event> events = new ArrayList<>();
+
     @Builder
     public Member(String email, String password, String name, MemberRole role) {
         this.email = email;
@@ -54,4 +59,5 @@ public class Member extends BaseTimeEntity {
     public void encodingPassword(String password) {
         this.password = password;
     }
+
 }

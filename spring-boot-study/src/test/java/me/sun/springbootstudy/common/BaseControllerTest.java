@@ -21,4 +21,5 @@ public class BaseControllerTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
 }
