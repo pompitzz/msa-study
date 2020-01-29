@@ -1,8 +1,8 @@
 package me.sun.springbootstudy.web;
 
 import me.sun.springbootstudy.common.BaseControllerTest;
-import me.sun.springbootstudy.domain.event.EventRepository;
 import me.sun.springbootstudy.domain.event.EventService;
+import me.sun.springbootstudy.domain.event.repository.EventRepository;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
 import me.sun.springbootstudy.domain.member.MemberService;

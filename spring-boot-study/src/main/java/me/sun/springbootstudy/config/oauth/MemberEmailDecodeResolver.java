@@ -25,22 +25,27 @@ public class MemberEmailDecodeResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean isTokenUserEmail = parameter.getParameterAnnotation(TokenMemberEmail.class) != null;
+        boolean isTokenMemberEmail = parameter
+                .getParameterAnnotation(TokenMemberEmail.class) != null;
+
         boolean isString = String.class.equals(parameter.getParameterType());
 
-        return isTokenUserEmail && isString;
+        return isTokenMemberEmail && isString;
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String authorizationHeader = webRequest.getHeader("Authorization");
         log.info("Authorization Header ::: " + authorizationHeader);
 
-        if (authorizationHeader == null) {
+        String NO_HAS_TOKEN = "[object Object]";
+        if (authorizationHeader.equals(NO_HAS_TOKEN)) {
             throw new NotHaveAccessTokenException("Access Token이 존재하지 않습니다.");
         }
 
         String jwtToken = authorizationHeader.substring(7);
+
         Jwt decodedToken = JwtHelper.decode(jwtToken);
 
         Map<String, String> claims = objectMapper.readValue(decodedToken.getClaims(), Map.class);

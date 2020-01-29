@@ -6,6 +6,8 @@ import me.sun.springbootstudy.domain.board.BoardType;
 import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.comment.Comment;
 import me.sun.springbootstudy.domain.comment.CommentRepository;
+import me.sun.springbootstudy.domain.event.Event;
+import me.sun.springbootstudy.domain.event.repository.EventRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
@@ -17,7 +19,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.stream.IntStream;
+
+import static java.time.LocalDate.of;
 
 @RequiredArgsConstructor
 @Component
@@ -30,6 +35,7 @@ public class AppRunner implements ApplicationRunner {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final EventRepository eventRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -74,6 +80,13 @@ public class AppRunner implements ApplicationRunner {
         Comment content3 = saveComment(member, board, null, "content3");
         Comment content4 = saveComment(member, board, null, "content4");
         Comment content5 = saveComment(member, board, null, "content5");
+
+
+        saveEvents("블로그 작성", of(2020, 1, 28), of(2020, 1, 30), member);
+        saveEvents("회의", of(2019, 12, 20), of(2019, 12, 25), member);
+        saveEvents("2월 면접", of(2020, 2, 10), of(2020, 2, 11), member);
+        saveEvents("면접 공부", of(2020, 1, 25), of(2020, 2, 2), member);
+        saveEvents("책 읽기", of(2020, 1, 2), of(2020, 1, 5), member);
     }
 
     private Comment saveThreeChildrenAndOneReturn(Member member, Board board, Comment content1, int num) {
@@ -90,5 +103,16 @@ public class AppRunner implements ApplicationRunner {
         Comment content1 = Comment.createComment(member, board,
                 o, content12);
         return commentRepository.save(content1);
+    }
+
+    private void saveEvents(String title, LocalDate start, LocalDate end, Member member) {
+        Event event = Event.builder()
+                .startDate(start)
+                .endDate(end)
+                .title(title)
+                .content("content")
+                .build();
+        event.setMember(member);
+        eventRepository.save(event);
     }
 }

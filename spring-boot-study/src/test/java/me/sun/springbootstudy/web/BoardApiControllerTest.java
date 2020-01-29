@@ -5,7 +5,7 @@ import me.sun.springbootstudy.domain.board.Board;
 import me.sun.springbootstudy.domain.board.BoardService;
 import me.sun.springbootstudy.domain.board.BoardType;
 import me.sun.springbootstudy.domain.board.repository.BoardRepository;
-import me.sun.springbootstudy.domain.event.EventRepository;
+import me.sun.springbootstudy.domain.event.repository.EventRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;

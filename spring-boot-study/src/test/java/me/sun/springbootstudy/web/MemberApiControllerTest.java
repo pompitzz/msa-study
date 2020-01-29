@@ -36,6 +36,7 @@ class MemberApiControllerTest {
 
     @Autowired
     TokenInformation tokenInformation;
+
     @Test
     void joinMember() throws Exception {
         //given

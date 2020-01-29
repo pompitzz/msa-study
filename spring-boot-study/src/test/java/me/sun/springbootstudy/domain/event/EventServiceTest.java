@@ -1,6 +1,7 @@
 package me.sun.springbootstudy.domain.event;
 
 import me.sun.springbootstudy.common.BaseControllerTest;
+import me.sun.springbootstudy.domain.event.repository.EventRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
 import me.sun.springbootstudy.domain.member.MemberRole;
@@ -13,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
+import static java.time.LocalDate.now;
+import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -41,8 +45,8 @@ class EventServiceTest extends BaseControllerTest {
 
         EventSaveRequestDto dto = EventSaveRequestDto.builder()
                 .title("event1")
-                .startDate(LocalDate.of(2019, 11, 11))
-                .endDate(LocalDate.now())
+                .startDate(of(2019, 11, 11))
+                .endDate(now())
                 .startTime(LocalTime.of(11, 11))
                 .endTime(LocalTime.of(12, 00))
                 .content("content")
@@ -66,8 +70,8 @@ class EventServiceTest extends BaseControllerTest {
 
         EventSaveRequestDto dto = EventSaveRequestDto.builder()
                 .title("event1")
-                .startDate(LocalDate.of(2019, 11, 11))
-                .endDate(LocalDate.now())
+                .startDate(of(2019, 11, 11))
+                .endDate(now())
                 .content("content")
                 .build();
         //when
@@ -85,6 +89,52 @@ class EventServiceTest extends BaseControllerTest {
                 .hasMessage("해당 이벤트가 존재하지 않습니다.");
     }
 
+    @Test
+    @DisplayName("전달 매개변수의 날짜의 년도와 개월에 일치하는 이벤트들을 조회하는 테스트")
+    void findEventsByDateAndMember() throws Exception {
+        //given
+        Member savedMember = saveMember("ema1212123il@naver.com", "password");
+        EventResponseDto title1 =
+                saveEvent(of(2020, 1, 2), of(2020, 1, 5), "title1", savedMember);
+        EventResponseDto title2 =
+                saveEvent(of(2019, 1, 2), of(2019, 1, 5), "title2", savedMember);
+        EventResponseDto title3 =
+                saveEvent(of(2020, 2, 2), of(2020, 2, 5), "title3", savedMember);
+        EventResponseDto title4 =
+                saveEvent(of(2020, 1, 2), of(2020, 2, 5), "title4", savedMember);
+        EventResponseDto title5 =
+                saveEvent(of(2020, 12, 2), of(2020, 1, 5), "title5", savedMember);
+
+        //when
+        List<EventResponseDto> events = eventService.findByMonthAndMember(of(2020, 1, 5), savedMember.getEmail());
+
+        //then
+        assertThat(events).
+                extracting("title").containsExactly(title1.getTitle(), title4.getTitle(), title5.getTitle());
+    }
+
+    @Test
+    @DisplayName("날짜가 일치하는 이벤트가 없어 조회가 되지 않는 테스트")
+    void findEventsByDateAndMemberRetSize0() throws Exception {
+        //given
+        Member savedMember = saveMember("email@naver.com", "password");
+        EventResponseDto title1 =
+                saveEvent(of(2020, 1, 2), of(2020, 1, 5), "title1", savedMember);
+        EventResponseDto title2 =
+                saveEvent(of(2019, 1, 2), of(2019, 1, 5), "title2", savedMember);
+        EventResponseDto title3 =
+                saveEvent(of(2020, 2, 2), of(2020, 2, 5), "title3", savedMember);
+        EventResponseDto title4 =
+                saveEvent(of(2020, 1, 2), of(2020, 2, 5), "title4", savedMember);
+        EventResponseDto title5 =
+                saveEvent(of(2020, 12, 2), of(2020, 1, 5), "title5", savedMember);
+
+        //when
+        List<EventResponseDto> events = eventService.findByMonthAndMember(of(2013, 1, 5), savedMember.getEmail());
+
+        //then
+        assertThat(events.size()).isEqualTo(0);
+    }
     private Member saveMember(String email, String password) {
         Member member = Member.builder()
                 .email(email)
@@ -95,5 +145,18 @@ class EventServiceTest extends BaseControllerTest {
 
         return memberRepository.save(member);
     }
+
+    private EventResponseDto saveEvent(LocalDate startDate, LocalDate endDate, String title, Member savedMember) {
+        EventSaveRequestDto dto = EventSaveRequestDto.builder()
+                .title(title)
+                .startDate(startDate)
+                .endDate(endDate)
+                .startTime(LocalTime.of(11, 11))
+                .endTime(LocalTime.of(12, 0))
+                .content("content")
+                .build();
+        return eventService.save(dto, savedMember.getEmail());
+    }
+
 
 }

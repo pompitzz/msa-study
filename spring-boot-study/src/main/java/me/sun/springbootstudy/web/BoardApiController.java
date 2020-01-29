@@ -27,7 +27,6 @@ public class BoardApiController {
     public ResponseEntity save(@RequestBody @Valid BoardSaveRequestDto dto,
                                @TokenMemberEmail String email,
                                Errors errors) {
-
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }

@@ -2,14 +2,16 @@ package me.sun.springbootstudy.domain.member;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
 class MemberRepositoryTest {
 
     @Autowired
@@ -19,7 +21,7 @@ class MemberRepositoryTest {
     void saveAndFindMember() throws Exception {
         //given
         Member member = Member.builder()
-                .email("email@naver.com")
+                .email("emqweasdq3213f1232dqweail@naver.com")
                 .password("password")
                 .name("James")
                 .role(MemberRole.USER)
@@ -27,7 +29,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when & then
-        Member findMember = memberRepository.findAll().get(0);
+        Member findMember = memberRepository.findById(member.getId()).get();
         assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
         assertThat(findMember.getName()).isEqualTo(member.getName());
         assertThat(findMember.getRole()).isEqualTo(MemberRole.USER);
@@ -43,7 +45,7 @@ class MemberRepositoryTest {
     @Test
     void findByEmail() throws Exception {
         //given
-        String email = "email@naver.com";
+        String email = "emai123asd123qwel@naver.com";
         Member member = Member.builder()
                 .email(email)
                 .password("password")

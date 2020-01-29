@@ -1,5 +1,6 @@
 package me.sun.springbootstudy.domain.board;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
@@ -7,9 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
 class BoardRepositoryTest {
 
     @Autowired
@@ -25,6 +28,9 @@ class BoardRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    JPAQueryFactory jpaQueryFactory;
 
     @Autowired
     EntityManager em;

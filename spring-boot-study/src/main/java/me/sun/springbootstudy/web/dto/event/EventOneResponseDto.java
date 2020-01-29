@@ -13,21 +13,17 @@ import java.time.LocalTime;
 @ToString
 public class EventOneResponseDto {
 
-
+    private Long id;
     private LocalDate startDate;
-
     private LocalDate endDate;
-
     private LocalTime startTime;
-
     private LocalTime endTime;
-
     private String title;
-
     private String content;
 
 
     public EventOneResponseDto(Event event) {
+        this.id = event.getId();
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.startTime = event.getStartTime();

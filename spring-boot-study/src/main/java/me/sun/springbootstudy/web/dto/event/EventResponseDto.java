@@ -11,18 +11,17 @@ import java.time.LocalTime;
 @Getter
 public class EventResponseDto {
 
+
+    private Long id;
     private LocalDate startDate;
-
     private LocalDate endDate;
-
     private LocalTime startTime;
-
     private LocalTime endTime;
-
     private String title;
 
 
     public EventResponseDto(Event event) {
+        this.id = event.getId();
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.startTime = event.getStartTime();
