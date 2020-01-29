@@ -1,7 +1,7 @@
 <template>
     <div class="fill-height">
         <v-row align="center" class="fill-height" justify="center">
-            <v-col cols="12" md="6" sm="12">
+            <v-col cols="12" lg="8" md="10" sm="12" xl="7">
                 <div class="mx-5">
                     <div class="text-center text-uppercase">
                         <h1>Calendar</h1>
@@ -83,34 +83,35 @@
                         <v-calendar
                                 :event-color="getEventColor"
                                 :events="events"
+                                :event-overlap-threshold="30"
                                 :start="start"
                                 :type="type"
                                 @click:date="open"
                                 @click:event="showEvent"
                                 @click:more="moreEvent"
-                                @click:time="open"
                                 dark
                                 ref="calendar"
 
                                 v-model="start"
                         ></v-calendar>
                     </v-sheet>
-                </div>
-            </v-col>
-            <v-col class="mb-4 controls" cols="12" md="6">
-                <div class="text-center">
-                    <v-btn color="green" outlined to="/boards">게시글로 가기</v-btn>
+                    <div class="text-right mt-3 font-weight-bold ">
+                        <v-btn @click="open({ date: start })" class="white--text" color="indigo"
+                               large>일정 추가
+                        </v-btn>
+                    </div>
                 </div>
             </v-col>
         </v-row>
         <EventDialog :dialog="true"/>
+        <EventDetail :dialog="true"/>
     </div>
 </template>
 
 <script>
     import EventDialog from "../components/EventDialog";
-    import store from "../store/store";
     import {setSnackBarInfo} from "../apis/common_api";
+    import EventDetail from "../components/EventDetail";
 
     export default {
         data: () => ({
@@ -125,25 +126,23 @@
             ],
         }),
         components: {
+            EventDetail,
             EventDialog
         },
         methods: {
             open(date) {
-                // console.log(date);
+                console.log(date);
                 if (localStorage.getItem('access_token') === null) {
-                    store.commit('SET_SNACKBAR', setSnackBarInfo('로그인 후 이용해주세요.', 'error', 'top'));
+                    this.$store.commit('SET_SNACKBAR', setSnackBarInfo('로그인 후 이용해주세요.', 'error', 'top'));
                 } else {
                     this.$store.commit('OPEN_CALENDAR_DIALOG', date)
                 }
             },
             showIntervalLabel(interval) {
-                // console.log(interval);
                 return interval.minute === 0
             },
-            showEvent({event, day}) {
-                // console.log('showEvent');
-                // console.log(event);
-                // console.log(day);
+            showEvent({event}) {
+                this.$store.dispatch('REQUEST_DETAIL_EVENT', event.id);
             },
             moreEvent({date}) {
                 this.start = date;
@@ -161,6 +160,15 @@
         },
         created() {
             this.start = this.$moment().format('YYYY-MM-DD');
+        },
+        watch: {
+            start(newDate, oldDate) {
+                let newDateMonth = this.$moment(newDate).format('MM');
+                let oldDateMonth = this.$moment(oldDate).format('MM');
+                if (newDateMonth !== oldDateMonth && !!localStorage.getItem('access_token')) {
+                    this.$store.dispatch('REQEUST_QUERY_EVENTS_BY_DATE', newDate);
+                }
+            }
         }
     }
 </script>

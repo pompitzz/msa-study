@@ -4,19 +4,21 @@ function requestAddEvent(event) {
     return axios.post(`${process.env.VUE_APP_BASEURL}/api/events`, event);
 }
 
-function requestQueryEvents(startDate) {
+function requestQueryEvents(date) {
     return axios.get(`${process.env.VUE_APP_BASEURL}/api/events`, {
-        params: {
-            startDate
-        }
+        params: {date: date}
     });
 }
 
-function requestDelteEvent(eventId){
+function requestEventDetail(eventId) {
+    return axios.get(`${process.env.VUE_APP_BASEURL}/api/events/${eventId}`);
+}
+
+function requestDelteEvent(eventId) {
     return axios.delete(`${process.env.VUE_APP_BASEURL}/api/events`, eventId);
 }
 
-function requestUpdateEvent(event){
+function requestUpdateEvent(event) {
     return axios.put(`${process.env.VUE_APP_BASEURL}/api/events`, event);
 }
 
@@ -24,5 +26,6 @@ export {
     requestAddEvent,
     requestQueryEvents,
     requestDelteEvent,
-    requestUpdateEvent
+    requestUpdateEvent,
+    requestEventDetail,
 }

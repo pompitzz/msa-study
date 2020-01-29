@@ -84,10 +84,10 @@
             return {
                 drawer: null,
                 links: [
-                    {name: '메인', icon: 'mdi-home', route: '/main'},
-                    {name: '메모장', icon: 'mdi-note-text', route: '/memo'},
+                    {name: '캘린더', icon: 'mdi-calendar-check', route: '/main'},
+                    // {name: '메모장', icon: 'mdi-note-text', route: '/memo'},
                     {name: '게시글', icon: 'mdi-clipboard-text-multiple-outline', route: '/boards'},
-                    {name: '관리자 페이지', icon: 'mdi-account', route: '/admin'},
+                    // {name: '관리자 페이지', icon: 'mdi-account', route: '/admin'},
                     {name: '로그인', icon: 'mdi-login-variant', route: '/login'},
                     {name: '회원가입', icon: 'mdi-account-plus', route: '/register'},
                 ]

@@ -130,7 +130,7 @@
         },
         computed: {
             dialog() {
-                return this.$store.state.calendar.dialog;
+                return this.$store.state.calendar.eventAddDialog;
             },
             event() {
                 return this.$store.state.calendar.event;

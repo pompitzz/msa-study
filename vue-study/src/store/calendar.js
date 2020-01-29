@@ -1,11 +1,13 @@
-import {requestAddEvent, requestQueryEvents} from "../apis/calendar_api";
+import {requestAddEvent, requestQueryEvents, requestEventDetail} from "../apis/calendar_api";
 import store from "./store";
 import {setSnackBarInfo} from "../apis/common_api";
 
 const state = {
     event: initEvent(),
     events: [],
-    dialog: false,
+    eventAddDialog: false,
+    eventDetailDialog: false,
+    eventDetail: {},
 };
 
 const mutations = {
@@ -13,14 +15,28 @@ const mutations = {
         state.event.startDate = payload.date;
         state.event.startTime = payload.time;
         // console.log(state.calendar);
-        state.dialog = true;
+        state.eventAddDialog = true;
     },
     CLOSE_CALENDAR_DIALOG(state) {
-        state.dialog = false;
+        state.eventAddDialog = false;
     },
     ADD_EVENT(state, getEvent) {
         state.events.push(getEvent);
-        state.dialog = false;
+        state.eventAddDialog = false;
+        state.event = initEvent();
+    },
+    ADD_EVENTS(state, events) {
+        state.events = [];
+        events.forEach(e => {
+            state.events.push(makeEvent(e));
+        })
+    },
+    SHOW_EVENT_DETAIL(state, event) {
+        state.event = event;
+        state.eventDetailDialog = true;
+    },
+    CLOSE_EVENT_DETAIL(state) {
+        state.eventDetailDialog = false;
         state.event = initEvent();
     }
 };
@@ -32,6 +48,7 @@ const actions = {
             const response = await requestAddEvent(calendar);
 
             const addedEvent = makeEvent(response.data);
+            console.log('addedEvent', addedEvent);
             context.commit('ADD_EVENT', addedEvent);
             store.commit('SET_SNACKBAR', setSnackBarInfo('일정이 추가 되었습니다.', 'info', 'top'))
         } catch (e) {
@@ -39,14 +56,24 @@ const actions = {
         }
     },
 
-    async REQEUST_QUERY_EVENTS_BY_MONTH(context, startDate) {
+    async REQEUST_QUERY_EVENTS_BY_DATE(context, date) {
         try {
-            const response = await requestQueryEvents(startDate);
-            // console.log('일정 조회');
-            // console.log(response.data);
-            // 이벤트 채워 넣기
+            const response = await requestQueryEvents(date);
+            context.commit('ADD_EVENTS', response.data);
+            console.log(response.data);
         } catch (e) {
-            // console.log('일정 조회 에러' + e);
+            store.commit('SET_SNACKBAR', setSnackBarInfo('이벤트 전체 조회를 실패하였습니다.', 'error', 'top'))
+        }
+    },
+
+    async REQUEST_DETAIL_EVENT(context, eventId) {
+        try {
+            console.log('dispated');
+            const respone = await requestEventDetail(eventId);
+            console.log('dispatch Event', respone.data);
+            context.commit('SHOW_EVENT_DETAIL', respone.data);
+        } catch (e) {
+            store.commit('SET_SNACKBAR', setSnackBarInfo('이벤트 상세 조회를 실패하였습니다.', 'error', 'top'))
         }
     },
 
@@ -88,6 +115,7 @@ const colors = ['blue', 'indigo', 'deep-purple', 'green', 'orange', 'red'];
 
 const makeEvent = (event) => {
     return {
+        id: event.id,
         name: event.title,
         start: event.startDate + getTime(event.startTime),
         end: event.endDate + getTime(event.endTime),
@@ -97,6 +125,7 @@ const makeEvent = (event) => {
 
 function initEvent() {
     return {
+        id: '',
         startDate: '',
         startTime: '',
         endDate: '',
