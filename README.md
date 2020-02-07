@@ -1,11 +1,19 @@
-# SpringBoot와 Vue를 이용한 웹사이트 제작
-> 스프링 부트와 Vue를 이용한 웹사이트 제작 OAuth 2.0를 활용하여 Authorization Server, Resource Server를 구축한다
-> JWT으로 토큰을 발급하고 Password Grant Type을 이용한다.
+# SpringBoot와 Vue.js를 이용한 웹사이트 제작
+> Spring Security OAuth 2.0, JWT 토큰을 활용하여 보안을 적용한다.
 > SpringBoot는 최대한 테스트 코드 작성을 하도록 노력한다.
 
 [구현중인 웹사이트로 접속하기](https://naughty-murdock-133815.netlify.com/)
 
 [![Build Status](https://travis-ci.org/DongmyeongLee22/msa-study.svg?branch=master)](https://travis-ci.org/DongmyeongLee22/msa-study)
+
+---
+## 프로젝트 동작 흐름
+![img](./images/front.png)
+![img](./images/aws.png)
+![img](./images/back.png)
+
+
+---
 
 ## 작업환경
 #### SpringBoot
@@ -26,7 +34,7 @@
  - Vuetify
  - Toast-UI Editor
 
-#### 배포 관련
+#### 배포
 - 서버는 AWS에 배포
 - 프론트는 Netlify에 배포
 ---
