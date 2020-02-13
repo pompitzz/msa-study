@@ -34,9 +34,11 @@
  - Vuetify
  - Toast-UI Editor
 
-#### 배포
-- 서버는 AWS에 배포
-- 프론트는 Netlify에 배포
+#### Deploy
+- BackEnd
+  - AWS EC2
+- FrontEnd
+  - Netlify
 ---
 ## 구현 순서
 #### 1. OAuth 2.0 서버 구축
@@ -49,6 +51,7 @@
 #### 2. 회원가입, 로그인 기능 구현
 - 회원가입, 로그인 뷰 구현
   - rules를 이용하여 input 검증
+  - 검증된 input만 통신허용
 - 회원가입, 로그인 API 통신 구현
 
 #### 3. 권한별 라우터 설정, 로그아웃 구현
@@ -62,7 +65,7 @@
   - EC2에 기본적으로 필요한 프로그램 설치
   - RDS는 Maria DB로 사용
     - 이유
-      - 가격이 저험
+      - 가격이 저렴
       - Amazon Aurora와 교체가 용이
 
 - **EC2에서 직접 서버 실행**
@@ -89,16 +92,18 @@
 #### 6. 기타 추가 설정
 - Vue.js에서 axios interceptor를 이용하여 기본 에러 처리
 - 토큰 만료 시
-  - Response Error가 토큰 만료라면 Refresh Token으로 자동으로 토큰 재 발급
+  - interceptor에서 응답을 보고 Refresh Token으로 자동으로 토큰 재 발급
   - Refresh Token도 만료되었다면 로그아웃 후 사용자에게 알림
 - 서버 도메인 등록 후 https 인증 추가
-- 서버측에서 HandlerMethodArgumentResolver를 이용하여 Annotation만으로 토큰 사용자의 Email Decodeing
+  - Let's Encrypt를 통하여 인증
+- 서버측에서 HandlerMethodArgumentResolver를 이용하여 토큰 디코딩하여 사용자의 정보를 확인
 - AOP를 이용하여 컨트롤러 메서드 실행 시간 측정
 
-#### 7. Calendar UI 구현하기
-<img src="./images/calendar.png" width="70%">
-<br>
+#### 7. 캘린더, 일정 추가 기능
+![img](./images/calendar.png)
 
-- 날짜 클릭시 일정 추가 가능
-- 일정 클릭 시 상세한 일정 확인 가능
-- 캘린더는 Day, Week, Month 선택 가능
+**로그인 한 유저에 한해서 일정 추가 가능**
+
+- 날짜클릭 시 일정을 추가할 수 있다.
+- 해당 일정을 클릭하면 상세한 일정을 확인할 수 있다.
+- 캘린더는 Day, Week, Month로 바꾸어가면서 확인할 수 있다.
