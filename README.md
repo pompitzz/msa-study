@@ -7,6 +7,11 @@
 [![Build Status](https://travis-ci.org/DongmyeongLee22/msa-study.svg?branch=master)](https://travis-ci.org/DongmyeongLee22/msa-study)
 
 ---
+## 테이블구조
+![img](./images/table.png)
+
+---
+
 ## 프로젝트 동작 흐름
 ![img](./images/front.png)
 ![img](./images/aws.png)

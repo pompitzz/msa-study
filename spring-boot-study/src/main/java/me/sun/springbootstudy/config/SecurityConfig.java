@@ -20,6 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
