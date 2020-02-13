@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.sun.springbootstudy.domain.board.repository.BoardRepository;
 import me.sun.springbootstudy.domain.member.Member;
 import me.sun.springbootstudy.domain.member.MemberRepository;
+import me.sun.springbootstudy.telegram.TelegramPollingBot;
 import me.sun.springbootstudy.web.dto.board.BoardListResponseDto;
 import me.sun.springbootstudy.web.dto.board.BoardOneResponseDto;
 import me.sun.springbootstudy.web.dto.board.BoardSaveRequestDto;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +22,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final TelegramPollingBot telegramPollingBot;
 
     @Transactional
     public Long save(BoardSaveRequestDto dto, String email) {
@@ -58,6 +61,11 @@ public class BoardService {
     }
 
     public Page<BoardListResponseDto> findBoardsByTitle(String title, Pageable pageable) {
+        try {
+            telegramPollingBot.sendMessage("접속");
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
         return boardRepository.findBoardsTitleWithPageable(title, pageable).map(BoardListResponseDto::new);
     }
 

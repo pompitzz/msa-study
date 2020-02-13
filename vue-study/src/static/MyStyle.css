@@ -63,6 +63,9 @@ a {
 .tui-editor-contents .hljs-meta {
     color: #1b8620;
 }
+.tui-editor-contents .hljs-title {
+    color: #54f773;
+}
 
 .tui-editor-contents h1 {
     padding-bottom: 15px;

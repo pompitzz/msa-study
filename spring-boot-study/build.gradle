@@ -9,7 +9,7 @@ plugins {
 
 
 group = 'me.sun'
-version = '0.0.3-' + new Date().format("MMddHHmm")
+version = '0.0.4-' + new Date().format("MMddHHmm")
 sourceCompatibility = '1.8'
 
 configurations {
@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.telegram:telegrambots:4.6'
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
